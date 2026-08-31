@@ -13,7 +13,7 @@
 #include "Shapes.h"
 #include "Renderer.h"
 #include "Physics.h"
-#include "Ball.h"
+#include "Character.h"
 
 ///////////////////////////////////////////////
 
