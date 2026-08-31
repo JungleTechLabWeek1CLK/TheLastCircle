@@ -13,6 +13,7 @@
 #include "Shapes.h"
 #include "Renderer.h"
 #include "Physics.h"
+#include "Ball.h"
 
 ///////////////////////////////////////////////
 
@@ -55,7 +56,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 ///////////////////////////////////////////////
-void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer)
+/*void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer)
 {
     UBall* CurrentBall = nullptr;
 
@@ -78,7 +79,7 @@ void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer)
         Renderer->UpdateConstantBuffer(CurrentBall->Location, CurrentBall->Radius, BallColor);
         Renderer->RenderPrimitive();
     }
-}
+}*/
 
 
 void AddBall(UPrimitive**& PrimitiveList, INT32& CurrentListSize)
