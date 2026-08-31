@@ -1,5 +1,6 @@
 #include "GameManager.h"
-#include <iostream>
+#include <cstdlib>
+#include <cmath>
 
 GameManager::GameManager() 
     : currentState(Title), 
@@ -7,7 +8,10 @@ GameManager::GameManager()
     GameClearTime(60.0f), 
     EnemyList(nullptr),EnemyCount(0), 
     EnemyCapacity(30), EnemySpawnTimer(0.0f), 
-    EnemySpawnInterval(100.0f)
+    EnemySpawnInterval(1.0f),
+    ProjectileList(nullptr),
+    ProjectileCount(0),
+    ProjectileCapacity(30)
 {
 
 }
@@ -16,10 +20,13 @@ GameManager::GameManager()
 GameManager::~GameManager()
 {
     ClearEnemies();
+    ClearProjectiles();
 
     delete[] EnemyList;
-
     EnemyList = nullptr;
+
+    delete[] ProjectileList;
+    ProjectileList = nullptr;
 }
 
 void GameManager::Initialize()
@@ -29,8 +36,12 @@ void GameManager::Initialize()
     GameTime = 0.0f;
     EnemyCount = 0;
     EnemyCapacity = 30;
-
     EnemyList = new UCharacterEnemy * [EnemyCapacity]();
+
+    ProjectileCount = 0;
+    ProjectileCapacity = 30;
+    ProjectileList = new UProjectile * [ProjectileCapacity]();
+
 
     // 60초 생존하면 게임 클리어
     GameClearTime = 60.0f;
@@ -45,6 +56,7 @@ void GameManager::Update(float DeltaTime)
 
     UpdateGameTime(DeltaTime);
     UpdateEnemySpawn(DeltaTime);
+    UpdateProjectiles(DeltaTime);
 
     CheckGameOver();
     CheckGameClear();
@@ -56,10 +68,12 @@ void GameManager::Update(float DeltaTime)
 void GameManager::ResetGame()
 {
     GameTime = 0.0f;
+    EnemySpawnTimer = 0.0f;
 
     currentState = Playing;
 
     ClearEnemies();
+    ClearProjectiles();
     SpawnPlayer();
 
 }
@@ -121,7 +135,7 @@ void GameManager::SpawnPlayer()
     Player.Location = SpawnPosition;
 }
 
-void GameManager::SpawnEnemy()
+void GameManager::SpawnEnemy(ETypeCharacter EnemyType)
 {
     //float minRadius;
 
@@ -132,8 +146,8 @@ void GameManager::SpawnEnemy()
 
     UCharacterEnemy* NewEnemy = new UCharacterEnemy();
 
-    NewEnemy->Location = FVector(0.8f, 0.0f, 0.0f);
-    NewEnemy->CharacterType = ETypeCharacter::ETC_Enemy;
+    NewEnemy->Location = GetEnemySpawnPosition();
+    NewEnemy->CharacterType = EnemyType;
 
     EnemyList[EnemyCount] = NewEnemy;
 
@@ -177,18 +191,6 @@ void GameManager::RemoveEnemy(int Index)
     --EnemyCount;
 }
 
-void GameManager::UpdateEnemySpawn(float DeltaTime)
-{
-    EnemySpawnTimer += DeltaTime;
-
-    if (EnemySpawnTimer >= EnemySpawnInterval)
-    {
-        SpawnEnemy();
-
-        EnemySpawnTimer = 0.0f;
-    }
-}
-
 void GameManager::ClearEnemies()
 {
     for (int i = 0; i < EnemyCount; ++i)
@@ -200,12 +202,98 @@ void GameManager::ClearEnemies()
     EnemyCount = 0;
 }
 
+void GameManager::SpawnProjectile()
+{
+    if (ProjectileCount >= ProjectileCapacity)
+    {
+        return;
+    }
+
+    UProjectile* NewProjectile = new UProjectile();
+
+    ProjectileList[ProjectileCount] = NewProjectile;
+
+    ++ProjectileCount;
+}
+
+void GameManager::ClearProjectiles()
+{
+    for (int i = 0; i < ProjectileCount; ++i)
+    {
+        delete ProjectileList[i];
+        ProjectileList[i] = nullptr;
+    }
+
+    ProjectileCount = 0;
+}
+
+void GameManager::RemoveProjectile(int Index)
+{
+    if (Index < 0 || Index >= ProjectileCount)
+    {
+        return;
+    }
+
+    delete ProjectileList[Index];
+
+    ProjectileList[Index] =
+        ProjectileList[ProjectileCount - 1];
+
+    ProjectileList[ProjectileCount - 1] = nullptr;
+
+    --ProjectileCount;
+}
+
+void GameManager::UpdateEnemySpawn(float DeltaTime)
+{
+    EnemySpawnTimer += DeltaTime;
+
+    if (EnemySpawnTimer >= EnemySpawnInterval)
+    {
+        int RandomValue = rand() % 100;
+
+        if (RandomValue < 80)
+        {
+            SpawnEnemy(ETypeCharacter::ETC_Enemy);
+        }
+        else
+        {
+            SpawnEnemy(ETypeCharacter::ETC_EnemyProjectile);
+        }
+
+        EnemySpawnTimer = 0.0f;
+    }
+}
+
 #pragma endregion
 
 
+FVector GameManager::GetEnemySpawnPosition()
+{
+    float RandomAngle =
+        ((float)rand() / RAND_MAX) * 2.0f * 3.141592f;
+
+    float MinRadius = EnemySpawnMinRadius;
+    float MaxRadius = 1.0f;
+
+    float RandomRadius =
+        MinRadius +
+        ((float)rand() / RAND_MAX) * (MaxRadius - MinRadius);
+
+    float X =
+        Player.Location.x +
+        cosf(RandomAngle) * RandomRadius;
+
+    float Y =
+        Player.Location.y +
+        sinf(RandomAngle) * RandomRadius;
+
+    return FVector(X, Y, 0.0f);
+}
+
 void GameManager::UpdateGameTime(float DeltaTime)
 {
-
+    GameTime += DeltaTime;
 }
 
 void GameManager::CheckGameOver()

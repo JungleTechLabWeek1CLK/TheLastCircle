@@ -1,6 +1,9 @@
 #pragma once
 #include "Math.h"
+#include "CharacterPlayer.h"
 #include "CharacterEnemy.h"
+#include "Projectile.h"
+
 
 // 게임 현재 상태
 enum EGameState
@@ -23,8 +26,8 @@ public:
 	void ResetGame();
 
 	void SpawnPlayer();
-	void SpawnEnemy();
-
+	void SpawnEnemy(ETypeCharacter EnemyType);
+	void SpawnProjectile();
 
 	void PauseGame();
 	void ResumeGame();
@@ -35,6 +38,11 @@ public:
 	bool IsPlaying() const;
 	bool IsPaused() const;
 
+	UCharacterPlayer* GetPlayer()
+	{
+		return &Player;
+	}
+
 
 private:
 	EGameState currentState = Title;
@@ -44,7 +52,10 @@ private:
 	float EnemySpawnTimer;
 	float EnemySpawnInterval;
 
-	UCharacterEnemy Player;
+	FVector GetEnemySpawnPosition();
+	float EnemySpawnMinRadius = 0.5f;
+
+	UCharacterPlayer Player;
 
 	UCharacterEnemy** EnemyList;
 
@@ -54,13 +65,21 @@ private:
 	void ResizeEnemyList();
 	void RemoveEnemy(int Index);
 	void ClearEnemies();
-
-
 	void UpdateEnemySpawn(float DeltaTime);
+
+	UProjectile** ProjectileList;
+	int ProjectileCount;
+	int ProjectileCapacity;
+
+	void UpdateProjectiles(float DeltaTime);
+	void RemoveProjectile(int Index);
+	void ClearProjectiles();
 
 	void UpdateGameTime(float DeltaTime);
 	void CheckGameOver();
 	void CheckGameClear();
+
+
 
 
 };
