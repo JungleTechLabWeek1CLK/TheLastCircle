@@ -1,9 +1,7 @@
-#include "Physics.h"
-#include "Renderer.h"
+#pragma once
+#include "Character.h"
 
-
-
-class UCharacter
+class UCharacterPlayer : public UCharacter
 {
 public:
     ////////
@@ -19,10 +17,10 @@ public:
     FVector Color;
     ////////
 
-    UCharacter() : Location(0.f), Velocity(0.f)
+    UCharacterPlayer() : Location(0.f), Velocity(0.f)
     {
     }
-    ~UCharacter()
+    ~UCharacterPlayer()
     {
     }
 private:
@@ -31,7 +29,3 @@ private:
     void GetDamage();
     void Die();
 };
-
-void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer);
-void AddBall(UPrimitive**& PrimitiveList, INT32& CurrentListSize);
-void RemoveBall(UPrimitive** PrimitiveList);
