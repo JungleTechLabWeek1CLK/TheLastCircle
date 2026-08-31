@@ -3,6 +3,14 @@
 #include "Math.h"
 #include <cmath>
 
+
+/*
+#include "Character.h"
+#include "CharacterPlayer.h"
+#include "CharacterEnemy.h"
+*/
+
+
 ///////////////////////////////////////////////
 // Structure for a Primitive
 class UPrimitive
@@ -90,6 +98,5 @@ const FVector DIRECTION_UP(0.f, 1.f, 0.f);
 const FVector DIRECTION_DOWN(0.f, -1.f, 0.f);
 
 
-void ApplyGravity(UPrimitive** PrimitiveList, const float DELTA_TIME);
-void HandleCollision(UPrimitive** PrimitiveList, const float DELTA_TIME);
-void MoveBalls(UPrimitive** PrimitiveList, const float DELTA_TIME);
+
+//void HandleCollision(UCharacterPlayer* Player, UCharacter** CharacterList, const float DELTA_TIME);

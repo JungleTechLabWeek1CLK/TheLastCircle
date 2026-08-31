@@ -1,5 +1,8 @@
+#pragma once
+
 #include "Physics.h"
 #include "Renderer.h"
+
 
 enum class ETypeCharacter
 {
@@ -16,7 +19,7 @@ public:
     // Required for test
     FVector Location;
     FVector Velocity;
-    float Radius;
+    float Radius = 0.1f;
     float Mass;
     float Hp;
     float Speed;
@@ -32,13 +35,11 @@ public:
     ~UCharacter()
     {
     }
-private:
+
     void Move();
     void Attack();
     void GetDamage();
     void Die();
-};
+private:
 
-void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer);
-void AddBall(UPrimitive**& PrimitiveList, INT32& CurrentListSize);
-void RemoveBall(UPrimitive** PrimitiveList);
+};

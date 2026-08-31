@@ -12,8 +12,4 @@ public:
     {
     }
 private:
-    void Move();
-    void Attack();
-    void GetDamage();
-    void Die();
 };

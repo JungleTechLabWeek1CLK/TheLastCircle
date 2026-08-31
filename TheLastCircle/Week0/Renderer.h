@@ -14,6 +14,12 @@
 #include "Math.h"
 #include "Shapes.h"
 
+/*
+#include "CharacterPlayer.h"
+#include "CharacterEnemy.h"
+#include "Projectile.h"
+*/
+
 ///////////////////////////////////////////////
 // Rnederer Class
 class URenderer
@@ -80,10 +86,9 @@ public:
         }
     }
 
-    void RenderPrimitive()
+    void RenderPrimitive(ETypePrimitive PrimitiveType)
     {
-        /*
-        switch (TypePrimitive)
+        switch (PrimitiveType)
         {
         case EPT_Triangle:
             RenderPrimitive(VertexBufferTriangle, NumVerticesTriangle);
@@ -95,32 +100,11 @@ public:
             RenderPrimitive(VertexBufferSphere, NumVerticesSphere);
             break;
         }
-        */
-        // in this test, always draw spheres
-        RenderPrimitive(VertexBufferSphere, NumVerticesSphere);
-    }
-
-    void ChangeShape()
-    {
-        switch (TypePrimitive)
-        {
-        case EPT_Triangle:
-            TypePrimitive = EPT_Cube;
-            break;
-        case EPT_Cube:
-            TypePrimitive = EPT_Sphere;
-            break;
-        case EPT_Sphere:
-            TypePrimitive = EPT_Triangle;
-            break;
-        }
     }
 
 
     ID3D11Device* Device = nullptr; // for communicating with GPU
     ID3D11DeviceContext* DeviceContext = nullptr; // for managing GPU command execution
-
-    ETypePrimitive TypePrimitive = EPT_Sphere; // current shape
 private:
     // Device and Swap Chain
     void CreateDeviceAndSwapChain(HWND hWindow)
@@ -387,4 +371,3 @@ private:
     };
 };
 ///////////////////////////////////////////////
-

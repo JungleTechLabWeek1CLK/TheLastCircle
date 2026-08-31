@@ -11,9 +11,7 @@ public:
     ~UCharacterPlayer()
     {
     }
+
 private:
-    void Move();
-    void Attack();
-    void GetDamage();
-    void Die();
+
 };

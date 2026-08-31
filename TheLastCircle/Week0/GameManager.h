@@ -43,6 +43,23 @@ public:
 		return &Player;
 	}
 
+	UCharacterEnemy** GetEnemyList()
+	{
+		return EnemyList;
+	}
+	int GetEnemyListCount()
+	{
+		return EnemyCount;
+	}
+	UProjectile** GetPlayerProjectileList()
+	{
+		return ProjectileList;
+	}
+	int GetPlayerProjectileListCount()
+	{
+		return ProjectileCount;
+	}
+
 
 private:
 	EGameState currentState = Title;

@@ -134,6 +134,7 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Projectile.h" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shapes.cpp" />
   </ItemGroup>
@@ -152,6 +153,8 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="ProjectileEnemy.h" />
+    <ClInclude Include="ProjectilePlayer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Sphere.h" />

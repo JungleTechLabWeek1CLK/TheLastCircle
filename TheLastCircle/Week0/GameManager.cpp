@@ -2,6 +2,13 @@
 #include <cstdlib>
 #include <cmath>
 
+
+#include "CharacterPlayer.h"
+#include "CharacterEnemy.h"
+#include "Projectile.h"
+
+
+
 GameManager::GameManager() 
     : currentState(Title), 
     GameTime(0.0f), 
@@ -56,7 +63,7 @@ void GameManager::Update(float DeltaTime)
 
     UpdateGameTime(DeltaTime);
     UpdateEnemySpawn(DeltaTime);
-    UpdateProjectiles(DeltaTime);
+    //UpdateProjectiles(DeltaTime);
 
     CheckGameOver();
     CheckGameClear();
