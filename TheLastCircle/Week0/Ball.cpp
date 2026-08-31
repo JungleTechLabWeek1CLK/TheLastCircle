@@ -24,3 +24,34 @@ void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer)
         Renderer->RenderPrimitive();
     }
 }
+
+void AddBall(UPrimitive**& PrimitiveList, INT32& CurrentListSize)
+{
+    UBall* NewBall = new UBall();
+    if (UBall::TotalNumBalls > CurrentListSize)
+    {
+        INT32 NewListSize = CurrentListSize * 2;
+        UPrimitive** NewList = new UPrimitive * [NewListSize]();
+        for (INT32 CurrentIndex = 0; CurrentIndex < CurrentListSize; ++CurrentIndex)
+        {
+            NewList[CurrentIndex] = PrimitiveList[CurrentIndex];
+        }
+        delete[] PrimitiveList;
+        CurrentListSize = NewListSize;
+        PrimitiveList = NewList;
+    }
+    PrimitiveList[UBall::TotalNumBalls - 1] = NewBall;
+}
+
+void RemoveBall(UPrimitive** PrimitiveList)
+{
+    if (UBall::TotalNumBalls > 0)
+    {
+        INT32 TargetIndexToDelete = (static_cast<float>(rand()) / RAND_MAX) * UBall::TotalNumBalls;
+        if (TargetIndexToDelete == UBall::TotalNumBalls)
+            --TargetIndexToDelete;
+        delete PrimitiveList[TargetIndexToDelete];
+        PrimitiveList[TargetIndexToDelete] = PrimitiveList[UBall::TotalNumBalls];
+        PrimitiveList[UBall::TotalNumBalls] = nullptr;
+    }
+}
