@@ -1,5 +1,28 @@
 #include "Character.h"
 
+void Move() {
+
+}
+void Attack() {
+
+}
+void GetDamage() {
+
+}
+void Die() {
+
+}
+
+
+
+
+
+
+
+
+
+
+
 void DrawBalls(UPrimitive** PrimitiveList, URenderer* Renderer)
 {
     UBall* CurrentBall = nullptr;

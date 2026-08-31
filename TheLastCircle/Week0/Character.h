@@ -1,7 +1,13 @@
 #include "Physics.h"
 #include "Renderer.h"
 
-
+enum class ETypeCharacter
+{
+    ETC_Player,
+    ETC_Enemy,
+    ETC_PlayerProjectile,
+    ETC_EnemyProjectile
+};
 
 class UCharacter
 {
@@ -17,6 +23,7 @@ public:
     float Damage;
     ETypePrimitive HitBox;
     FVector Color;
+    ETypeCharacter CharacterType;
     ////////
 
     UCharacter() : Location(0.f), Velocity(0.f)
