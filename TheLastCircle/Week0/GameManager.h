@@ -13,6 +13,7 @@ enum EGameState
 	Title,
 	Playing,
 	Paused,
+	Upgrade,
 	GameOver,
 	GameClear,
 };
@@ -114,6 +115,9 @@ public:
 		return Score;
 	}
 
+	void StartUpgrade();
+	void FinishUpgrade();
+
 
 private:
 	EGameState currentState = Title;
@@ -143,6 +147,8 @@ private:
 	int EXPCapacity;
 
 	void ResizeEXPList();
+	void RemoveEXP(int index);
+	void ClearEXP();
 
 	void ResizeEnemyList();
 	void ClearEnemies();

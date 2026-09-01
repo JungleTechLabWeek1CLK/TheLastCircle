@@ -6,6 +6,7 @@ enum class EPopupType
 {
     Title,
     Pause,
+    Upgrade,
     GameOver,
     GameClear
 };
@@ -26,5 +27,7 @@ private:
     void RenderPausePopup(UGameManager* GameManager);
     void RenderGameOverPopup(UGameManager* GameManager);
     void RenderGameClearPopup(UGameManager* GameManager);
+
+    void RenderChoicePopup(UGameManager* GameManager);
 
 };

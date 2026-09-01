@@ -86,6 +86,7 @@ void UGameManager::ResetGame()
 
     ClearEnemies();
     ClearProjectiles();
+    ClearEXP();
     SpawnPlayer();
 
 }
@@ -240,6 +241,17 @@ void UGameManager::RemoveEnemy(int Index)
     EnemyList[EnemyCount - 1] = nullptr;
 
     --EnemyCount;
+}
+
+void UGameManager::ClearEXP()
+{
+    for (int i = 0; i < EXPCount; ++i)
+    {
+        delete EXPList[i];
+        EXPList[i] = nullptr;
+    }
+
+    EXPCount = 0;
 }
 
 void UGameManager::ClearEnemies()

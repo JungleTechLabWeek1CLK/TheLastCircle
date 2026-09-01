@@ -40,7 +40,14 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
     case EPopupType::Title:
         break;
     case EPopupType::Pause:
+        ImGui::SetNextWindowSize(
+            ImVec2(WindowSize.x, WindowSize.y*1.2f),
+            ImGuiCond_Always
+        );
         RenderPausePopup(GameManager);
+        break;
+    case EPopupType::Upgrade:
+        RenderChoicePopup(GameManager);
         break;
     case EPopupType::GameOver:
         RenderGameOverPopup(GameManager);
@@ -488,6 +495,31 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
 
 #pragma endregion
 
+void RenderChoicePopup(UGameManager* GameManager)
+{
+
+    ImGuiWindowFlags WindowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoTitleBar;
+
+    float WindowWidth = ImGui::GetWindowWidth();
+    float WindowHeight = ImGui::GetWindowHeight();
+
+    ImGui::Begin("UpgradePopup", nullptr, WindowFlags);
+
+    if (ImGui::Button("Damage"))
+    {
+        
+    }
+    if (ImGui::Button("HP"))
+    {
+    }
+
+}
+
+
 void UGameUI::UIRender(UGameManager* GameManager)
 {
     if (GameManager == nullptr)
@@ -507,6 +539,10 @@ void UGameUI::UIRender(UGameManager* GameManager)
 
     case Paused:
         RenderPopup(GameManager, EPopupType::Pause);
+        break;
+
+    case Upgrade:
+        RenderPopup(GameManager, EPopupType::Upgrade);
         break;
 
     case GameOver:
