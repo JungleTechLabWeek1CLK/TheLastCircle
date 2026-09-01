@@ -3,6 +3,8 @@
 
 #include "ImGui/imgui.h"
 
+#include <Windows.h>
+
 
 #pragma region Popups
 
@@ -43,6 +45,38 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
     }
 
    
+}
+
+void UGameUI::RenderTitle(UGameManager* GameManager)
+{
+    ImGuiViewport* Viewport = ImGui::GetMainViewport();
+    ImVec2 Center = Viewport->GetCenter();
+
+    ImGui::SetNextWindowSize(
+        ImVec2(400.0f, 400.0f),
+        ImGuiCond_Always
+    );
+
+    ImGuiWindowFlags WindowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoTitleBar;
+
+    ImGui::Begin("TitleWindow", nullptr, WindowFlags);
+
+    const char* TitleText = "THE LAST CIRCLE";
+
+    float TitleTextWidth =
+        ImGui::CalcTextSize(TitleText).x;
+
+    ImGui::SetCursorPosY(60.0f);
+
+    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - TitleTextWidth) * 0.5f );
+
+    ImGui::Text("%s", TitleText);
+
+
 }
 
 void UGameUI::RenderPausePopup(UGameManager* GameManager)
@@ -146,7 +180,7 @@ void UGameUI::UIRender(UGameManager* GameManager)
     switch (GameManager->GetGameState())
     {
     case Title:
-        RenderPopup(GameManager, EPopupType::Title);
+        RenderTitle(GameManager);
         break;
 
     case Playing:

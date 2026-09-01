@@ -136,6 +136,11 @@ void UGameManager::ReturnToTitle()
 
 #pragma endregion
 
+bool UGameManager::IsTitle() const
+{
+    return currentState == Title;
+}
+
 bool UGameManager::IsPlaying() const
 {
     return (currentState == Playing) ? true : false;

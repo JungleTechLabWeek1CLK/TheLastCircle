@@ -45,6 +45,7 @@ public:
 	void Lose();
 	void Win();
 
+	bool IsTitle() const;
 	bool IsPlaying() const;
 	bool IsPaused() const;
 
