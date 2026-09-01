@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Projectile.h"
+#include "Character.h"
 
-class UProjectileEnemy : public UProjectile
+class UProjectilePlayer : public UProjectile
 {
 public:
+	UProjectilePlayer() : UProjectile()
+	{
+		CharacterType = ETypeCharacter::ETC_EnemyProjectile;
+	}
 private:
-	float DealthTimer = 5.f;
 };

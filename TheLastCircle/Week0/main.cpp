@@ -89,9 +89,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // Game Manager
     // TODO: change class name to use GameManager as the name of the variable
-    GameManager gameManager;
-    gameManager.Initialize();
-    gameManager.ResetGame();
+    UGameManager GameManager;
+    GameManager.Initialize();
+    GameManager.ResetGame();
 
 
     // Main Loop
@@ -110,8 +110,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
         }
 
-        UCharacterPlayer* Player = gameManager.GetPlayer();
-        UCharacterEnemy** EnemyList = gameManager.GetEnemyList();
+        UCharacterPlayer* Player = GameManager.GetPlayer();
+        UCharacterEnemy** EnemyList = GameManager.GetEnemyList();
 
 
         // Physics Process
@@ -123,9 +123,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         if (DeltaTime > 0.1f)
             DeltaTime = 0.1f;
 
-        HandleCollision(Player, EnemyList, gameManager.GetEnemyListCount(),
-            gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
-            gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(), DeltaTime);
+        HandleCollision(Player, EnemyList, GameManager.GetEnemyListCount(),
+            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(),
+            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(), DeltaTime);
 
         ////////////////////////////////////////////
 
@@ -134,14 +134,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // Rendering Process
         ////////////////////////////////////////////
         Renderer.Prepare();
-        gameManager.Update(DeltaTime);
+        GameManager.Update(DeltaTime);
         
-        DrawCharacters(Player, EnemyList, gameManager.GetEnemyListCount(),
-            gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
-            gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
+        DrawCharacters(Player, EnemyList, GameManager.GetEnemyListCount(),
+            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(),
+            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(),
             &Renderer);
 
-        int EnemyListCount = gameManager.GetEnemyListCount();
+        int EnemyListCount = GameManager.GetEnemyListCount();
         if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
             Player->Move({Player->Location.x - 1, Player->Location.y, 0}, DeltaTime);
         }
