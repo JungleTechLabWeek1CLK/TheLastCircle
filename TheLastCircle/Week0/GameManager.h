@@ -148,7 +148,6 @@ private:
 	int EXPCapacity;
 
 	void ResizeEXPList();
-	void RemoveEXP(int index);
 	void ClearEXP();
 
 	void ResizeEnemyList();

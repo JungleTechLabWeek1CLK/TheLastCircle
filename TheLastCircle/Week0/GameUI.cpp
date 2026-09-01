@@ -47,7 +47,7 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
         RenderPausePopup(GameManager);
         break;
     case EPopupType::Upgrade:
-        RenderChoicePopup(GameManager);
+        RenderChoicePopup(GameManager, nullptr);  // TODO: fix this
         break;
     case EPopupType::GameOver:
         RenderGameOverPopup(GameManager);

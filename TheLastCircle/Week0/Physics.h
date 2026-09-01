@@ -18,4 +18,4 @@ class UProjectile;
 class UItemEXP;
 void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
     UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
-    const float DELTA_TIME, bool bIsPaused);
+    const float DELTA_TIME, bool bIsPlaying);

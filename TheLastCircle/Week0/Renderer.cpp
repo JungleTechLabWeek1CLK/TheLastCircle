@@ -55,7 +55,7 @@ void DrawBackground(URenderer* Renderer, bool bIsTitle)
     if (bIsTitle)
         return;
 
-    FVector Temp;
-    Renderer->UpdateConstantBuffer(Temp, 0.f, Temp, 100.5f);
+    FVector Temp = { 0.f, 0.f, 0.f };
+    Renderer->UpdateConstantBuffer(Temp, 1.f, Temp, 100.5f);
     Renderer->RenderPrimitive(EPT_Quad);
 }

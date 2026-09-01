@@ -1,6 +1,7 @@
 // ShaderW0.hlsl
 
 Texture2D MainTexture : register(t0); 
+Texture2D BackgroundTexture : register(t1);
 SamplerState MainSampler : register(s0); 
 
 
@@ -96,6 +97,11 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         // EXP
         float3 Color = { 1.f, 1.f, 0.f };
         TextureColor = float4(Color, 1.f);
+    }
+    else if (CharacterType > 100)
+    {
+        // Background
+        TextureColor = BackgroundTexture.Sample(MainSampler, Input.UV);
     }
     
     return TextureColor;

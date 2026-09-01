@@ -31,13 +31,13 @@ public:
         CreateShader();
         CreateConstantBuffer();
         CreateVertexBuffers();
-        CreateShaderResourceView(L"Asset/sprite.png");    // texture location
+        CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/tile.png");    // texture location
         CreateSamplerState();
     }
     void Release()
     {
         ReleaseSamplerState();
-        ReleaseShaderResourceView();
+        ReleaseShaderResourceViews();
         ReleaseVertexBuffers();
         ReleaseConstantBuffer();
         ReleaseShader();
@@ -274,7 +274,8 @@ private:
             DeviceContext->PSSetConstantBuffers(0, 1, &ConstantBuffer);
         }
 
-        DeviceContext->PSSetShaderResources(0, 1, &TextureSRV);
+        DeviceContext->PSSetShaderResources(0, 1, &TextureSrvSprite);
+        DeviceContext->PSSetShaderResources(1, 1, &TextureSrvTile);
         DeviceContext->PSSetSamplers(0, 1, &SamplerState);
     }
 
@@ -427,26 +428,42 @@ private:
     }
 
     // Texture
-    void CreateShaderResourceView(const wchar_t* FilePath)
+    void CreateShaderResourceViews(const wchar_t* FilePathSprite, const wchar_t* FilePathTile)
     {
         HRESULT Resut = DirectX::CreateWICTextureFromFile(
             Device,               
             DeviceContext,              
-            FilePath,
+            FilePathSprite,
             nullptr,              
-            &TextureSRV         
+            &TextureSrvSprite
         );
 
         if (FAILED(Resut))
         {
-            MessageBox(NULL, L"An unhandled exception occurred.", L"Error", MB_OK | MB_ICONERROR);
+            MessageBox(NULL, L"Failed to load sprite.", L"Error", MB_OK | MB_ICONERROR);
+            abort();
+        }
+
+        Resut = DirectX::CreateWICTextureFromFile(
+            Device,
+            DeviceContext,
+            FilePathTile,
+            nullptr,
+            &TextureSrvTile
+        );
+
+        if (FAILED(Resut))
+        {
+            MessageBox(NULL, L"Failed to load tile.", L"Error", MB_OK | MB_ICONERROR);
             abort();
         }
     }
-    void ReleaseShaderResourceView()
+    void ReleaseShaderResourceViews()
     {
-        TextureSRV->Release();
-        TextureSRV = nullptr;
+        TextureSrvSprite->Release();
+        TextureSrvSprite = nullptr;
+        TextureSrvTile->Release();
+        TextureSrvTile = nullptr;
     }
     void CreateSamplerState()
     {
@@ -501,7 +518,8 @@ private:
     std::vector<FVertexSimple> VerticesQuad;
 
     // for managing textures
-    ID3D11ShaderResourceView* TextureSRV;
+    ID3D11ShaderResourceView* TextureSrvSprite;
+    ID3D11ShaderResourceView* TextureSrvTile;
     ID3D11SamplerState* SamplerState;
 
     // for managing shaders
@@ -530,3 +548,6 @@ class UItemEXP;
 void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
     UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
     URenderer* Renderer, bool bIsTitle);
+
+
+void DrawBackground(URenderer* Renderer, bool bIsTitle);
