@@ -38,7 +38,7 @@ public:
     void GetDamage(float damage) override;
     void UpdateTime(float delta);
     int LevelUp();
-    void Upgrade();
+    void Upgrade(ETypeUpgrade type);
     void GetEXP(int exp);
     int GetLevel() {
         return Level;

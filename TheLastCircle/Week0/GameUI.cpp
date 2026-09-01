@@ -604,13 +604,16 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             switch (Choices[i])
             {
             case ETypeUpgrade::ETU_Damage:
-                GameManager->GetPlayer()->Upgrade();
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Damage);
                 break;
             case ETypeUpgrade::ETU_Hp:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Hp);
                 break;
             case ETypeUpgrade::ETU_Speed:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Speed);
                 break;
             case ETypeUpgrade::ETU_bullets:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_bullets);
                 break;
             }
             GameManager->ResumeGame();

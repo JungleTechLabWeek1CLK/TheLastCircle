@@ -31,7 +31,7 @@ int UCharacterPlayer::LevelUp() {
     }
     return cnt;
 }
-void UCharacterPlayer::Upgrade() {
+void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
     Damage += 100;
 }
 void UCharacterPlayer::GetEXP(int exp) {
