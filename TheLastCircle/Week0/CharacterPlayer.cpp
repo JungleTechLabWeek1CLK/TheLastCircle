@@ -4,8 +4,12 @@ void UCharacterPlayer::UpdateTime(float delta) {
     
     ShootTime += delta;
     GuardTime += delta;
-    if (GuardDelay <= GuardTime) {
+    if (bIsGuard) {
+        InvincibleTime += delta;
+    }
+    if (bIsGuard && GuardDelay <= GuardTime) {
         bIsGuard = false;
+        InvincibleTime = 0.f;
     }
     if (Delay <= ShootTime) {
         bIsShoot = true;

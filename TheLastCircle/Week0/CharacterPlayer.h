@@ -21,6 +21,7 @@ public:
     float GuardTime = 0.f;
     float GuardDelay = 3.f;
     float MaxHp;
+    float InvincibleTime = 0.f;
     ETypeUpgrade Upgrades[4] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets };
 
     UCharacterPlayer()

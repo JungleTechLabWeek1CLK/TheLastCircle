@@ -14,7 +14,7 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
         return;
 
     FVector PlayerOffset = Player->Location;
-    Renderer->UpdateConstantBuffer(Player->Location - PlayerOffset, Player->Radius, Player->Location, 0.5f);
+    Renderer->UpdateConstantBuffer(Player->Location - PlayerOffset, Player->Radius, Player->Location, 0.5f, Player->InvincibleTime);
     Renderer->RenderPrimitive(EPT_Sphere);
 
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)

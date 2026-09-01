@@ -15,6 +15,8 @@ cbuffer constants : register(b0)
     // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP
     // 100.5 = background, 99.5 = health bar, 98.5 = exp bar
     float CharacterType; 
+    
+    float InvincibleTime;
 }
 
 struct VS_INPUT
@@ -95,6 +97,12 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
     {
         // player
         TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+        if (InvincibleTime > 0.0f)
+        {
+            float Flash = 0.5f + 0.5f * sin(InvincibleTime * 20.0f);
+
+            TextureColor.rgb = lerp(TextureColor.rgb, float3(1.0f, 1.0f, 1.0f), Flash);
+        }
     }
     else if (CharacterType > 1 && CharacterType < 2)
     {

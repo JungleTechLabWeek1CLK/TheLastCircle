@@ -71,7 +71,7 @@ public:
         PrepareShader();
     }
 
-    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& PlayerOffset, const float CharacterType)
+    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& PlayerOffset, const float CharacterType, const float InvincibleTime = 0.0f)
     {
         if (ConstantBuffer)
         {
@@ -84,7 +84,7 @@ public:
             Constants->Radius = Radius;
             Constants->PlayerOffset = PlayerOffset;
             Constants->CharacterType = CharacterType;
-
+            Constants->InvincibleTime = InvincibleTime;
             DeviceContext->Unmap(ConstantBuffer, 0);
         }
     }
@@ -558,6 +558,8 @@ private:
 
         FVector PlayerOffset;
         float CharacterType; // description is written in shader file
+
+        float InvincibleTime;
     };
 };
 ///////////////////////////////////////////////

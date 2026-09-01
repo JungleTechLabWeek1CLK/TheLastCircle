@@ -129,7 +129,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         GameManager.Update(DeltaTime);
         UCharacterPlayer* Player = GameManager.GetPlayer();
         UCharacterEnemy** EnemyList = GameManager.GetEnemyList();
-        UItemEXP** EXPList = GameManager.GetEXPList();
         ////////////////////////////////////////////
 
 
@@ -197,6 +196,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
+            UItemEXP** EXPList = GameManager.GetEXPList();
             for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEXPListCount(); ++CurrentIndex)
             {
                 if (EXPList[CurrentIndex] != nullptr && EXPList[CurrentIndex]->IsActive() && EXPList[CurrentIndex]->bIsFollow) {
