@@ -229,7 +229,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ////////////////////////////////////////////
         Renderer.Prepare();
 
-        DrawBackground(&Renderer, GameManager.IsTitle());
+        DrawBackground(Player, &Renderer, GameManager.IsTitle());
 
         // TODO: drop item list will be added
         DrawObjects(Player, EnemyList, GameManager.GetEnemyListCount(),

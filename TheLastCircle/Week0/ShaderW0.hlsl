@@ -124,7 +124,14 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
     else if (CharacterType > 100)
     {
         // Background
-        TextureColor = BackgroundTexture.Sample(MainSampler, Input.UV);
+        float ScrollSpeed = 5.f;
+        
+        float2 UVScroll;
+        UVScroll.x = PlayerOffset.x * ScrollSpeed;
+
+        UVScroll.y = -PlayerOffset.y * ScrollSpeed;
+        
+        TextureColor = BackgroundTexture.Sample(MainSampler, Input.UV + UVScroll);
     }
     else if (CharacterType > 99 && CharacterType < 100)
     {

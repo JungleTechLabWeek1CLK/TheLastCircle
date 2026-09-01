@@ -572,6 +572,6 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
     URenderer* Renderer, bool bIsTitle);
 
 
-void DrawBackground(URenderer* Renderer, bool bIsTitle);
+void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle);
 
 void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying);

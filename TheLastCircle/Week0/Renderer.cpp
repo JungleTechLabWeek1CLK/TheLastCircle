@@ -13,12 +13,13 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
     if (bIsTitle)
         return;
 
-    Renderer->UpdateConstantBuffer(Player->Location, Player->Radius, Player->Location, 0.5f);
+    FVector PlayerOffset = Player->Location;
+    Renderer->UpdateConstantBuffer(Player->Location - PlayerOffset, Player->Radius, Player->Location, 0.5f);
     Renderer->RenderPrimitive(EPT_Sphere);
 
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
-        Renderer->UpdateConstantBuffer(EnemyList[CurrentIndex]->Location, EnemyList[CurrentIndex]->Radius, Player->Location, 1.5f);
+        Renderer->UpdateConstantBuffer(EnemyList[CurrentIndex]->Location - PlayerOffset, EnemyList[CurrentIndex]->Radius, Player->Location, 1.5f);
         Renderer->RenderPrimitive(EPT_Triangle);
     }
 
@@ -30,9 +31,9 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
             continue;
 
         if(CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location, CurrentProjectile->Radius, Player->Location, 2.5f);
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - PlayerOffset, CurrentProjectile->Radius, Player->Location, 2.5f);
         else
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location, CurrentProjectile->Radius, Player->Location, 3.5f);
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - PlayerOffset, CurrentProjectile->Radius, Player->Location, 3.5f);
 
         Renderer->RenderPrimitive(EPT_Sphere);
     }
@@ -43,7 +44,7 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
         if (CurrentItemEXP->IsActive() == false)
             continue;
 
-        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location, CurrentItemEXP->Radius, Player->Location, 4.5f);
+        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - PlayerOffset, CurrentItemEXP->Radius, Player->Location, 4.5f);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 
@@ -51,13 +52,13 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
 
 }
 
-void DrawBackground(URenderer* Renderer, bool bIsTitle)
+void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle)
 {
     if (bIsTitle)
         return;
 
-    FVector Temp = { 0.f, 0.f, 0.f };
-    Renderer->UpdateConstantBuffer(Temp, 1.f, Temp, 100.5f);
+    FVector Origin = { 0.f, 0.f, 0.f };
+    Renderer->UpdateConstantBuffer(Origin, 1.f, Player->Location, 100.5f);
     Renderer->RenderPrimitive(EPT_BackgroundQuad);
 }
 
