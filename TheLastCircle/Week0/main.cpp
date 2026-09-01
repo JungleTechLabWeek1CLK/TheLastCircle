@@ -91,7 +91,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     GameManager.Initialize();
     GameManager.ResetGame();
 
-
+    RECT rect;
+    GetClientRect(hWnd, &rect);
+    int centerX = rect.right / 2;
+    int centerY = rect.bottom / 2;
     // Main Loop
     while (bIsExit == false)
     {
@@ -143,6 +146,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         POINT pt;
         GetCursorPos(&pt);
         ScreenToClient(hWnd, &pt);
+
         if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
             Player->Move({Player->Location.x - 1, Player->Location.y, 0}, DeltaTime);
         }
@@ -157,14 +161,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
             if (Player->bIsShoot) {
-                GameManager.SpawnProjectile(Player->Location, { (float)pt.x / 512 - 1, 1 - (float)pt.y / 512, 0 }, ETypeCharacter::ETC_PlayerProjectile);
+                FVector V = { ((float)pt.x / centerX) - 1.f, 1.f - ((float)pt.y / centerY), 0 };
+                V.Normalize();
+                GameManager.SpawnProjectile(Player->Location, V, ETypeCharacter::ETC_PlayerProjectile);
                 Player->bIsShoot = false;
             }
         }
         Player->UpdateTime(DeltaTime);
         for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
         {
-            EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
+            if (EnemyList[CurrentIndex] != nullptr && EnemyList[CurrentIndex]->IsActive()) {
+                EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
+                if (EnemyList[CurrentIndex]->bIsShoot) {
+                    FVector V = { Player->Location.x - EnemyList[CurrentIndex]->Location.x, Player->Location.y - EnemyList[CurrentIndex]->Location.y ,0 };
+                    V.Normalize();
+                    GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile);
+                    EnemyList[CurrentIndex]->bIsShoot = false;
+                }
+                EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
+            }
+            else
+                GameManager.RemoveEnemy(CurrentIndex);
         }
         for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
         {
