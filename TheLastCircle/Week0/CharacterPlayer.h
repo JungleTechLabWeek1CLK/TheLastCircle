@@ -4,17 +4,15 @@
 class UCharacterPlayer : public UCharacter
 {
 public:
-    float Delay = 1;
-    float ShootTime = 0;
-    bool bIsShoot = true;
-
     UCharacterPlayer()
     {
+        Hp = 1000;
+        Damage = 100;
+        Delay = 1.f;
     }
     ~UCharacterPlayer()
     {
     }
-    void UpdateTime(float delta);
 
 private:
 

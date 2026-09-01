@@ -37,6 +37,8 @@ public:
 	void SpawnEnemy(ETypeCharacter EnemyType);
 	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type);
 
+	void RemoveEnemy(int Index);
+
 	void PauseGame();
 	void ResumeGame();
 
@@ -94,11 +96,6 @@ public:
 		return RemainingTime;
 	}
 
-	EGameState GetGameState() const
-	{
-		return currentState;
-	}
-
 	int GetScore() const
 	{
 		return Score;
@@ -129,7 +126,6 @@ private:
 	int EnemyCapacity;
 
 	void ResizeEnemyList();
-	void RemoveEnemy(int Index);
 	void ClearEnemies();
 	void UpdateEnemySpawn(float DeltaTime);
 
