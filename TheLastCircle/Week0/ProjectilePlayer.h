@@ -6,7 +6,7 @@
 class UProjectilePlayer : public UProjectile
 {
 public:
-	UProjectilePlayer() : UProjectile() 
+	UProjectilePlayer(float damage) : UProjectile(damage)
 	{
 		CharacterType = ETypeCharacter::ETC_PlayerProjectile;
 	}

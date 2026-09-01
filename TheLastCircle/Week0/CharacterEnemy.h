@@ -12,9 +12,10 @@ class UCharacterEnemy : public UCharacter
 {
 public:
     ETypeEnemy EnemyType = ETypeEnemy::ETE_Walker;
+    float Reward = 100.f;
     UCharacterEnemy()
     {
-        Hp = 100;
+        Hp = 200;
         Delay = 5.f;
         bIsShoot = false;
         ShootTime = 5.f;

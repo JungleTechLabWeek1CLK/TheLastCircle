@@ -18,7 +18,7 @@ void UCharacter::Attack(FVector location) {
 void UCharacter::GetDamage(float damage) {
     Hp -= damage;
     if (Hp <= 0) {
-        this->Die();
+        Die();
     }
 }
 void UCharacter::Die() {

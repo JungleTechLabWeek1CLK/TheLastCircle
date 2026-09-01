@@ -6,6 +6,9 @@ class UCharacterPlayer : public UCharacter
 public:
     int Bullets;
     float Radian;
+    float EXP;
+    float MaxEXP = 100;
+    int Level = 1;
     UCharacterPlayer()
     {
         Hp = 100;
@@ -19,6 +22,9 @@ public:
     {
     }
     void UpdateTime(float delta);
+    void LevelUp();
+    void Upgrade();
+    void GetEXP(int exp);
 private:
 
 };

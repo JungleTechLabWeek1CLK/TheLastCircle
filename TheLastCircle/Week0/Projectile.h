@@ -5,9 +5,10 @@
 class UProjectile : public UCharacter
 {
 public:
-	UProjectile() {
+	UProjectile(float damage) {
 		Radius = 0.01f;
 		Speed = 1.f;
+		Damage = damage;
 	}
 	void Move(FVector location, float delta)
 	{
