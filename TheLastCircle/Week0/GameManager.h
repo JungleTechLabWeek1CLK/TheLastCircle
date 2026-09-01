@@ -35,7 +35,7 @@ public:
 	void ResetGame();
 
 	void SpawnPlayer();
-	void SpawnEnemy(ETypeCharacter EnemyType);
+	void SpawnEnemy(ETypeEnemy EnemyType);
 	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage);
 	void SpawnEXP(FVector location, float reword);
 
@@ -114,9 +114,18 @@ public:
 		return RemainingTime;
 	}
 
-	int GetScore() const
+	float GetScore() const
 	{
 		return Score;
+	}
+
+	void SetScore(float score)
+	{
+		this->Score = score;
+	}
+	void ResetScore()
+	{
+		this->Score = 0;
 	}
 
 	void StartUpgrade();
@@ -127,7 +136,7 @@ private:
 	EGameState currentState = Title;
 	EGameDifficulty Difficulty = EGameDifficulty::Easy;
 
-	int Score = 0;
+	float Score = 0.f;
 
 	float GameTime;
 	float GameClearTime;
@@ -167,6 +176,7 @@ private:
 	void ClearProjectiles();
 	void ResizeProjectileList();
 
+	void UpdateScore(float DeltaTime);
 	void UpdateGameTime(float DeltaTime);
 	void CheckGameOver();
 	void CheckGameClear();

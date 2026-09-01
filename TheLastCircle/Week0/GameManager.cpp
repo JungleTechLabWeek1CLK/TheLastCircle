@@ -42,6 +42,7 @@ void UGameManager::Initialize()
 {
     currentState = Title;
 
+    Score = 0.f;
     GameTime = 0.0f;
     EnemyCount = 0;
     EnemyCapacity = 30;
@@ -55,7 +56,6 @@ void UGameManager::Initialize()
     EXPCapacity = 30;
     EXPList = new UItemEXP * [EXPCapacity]();
     // 60초 생존하면 게임 클리어
-    GameClearTime = 10.0f;
 }
 
 void UGameManager::Update(float DeltaTime)
@@ -69,6 +69,7 @@ void UGameManager::Update(float DeltaTime)
     UpdateEnemySpawn(DeltaTime);
     //UpdateProjectiles(DeltaTime);
 
+    UpdateScore(DeltaTime);
     CheckGameOver();
     CheckGameClear();
 }
@@ -172,14 +173,11 @@ void UGameManager::SpawnPlayer()
     FVector SpawnPosition(0.0f, 0.0f, 0.0f);
 
     Player.Location = SpawnPosition;
-    
-    if (Player.Hp <= 100.f)
-    {
-        Player.Hp = Player.MaxHp;
-    }
+
+    Player.Hp = Player.MaxHp;
 }
 
-void UGameManager::SpawnEnemy(ETypeCharacter EnemyType)
+void UGameManager::SpawnEnemy(ETypeEnemy EnemyType)
 {
     //float minRadius;
 
@@ -188,10 +186,10 @@ void UGameManager::SpawnEnemy(ETypeCharacter EnemyType)
         ResizeEnemyList();
     }
 
-    UCharacterEnemy* NewEnemy = new UCharacterEnemy();
+    UCharacterEnemy* NewEnemy = new UCharacterEnemy(EnemyType);
 
     NewEnemy->Location = GetEnemySpawnPosition();
-    NewEnemy->CharacterType = EnemyType;
+    NewEnemy->CharacterType = ETypeCharacter::ETC_Enemy;
 
     EnemyList[EnemyCount] = NewEnemy;
 
@@ -393,14 +391,20 @@ void UGameManager::UpdateEnemySpawn(float DeltaTime)
     {
         int RandomValue = rand() % 100;
 
-        if (RandomValue < 80)
+        SpawnEnemy(ETypeEnemy::ETE_Ranger);
+        /*
+        if (RandomValue < 40)
         {
-            SpawnEnemy(ETypeCharacter::ETC_Enemy);
+            SpawnEnemy(ETypeEnemy::ETE_Walker);
+        }
+        else if (RandomValue < 80)
+        {
+            SpawnEnemy(ETypeEnemy::ETE_Runner);
         }
         else
         {
-            SpawnEnemy(ETypeCharacter::ETC_EnemyProjectile);
-        }
+            SpawnEnemy(ETypeEnemy::ETE_Ranger);
+        }*/
 
         EnemySpawnTimer = 0.0f;
     }
@@ -444,12 +448,18 @@ void UGameManager::SetDifficulty(EGameDifficulty NewDifficulty)
     switch (Difficulty)
     {
     case EGameDifficulty::Easy:
+        GameClearTime = 10.0f;
         // 쉬움모드에서 변경할 내용
         break;
     case EGameDifficulty::Hard:
-        // 어려움모드에서 변경할 내용
+        GameClearTime = 60.0f;
         break;
     }
+}
+
+void UGameManager::UpdateScore(float DeltaTime)
+{
+    Score += DeltaTime;
 }
 
 void UGameManager::UpdateGameTime(float DeltaTime)

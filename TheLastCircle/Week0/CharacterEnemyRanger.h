@@ -8,14 +8,14 @@ public:
     float ShootTime = 0;
     bool bIsShoot = true;
 
-    UCharacterEnemyRanger()
+    /*UCharacterEnemyRanger()
     {
         Hp = 1000;
         Damage = 100;
     }
     ~UCharacterEnemyRanger()
     {
-    }
+    }*/
     void UpdateTime(float delta);
     void Move(FVector location, float delta) override;
 private:

@@ -198,7 +198,8 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
         WindowHeight
     );
 
-    int Score = 111;
+    int Score = GameManager->GetScore();
+
     const char* ScoreText = "SCORE:999";
 
     float TextWidth = ImGui::CalcTextSize(GameClearText).x;
@@ -330,7 +331,7 @@ void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
         );
         if (ImGui::Button("HARD", ButtonSize))
         {
-            GameManager->SetDifficulty(EGameDifficulty::Easy);
+            GameManager->SetDifficulty(EGameDifficulty::Hard);
             GameManager->ResetGame();
 
             ImGui::CloseCurrentPopup();
@@ -381,7 +382,7 @@ void UGameUI::RenderGameOverPopup(UGameManager* GameManager)
         WindowHeight
     );
 
-    int Score = 111;
+    int Score = GameManager->GetScore();
     const char* ScoreText = "SCORE:999";
 
     float TextWidth = ImGui::CalcTextSize(GameOverText).x;
@@ -454,7 +455,7 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
         WindowHeight
     );
 
-    int Score = 111;
+    int Score = GameManager->GetScore();
     const char* ScoreText = "SCORE:999";
 
     float TextWidth = ImGui::CalcTextSize(GameClearText).x;

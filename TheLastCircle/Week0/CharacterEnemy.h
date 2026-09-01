@@ -13,13 +13,13 @@ class UCharacterEnemy : public UCharacter
 public:
     ETypeEnemy EnemyType = ETypeEnemy::ETE_Walker;
     float Reward = 100.f;
-    UCharacterEnemy()
+    UCharacterEnemy(ETypeEnemy enemyType)
     {
         Hp = 200;
         Delay = 5.f;
         bIsShoot = false;
         ShootTime = 5.f;
-        switch (EnemyType)
+        switch (enemyType)
         {
         case ETypeEnemy::ETE_Walker:
             Range = -1.f;
