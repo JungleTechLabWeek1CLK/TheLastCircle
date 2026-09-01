@@ -27,7 +27,7 @@ public:
 
 	void SpawnPlayer();
 	void SpawnEnemy(ETypeCharacter EnemyType);
-	void SpawnProjectile();
+	void SpawnProjectile(FVector Location, FVector Velocity);
 
 	void PauseGame();
 	void ResumeGame();
