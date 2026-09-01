@@ -15,6 +15,8 @@
 #include "Math.h"
 #include "Shapes.h"
 
+#include <vector>
+const float PI = 3.14159265359f;
 
 ///////////////////////////////////////////////
 // Rnederer Class
@@ -29,7 +31,7 @@ public:
         CreateShader();
         CreateConstantBuffer();
         CreateVertexBuffers();
-        CreateShaderResourceView(L"Asset/texture.jpg");    // texture location
+        CreateShaderResourceView(L"Asset/sprite.png");    // texture location
         CreateSamplerState();
     }
     void Release()
@@ -69,9 +71,7 @@ public:
         PrepareShader();
     }
 
-    // if the object to draw is enemy, pass 1 to IsEnemy
-    // otherwise use default value
-    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& Color, const FVector& PlayerOffset, const float IsEnemy = 3)
+    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& Color, const FVector& PlayerOffset, const float CharacterType)
     {
         if (ConstantBuffer)
         {
@@ -84,7 +84,7 @@ public:
             Constants->Radius = Radius;
             Constants->Color = Color;
             Constants->PlayerOffset = PlayerOffset;
-            Constants->IsEnemy = IsEnemy;
+            Constants->CharacterType = CharacterType;
 
             DeviceContext->Unmap(ConstantBuffer, 0);
         }
@@ -97,12 +97,14 @@ public:
         case EPT_Triangle:
             RenderPrimitive(VertexBufferTriangle, NumVerticesTriangle);
             break;
+        case EPT_Sphere:
+            RenderPrimitive(VertexBufferCircle, NumVerticesCircle);
+            break;
+            /*
         case EPT_Cube:
             RenderPrimitive(VertexBufferCube, NumVerticesCube);
             break;
-        case EPT_Sphere:
-            RenderPrimitive(VertexBufferSphere, NumVerticesSphere);
-            break;
+            */
         }
     }
 
@@ -227,6 +229,7 @@ private:
         {
             { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
             { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,  0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 }
         };
 
         Device->CreateInputLayout(layout, ARRAYSIZE(layout), vertexshaderCSO->GetBufferPointer(), vertexshaderCSO->GetBufferSize(), &SimpleInputLayout);
@@ -276,6 +279,8 @@ private:
     // Vertex Buffer
     void CreateVertexBuffers()
     {
+        /*
+        * previous code
         NumVerticesTriangle = sizeof(triangle_vertices) / sizeof(FVertexSimple);
         NumVerticesCube = sizeof(cube_vertices) / sizeof(FVertexSimple);
         NumVerticesSphere = sizeof(sphere_vertices) / sizeof(FVertexSimple);
@@ -283,6 +288,17 @@ private:
         VertexBufferTriangle = CreateVertexBuffer(triangle_vertices, sizeof(triangle_vertices));
         VertexBufferCube = CreateVertexBuffer(cube_vertices, sizeof(cube_vertices));
         VertexBufferSphere = CreateVertexBuffer(sphere_vertices, sizeof(sphere_vertices));
+        */
+
+        // revised one
+        GenerateTriangle();
+        GenerateCircle(10, 30);
+
+        NumVerticesTriangle = VerticesTriangle.size();
+        NumVerticesCircle = VerticesCircle.size();
+
+        VertexBufferTriangle = CreateVertexBuffer(VerticesTriangle.data(), NumVerticesTriangle * sizeof(FVertexSimple));
+        VertexBufferCircle = CreateVertexBuffer(VerticesCircle.data(), NumVerticesCircle * sizeof(FVertexSimple));
     }
     ID3D11Buffer* CreateVertexBuffer(FVertexSimple* vertices, UINT byteWidth)
     {
@@ -302,14 +318,62 @@ private:
     }
     void ReleaseVertexBuffers()
     {
+        /*
         ReleaseVertexBuffer(VertexBufferCube);
-        ReleaseVertexBuffer(VertexBufferTriangle);
         ReleaseVertexBuffer(VertexBufferSphere);
+        */
+        ReleaseVertexBuffer(VertexBufferTriangle);
+        ReleaseVertexBuffer(VertexBufferCircle);
     }
     void ReleaseVertexBuffer(ID3D11Buffer* vertexBuffer)
     {
         vertexBuffer->Release();
     }
+
+
+    // Primitive Generator
+    void GenerateTriangle()
+    {
+        VerticesTriangle =  {
+            {  0.0f,  1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.5f, 0.0f }, // Top
+            {  1.0f, -1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Bottom-Right
+            { -1.0f, -1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 1.0f }  // Bottom-Left
+        };
+    }
+    void GenerateCircle(float Radius, INT32 SliceCount)
+    {
+        FVertexSimple Center;
+        Center.x = 0.0f; Center.y = 0.0f; Center.z = 0.0f;
+        Center.r = 1.0f; Center.g = 1.0f; Center.b = 1.0f; Center.a = 1.0f;
+        Center.u = 0.5f; Center.v = 0.5f;
+
+        for (int CurrentCount = 0; CurrentCount < SliceCount; ++CurrentCount)
+        {
+            float Theta1 = 2.0f * PI * (float)CurrentCount / SliceCount;
+            float Theta2 = 2.0f * PI * (float)(CurrentCount + 1) / SliceCount;
+
+            auto MakeEdgeVertex = [Radius](float Theta) -> FVertexSimple {
+                FVertexSimple V;
+                V.x = Radius * cos(Theta);
+                V.y = Radius * sin(Theta);
+                V.z = 0.0f;
+                V.r = 1.0f; V.g = 1.0f; V.b = 1.0f; V.a = 1.0f;
+
+                V.u = 0.5f + (cos(Theta) * 0.5f);
+                V.v = 0.5f - (sin(Theta) * 0.5f);
+                return V;
+                };
+
+            FVertexSimple Edge1 = MakeEdgeVertex(Theta1);
+            FVertexSimple Edge2 = MakeEdgeVertex(Theta2);
+
+            VerticesCircle.push_back(Center);
+            VerticesCircle.push_back(Edge2);
+            VerticesCircle.push_back(Edge1);
+        }
+    }
+
+
 
     // Constant Buffer
     void CreateConstantBuffer()
@@ -393,16 +457,23 @@ private:
 
     // for managing vertex buffers
     ID3D11Buffer* VertexBufferTriangle = nullptr;
-    ID3D11Buffer* VertexBufferCube = nullptr;
-    ID3D11Buffer* VertexBufferSphere = nullptr;
+    ID3D11Buffer* VertexBufferCircle = nullptr;
     UINT NumVerticesTriangle;
+    UINT NumVerticesCircle;
+
+    /*
+    ID3D11Buffer* VertexBufferSphere = nullptr;
+    ID3D11Buffer* VertexBufferCube = nullptr;
     UINT NumVerticesCube;
     UINT NumVerticesSphere;
-
+    */
 
     FLOAT ClearColor[4] = { 0.025f, 0.025f, 0.025f, 1.0f }; // color of the background
     D3D11_VIEWPORT ViewportInfo;
 
+    // for managing primitives
+    std::vector<FVertexSimple> VerticesTriangle;
+    std::vector<FVertexSimple> VerticesCircle;
 
     // for managing textures
     ID3D11ShaderResourceView* TextureSRV;
@@ -424,7 +495,7 @@ private:
         float Pad;
 
         FVector PlayerOffset;
-        float IsEnemy;
+        float CharacterType; // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 enemy projectile
     };
 };
 ///////////////////////////////////////////////
