@@ -216,7 +216,10 @@ void GameManager::SpawnProjectile(FVector Location, FVector Velocity)
         return;
     }
 
-    UProjectile* NewProjectile = new UProjectile(Location, Velocity);
+    UProjectile* NewProjectile = new UProjectile();
+
+    NewProjectile->Location = Location;
+    NewProjectile->Velocity = Velocity;
 
     ProjectileList[ProjectileCount] = NewProjectile;
 
