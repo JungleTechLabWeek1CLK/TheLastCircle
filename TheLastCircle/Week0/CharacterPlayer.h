@@ -4,12 +4,16 @@
 class UCharacterPlayer : public UCharacter
 {
 public:
+    int Bullets;
+    float Radian;
     UCharacterPlayer()
     {
         Hp = 100;
         Damage = 100;
         Delay = 1.f;
         Speed = 0.5f;
+        Bullets = 5;
+        Radian = 10.f;
     }
     ~UCharacterPlayer()
     {

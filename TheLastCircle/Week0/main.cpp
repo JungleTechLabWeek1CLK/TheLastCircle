@@ -163,7 +163,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             if (Player->bIsShoot) {
                 FVector V = { ((float)pt.x / centerX) - 1.f - Player->Location.x, 1.f - ((float)pt.y / centerY) - Player->Location.y, 0 };
                 V.Normalize();
-                GameManager.SpawnProjectile(Player->Location, V, ETypeCharacter::ETC_PlayerProjectile);
+                float baseRad = atan2(V.x, V.y);
+                constexpr float DEG2RAD = 3.14159265f / 180.0f;
+
+                for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
+                    float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
+                    float finalRad = baseRad + (offsetDeg * DEG2RAD);
+
+                    GameManager.SpawnProjectile(Player->Location, {sin(finalRad), cos(finalRad), 0}, ETypeCharacter::ETC_PlayerProjectile);
+                }
+
                 Player->bIsShoot = false;
             }
         }
