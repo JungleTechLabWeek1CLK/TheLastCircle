@@ -142,6 +142,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             &Renderer);
 
         int EnemyListCount = GameManager.GetEnemyListCount();
+        UProjectile** ProjectilePlayerList = GameManager.GetPlayerProjectileList();
+        int ProjectilePlayerListCount = GameManager.GetPlayerProjectileListCount();
+        POINT pt;
+        GetCursorPos(&pt);
+        ScreenToClient(hWnd, &pt);
         if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
             Player->Move({Player->Location.x - 1, Player->Location.y, 0}, DeltaTime);
         }
@@ -154,9 +159,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         if (GetAsyncKeyState(VK_DOWN) & 0x8000) { //아래
             Player->Move({ Player->Location.x, Player->Location.y - 1, 0 }, DeltaTime);
         }
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
+            if (Player->bIsShoot) {
+                GameManager.SpawnProjectile(Player->Location, { (float)pt.x / 512 - 1, 1 - (float)pt.y / 512, 0 });
+                Player->bIsShoot = false;
+            }
+        }
+        Player->UpdateTime(DeltaTime);
         for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
         {
             EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
+        }
+        for (INT32 CurrentIndex = 0; CurrentIndex < ProjectilePlayerListCount; ++CurrentIndex)
+        {
+            ProjectilePlayerList[CurrentIndex]->Move(ProjectilePlayerList[CurrentIndex]->Velocity, DeltaTime);
         }
         /*
         /// ImGui - start
