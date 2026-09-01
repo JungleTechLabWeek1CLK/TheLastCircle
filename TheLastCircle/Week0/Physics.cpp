@@ -55,7 +55,7 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
     {
         UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
-        if (CurrentItemEXP->bIsFollow)
+        if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow)
             continue;
 
         // Sphere - Sphere Collision
@@ -65,14 +65,14 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
         if (DISTANCE < (Player->Radius + CurrentItemEXP->LootableRadius))
         {
             // collision detected
-            CurrentItemEXP->bIsActive = true;
+            CurrentItemEXP->bIsFollow = true;
         }
     }
     // Player - ItemEXP (collision check)
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
     {
         UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
-        if (CurrentItemEXP->bIsFollow == false)
+        if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow == false)
             continue;
 
         // Sphere - Sphere Collision

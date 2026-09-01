@@ -528,5 +528,5 @@ class UCharacterEnemy;
 class UProjectile;
 class UItemEXP;
 void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemListCount,
+    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
     URenderer* Renderer, bool bIsTitle);

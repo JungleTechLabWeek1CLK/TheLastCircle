@@ -6,7 +6,7 @@
 #include "ItemEXP.h"
 
 void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemListCount,
+    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
     URenderer* Renderer, bool bIsTitle)
 {
     if (bIsTitle)
@@ -36,7 +36,7 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 
-    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
+    for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
     {
         UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
         if (CurrentItemEXP->IsActive() == false)
