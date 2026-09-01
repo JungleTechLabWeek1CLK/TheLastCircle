@@ -11,7 +11,7 @@ enum class ETypeEnemy
 class UCharacterEnemy : public UCharacter
 {
 public:
-    ETypeEnemy EnemyType = ETypeEnemy::ETE_Ranger;
+    ETypeEnemy EnemyType = ETypeEnemy::ETE_Walker;
     UCharacterEnemy()
     {
         Hp = 100;
