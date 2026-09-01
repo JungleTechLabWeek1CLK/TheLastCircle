@@ -138,64 +138,64 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         POINT pt;
         GetCursorPos(&pt);
         ScreenToClient(hWnd, &pt);
-
-        if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
-            Player->Move({ Player->Location.x - 1, Player->Location.y, 0 }, DeltaTime);
-        }
-        if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { //오른쪽
-            Player->Move({ Player->Location.x + 1, Player->Location.y, 0 }, DeltaTime);
-        }
-        if (GetAsyncKeyState(VK_UP) & 0x8000) { //위
-            Player->Move({ Player->Location.x, Player->Location.y + 1, 0 }, DeltaTime);
-        }
-        if (GetAsyncKeyState(VK_DOWN) & 0x8000) { //아래
-            Player->Move({ Player->Location.x, Player->Location.y - 1, 0 }, DeltaTime);
-        }
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
-            if (Player->bIsShoot) {
-                FVector V = { ((float)pt.x / centerX) - 1.f - Player->Location.x, 1.f - ((float)pt.y / centerY) - Player->Location.y, 0 };
-                V.Normalize();
-                float baseRad = atan2(V.x, V.y);
-                constexpr float DEG2RAD = 3.14159265f / 180.0f;
-
-                for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
-                    float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
-                    float finalRad = baseRad + (offsetDeg * DEG2RAD);
-
-                    GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage);
-                }
-
-                Player->bIsShoot = false;
+        if (GameManager.IsPlaying()) {
+            if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
+                Player->Move({ Player->Location.x - 1, Player->Location.y, 0 }, DeltaTime);
             }
-        }
-        Player->UpdateTime(DeltaTime);
-        for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEnemyListCount(); ++CurrentIndex)
-        {
-            if (EnemyList[CurrentIndex] != nullptr && EnemyList[CurrentIndex]->IsActive()) {
-                EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
-                if (EnemyList[CurrentIndex]->bIsShoot) {
-                    FVector V = { Player->Location.x - EnemyList[CurrentIndex]->Location.x, Player->Location.y - EnemyList[CurrentIndex]->Location.y ,0 };
+            if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { //오른쪽
+                Player->Move({ Player->Location.x + 1, Player->Location.y, 0 }, DeltaTime);
+            }
+            if (GetAsyncKeyState(VK_UP) & 0x8000) { //위
+                Player->Move({ Player->Location.x, Player->Location.y + 1, 0 }, DeltaTime);
+            }
+            if (GetAsyncKeyState(VK_DOWN) & 0x8000) { //아래
+                Player->Move({ Player->Location.x, Player->Location.y - 1, 0 }, DeltaTime);
+            }
+            if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
+                if (Player->bIsShoot) {
+                    FVector V = { ((float)pt.x / centerX) - 1.f - Player->Location.x, 1.f - ((float)pt.y / centerY) - Player->Location.y, 0 };
                     V.Normalize();
-                    GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile, EnemyList[CurrentIndex]->Damage);
-                    EnemyList[CurrentIndex]->bIsShoot = false;
+                    float baseRad = atan2(V.x, V.y);
+                    constexpr float DEG2RAD = 3.14159265f / 180.0f;
+
+                    for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
+                        float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
+                        float finalRad = baseRad + (offsetDeg * DEG2RAD);
+
+                        GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage);
+                    }
+
+                    Player->bIsShoot = false;
                 }
-                else
-                    EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
             }
-            else {
-                Player->GetEXP(EnemyList[CurrentIndex]->Reward);
-                GameManager.RemoveEnemy(CurrentIndex--);
+            Player->UpdateTime(DeltaTime);
+            for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEnemyListCount(); ++CurrentIndex)
+            {
+                if (EnemyList[CurrentIndex] != nullptr && EnemyList[CurrentIndex]->IsActive()) {
+                    EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
+                    if (EnemyList[CurrentIndex]->bIsShoot) {
+                        FVector V = { Player->Location.x - EnemyList[CurrentIndex]->Location.x, Player->Location.y - EnemyList[CurrentIndex]->Location.y ,0 };
+                        V.Normalize();
+                        GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile, EnemyList[CurrentIndex]->Damage);
+                        EnemyList[CurrentIndex]->bIsShoot = false;
+                    }
+                    else
+                        EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
+                }
+                else {
+                    Player->GetEXP(EnemyList[CurrentIndex]->Reward);
+                    GameManager.RemoveEnemy(CurrentIndex--);
+                }
             }
-        }
 
-        UProjectile** ProjectileList = GameManager.GetProjectileList();
-        int ProjectileListCount = GameManager.GetProjectileListCount();
-        for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
-        {
-            ProjectileList[CurrentIndex]->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
-        }
-        
+            UProjectile** ProjectileList = GameManager.GetProjectileList();
+            int ProjectileListCount = GameManager.GetProjectileListCount();
+            for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
+            {
+                ProjectileList[CurrentIndex]->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
+            }
 
+        }
         // Rendering Process
         ////////////////////////////////////////////
         Renderer.Prepare();
