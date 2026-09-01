@@ -4,6 +4,7 @@
 #include "ImGui/imgui.h"
 
 #include <Windows.h>
+#include <string.h>
 
 
 #pragma region Popups
@@ -498,6 +499,7 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
 void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices)
 {
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
+    int ChoiceCount = sizeof(Choices)/ sizeof(Choices[0]);
 
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |
@@ -508,10 +510,36 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
 
+
+
     ImGui::Begin("UpgradePopup", nullptr, WindowFlags);
+
+    const char* Title = "SELECT UPGRADE";
+    float TitleWidth = ImGui::CalcTextSize(Title).x;
+
+    float Spacing = WindowWidth * 0.02f;
+
+    float ButtonWidth =
+        (WindowWidth - Spacing * (ChoiceCount + 1))
+        / ChoiceCount;
+
+    float ButtonHeight = WindowHeight * 0.7f;
+
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - TitleWidth) * 0.5f
+    );
+
+    ImGui::Text("%s", Title);
+
+    ImGui::Dummy(
+        ImVec2(0.0f, WindowHeight * 0.05f)
+    );
+
+
     const char* cardName = "";
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < ChoiceCount; i++)
     {
         switch (Choices[i])
         {
@@ -528,12 +556,42 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             cardName = "Bullets+";
             break;
         }
+        ImGui::SetCursorPosY(WindowHeight * 0.15f);
 
-        ImGui::Button(cardName);
+        if (i > 0)
+        {
+            ImGui::SameLine(0.0f, Spacing);
+        }
 
+        if (ImGui::Button(cardName))
+        {
+
+        }
+/*
+        if (ImGui::Button(
+            cardName,
+            ImVec2(ButtonWidth, ButtonHeight)))
+        {
+            switch (Choices[i])
+            {
+            case ETypeUpgrade::ETU_Damage:
+                // 데미지 증가
+                break;
+
+            case ETypeUpgrade::ETU_Hp:
+                // HP 증가
+                break;
+
+            case ETypeUpgrade::ETU_Speed:
+                // 이동속도 증가
+                break;
+
+            case ETypeUpgrade::ETU_bullets:
+                // 공격속도 증가
+                break;
+            }*/
+        ImGui::End();
     }
-
-
 }
 
 
