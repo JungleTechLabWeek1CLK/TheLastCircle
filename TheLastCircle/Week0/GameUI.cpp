@@ -48,7 +48,14 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
         RenderPausePopup(GameManager);
         break;
     case EPopupType::Upgrade:
-        RenderChoicePopup(GameManager, nullptr);  // TODO: fix this
+        ImGui::SetNextWindowSize(
+            ImVec2(
+                ScreenSize.x * 0.9f,
+                ScreenSize.y * 0.75f
+            ),
+            ImGuiCond_Always
+        );
+        RenderChoicePopup(GameManager,GameManager->GetPlayer()->Upgrades);
         break;
     case EPopupType::GameOver:
         RenderGameOverPopup(GameManager);
@@ -499,7 +506,8 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
 void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices)
 {
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
-    int ChoiceCount = sizeof(Choices)/ sizeof(Choices[0]);
+    //int ChoiceCount = sizeof(Choices)/ sizeof(ETypeUpgrade);
+    int ChoiceCount = 3;
 
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |
@@ -507,12 +515,12 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
 
+    ImGui::SetWindowFontScale(1.0f);
+    ImGui::Begin("UpgradePopup", nullptr, WindowFlags);
+
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
 
-
-
-    ImGui::Begin("UpgradePopup", nullptr, WindowFlags);
 
     const char* Title = "SELECT UPGRADE";
     float TitleWidth = ImGui::CalcTextSize(Title).x;
@@ -536,61 +544,81 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
         ImVec2(0.0f, WindowHeight * 0.05f)
     );
 
-
-    const char* cardName = "";
+    // 여백 적용
+    ImGui::SetCursorPosX(Spacing);
 
     for (int i = 0; i < ChoiceCount; i++)
     {
+        ImGui::PushID(i);
+        const char* CardName = "";
+        const char* Description = "";
         switch (Choices[i])
         {
         case ETypeUpgrade::ETU_Damage:
-            cardName = "Damage+";
+            CardName = "Damage+";
+            Description = "Increase attack damage";
             break;
         case ETypeUpgrade::ETU_Hp:
-            cardName = "HP+";
+            CardName = "HP+";
+            Description = "Increase maximum HP";
             break;
         case ETypeUpgrade::ETU_Speed:
-            cardName = "Speed+";
-             break;
+            CardName = "Speed+";
+            Description = "Increase movement speed.";
+            break;
         case ETypeUpgrade::ETU_bullets:
-            cardName = "Bullets+";
+            CardName = "Bullets+";
+            Description = "Increase number of bullets.";
             break;
         }
-        ImGui::SetCursorPosY(WindowHeight * 0.15f);
 
-        if (i > 0)
-        {
-            ImGui::SameLine(0.0f, Spacing);
-        }
+        ImGui::BeginChild("UpgradeCard",
+            ImVec2(ButtonWidth, ButtonHeight), // 크기
+            true // 테두리 표시
+        );
 
-        if (ImGui::Button(cardName))
-        {
+        // 현재 창(Window) 또는 레이아웃 내에서 위젯을 추가로 배치할 수 있는 남은 가용 공간의 크기
+        float InnerWidth = ImGui::GetContentRegionAvail().x;
 
-        }
-/*
-        if (ImGui::Button(
-            cardName,
-            ImVec2(ButtonWidth, ButtonHeight)))
+        // 제목 중앙 정렬
+        float NameWidth = ImGui::CalcTextSize(CardName).x;
+
+        ImGui::SetCursorPosX((ButtonWidth - NameWidth) * 0.5f);
+
+        ImGui::Text("%s", CardName);
+
+        // 구분선
+        ImGui::Separator();
+
+        ImGui::Dummy(ImVec2(0.0f, ButtonHeight * 0.1f));
+
+        ImGui::TextWrapped("%s", Description);
+
+        float SelectHeight =
+            ButtonHeight * 0.18f;
+
+        ImGui::SetCursorPosY(ButtonHeight - SelectHeight - ButtonHeight * 0.08f);
+
+        if (ImGui::Button("SELECT", ImVec2(InnerWidth, SelectHeight)))
         {
             switch (Choices[i])
             {
             case ETypeUpgrade::ETU_Damage:
-                // 데미지 증가
                 break;
-
             case ETypeUpgrade::ETU_Hp:
-                // HP 증가
                 break;
-
             case ETypeUpgrade::ETU_Speed:
-                // 이동속도 증가
                 break;
-
             case ETypeUpgrade::ETU_bullets:
-                // 공격속도 증가
                 break;
-            }*/
+            }
+        }
+        ImGui::EndChild();
+        ImGui::SameLine();
+        ImGui::PopID();
     }
+   
+    
     ImGui::End();
 }
 
@@ -617,7 +645,7 @@ void UGameUI::UIRender(UGameManager* GameManager)
         break;
 
     case Upgrade:
-        RenderChoicePopup(GameManager, GameManager->GetPlayer()->Upgrades);
+        RenderPopup(GameManager, EPopupType::Upgrade);
         break;
 
     case GameOver:
