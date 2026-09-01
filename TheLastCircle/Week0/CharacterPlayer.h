@@ -19,6 +19,8 @@ public:
     bool bIsGuard = false;
     float GuardTime = 0.f;
     float GuardDelay = 3.f;
+    ETypeUpgrade Upgrades[3] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed};
+
     UCharacterPlayer()
     {
         Hp = 100;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CharacterPlayer.h"
+
 class UGameManager;
 
 enum class EPopupType
@@ -28,6 +30,6 @@ private:
     void RenderGameOverPopup(UGameManager* GameManager);
     void RenderGameClearPopup(UGameManager* GameManager);
 
-    void RenderChoicePopup(UGameManager* GameManager, float* choices);
+    void RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices);
 
 };

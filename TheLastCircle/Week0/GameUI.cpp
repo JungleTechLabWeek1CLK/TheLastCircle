@@ -495,7 +495,7 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
 
 #pragma endregion
 
-void UGameUI::RenderChoicePopup(UGameManager* GameManager, float * choices)
+void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices)
 {
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
 
@@ -509,14 +509,30 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, float * choices)
     float WindowHeight = ImGui::GetWindowHeight();
 
     ImGui::Begin("UpgradePopup", nullptr, WindowFlags);
+    const char* cardName = "";
 
-    if (ImGui::Button("Damage"))
+    for (int i = 0; i < 3; i++)
     {
-        
+        switch (Choices[i])
+        {
+        case ETypeUpgrade::ETU_Damage:
+            cardName = "Damage+";
+            break;
+        case ETypeUpgrade::ETU_Hp:
+            cardName = "HP+";
+            break;
+        case ETypeUpgrade::ETU_Speed:
+            cardName = "Speed+";
+             break;
+        case ETypeUpgrade::ETU_bullets:
+            cardName = "Bullets+";
+            break;
+        }
+
+        ImGui::Button(cardName);
+
     }
-    if (ImGui::Button("HP"))
-    {
-    }
+
 
 }
 
@@ -543,7 +559,7 @@ void UGameUI::UIRender(UGameManager* GameManager)
         break;
 
     case Upgrade:
-        RenderPopup(GameManager, EPopupType::Upgrade);
+        RenderChoicePopup(GameManager, GameManager->GetPlayer()->Upgrades);
         break;
 
     case GameOver:
