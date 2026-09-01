@@ -604,6 +604,7 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             switch (Choices[i])
             {
             case ETypeUpgrade::ETU_Damage:
+                GameManager->GetPlayer()->Upgrade();
                 break;
             case ETypeUpgrade::ETU_Hp:
                 break;
@@ -612,7 +613,10 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             case ETypeUpgrade::ETU_bullets:
                 break;
             }
+            GameManager->ResumeGame();
+            
         }
+        // 게임 진행
         ImGui::EndChild();
         ImGui::SameLine();
         ImGui::PopID();

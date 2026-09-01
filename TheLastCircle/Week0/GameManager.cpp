@@ -105,6 +105,10 @@ void UGameManager::ResumeGame()
     {
         currentState = Playing;
     }
+    else if (currentState == Upgrade)
+    {
+        currentState = Playing;
+    }
 }
 
 void UGameManager::Lose()
@@ -428,6 +432,11 @@ FVector UGameManager::GetEnemySpawnPosition()
     return FVector(X, Y, 0.0f);
 }
 
+void UGameManager::SetGameState(EGameState currentState)
+{
+    this->currentState = currentState;
+}
+
 void UGameManager::SetDifficulty(EGameDifficulty NewDifficulty)
 {
     Difficulty = NewDifficulty;
@@ -441,11 +450,6 @@ void UGameManager::SetDifficulty(EGameDifficulty NewDifficulty)
         // 어려움모드에서 변경할 내용
         break;
     }
-}
-
-void UGameManager::SetGameState(EGameState currentState)
-{
-    this->currentState = currentState;
 }
 
 void UGameManager::UpdateGameTime(float DeltaTime)
