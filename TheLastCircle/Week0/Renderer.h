@@ -71,7 +71,7 @@ public:
         PrepareShader();
     }
 
-    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& Color, const FVector& PlayerOffset, const float CharacterType)
+    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& PlayerOffset, const float CharacterType)
     {
         if (ConstantBuffer)
         {
@@ -82,7 +82,6 @@ public:
             FConstants* Constants = (FConstants*)constantbufferMSR.pData;
             Constants->Offset = Offset;
             Constants->Radius = Radius;
-            Constants->Color = Color;
             Constants->PlayerOffset = PlayerOffset;
             Constants->CharacterType = CharacterType;
 
@@ -491,9 +490,6 @@ private:
         FVector Offset;
         float Radius;
 
-        FVector Color;
-        float Pad;
-
         FVector PlayerOffset;
         float CharacterType; // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 enemy projectile
     };
@@ -505,4 +501,4 @@ class UCharacterPlayer;
 class UCharacterEnemy;
 class UProjectile;
 void DrawCharacters(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, URenderer* Renderer);
+    UProjectile** ProjectileList, INT32 ProjectileListCount, URenderer* Renderer, bool bIsTitle);
