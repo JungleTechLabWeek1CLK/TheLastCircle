@@ -1,6 +1,13 @@
 #pragma once
 #include "Character.h"
 
+enum class ETypeUpgrade {
+    ETU_Damage,
+    ETU_Hp,
+    ETU_bullets,
+    ETU_Speed
+};
+
 class UCharacterPlayer : public UCharacter
 {
 public:
