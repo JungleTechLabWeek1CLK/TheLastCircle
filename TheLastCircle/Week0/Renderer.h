@@ -9,6 +9,7 @@
 #pragma comment(lib, "d3dcompiler")
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include "WICTextureLoader.h" // DirectXTK 
 
 
 #include "Math.h"
@@ -28,9 +29,13 @@ public:
         CreateShader();
         CreateConstantBuffer();
         CreateVertexBuffers();
+        CreateShaderResourceView(L"Asset/texture.jpg");    // texture location
+        CreateSamplerState();
     }
     void Release()
     {
+        ReleaseSamplerState();
+        ReleaseShaderResourceView();
         ReleaseVertexBuffers();
         ReleaseConstantBuffer();
         ReleaseShader();
@@ -263,6 +268,9 @@ private:
             DeviceContext->VSSetConstantBuffers(0, 1, &ConstantBuffer);
             DeviceContext->PSSetConstantBuffers(0, 1, &ConstantBuffer);
         }
+
+        DeviceContext->PSSetShaderResources(0, 1, &TextureSRV);
+        DeviceContext->PSSetSamplers(0, 1, &SamplerState);
     }
 
     // Vertex Buffer
@@ -332,6 +340,48 @@ private:
         DeviceContext->Draw(numVertices, 0);
     }
 
+    // Texture
+    void CreateShaderResourceView(const wchar_t* FilePath)
+    {
+        HRESULT Resut = DirectX::CreateWICTextureFromFile(
+            Device,               
+            DeviceContext,              
+            FilePath,
+            nullptr,              
+            &TextureSRV         
+        );
+
+        if (FAILED(Resut))
+        {
+            MessageBox(NULL, L"An unhandled exception occurred.", L"Error", MB_OK | MB_ICONERROR);
+            abort();
+        }
+    }
+    void ReleaseShaderResourceView()
+    {
+        TextureSRV->Release();
+        TextureSRV = nullptr;
+    }
+    void CreateSamplerState()
+    {
+        D3D11_SAMPLER_DESC SampDesc = {};
+        SampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+
+        // checkerboard
+        SampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+        SampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+        SampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+        SampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+
+        SamplerState = nullptr;
+        Device->CreateSamplerState(&SampDesc, &SamplerState);
+    }
+    void ReleaseSamplerState()
+    {
+        SamplerState->Release();
+        SamplerState = nullptr;
+    }
+
 
     IDXGISwapChain* SwapChain = nullptr; // for swapping frame buffers
 
@@ -352,6 +402,11 @@ private:
 
     FLOAT ClearColor[4] = { 0.025f, 0.025f, 0.025f, 1.0f }; // color of the background
     D3D11_VIEWPORT ViewportInfo;
+
+
+    // for managing textures
+    ID3D11ShaderResourceView* TextureSRV;
+    ID3D11SamplerState* SamplerState;
 
     // for managing shaders
     ID3D11VertexShader* SimpleVertexShader;
