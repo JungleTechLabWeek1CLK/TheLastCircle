@@ -64,7 +64,9 @@ public:
         PrepareShader();
     }
 
-    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& Color)
+    // if the object to draw is enemy, pass 1 to IsEnemy
+    // otherwise use default value
+    void UpdateConstantBuffer(const FVector& Offset, const float Radius, const FVector& Color, const FVector& PlayerOffset, const float IsEnemy = 3)
     {
         if (ConstantBuffer)
         {
@@ -76,6 +78,8 @@ public:
             Constants->Offset = Offset;
             Constants->Radius = Radius;
             Constants->Color = Color;
+            Constants->PlayerOffset = PlayerOffset;
+            Constants->IsEnemy = IsEnemy;
 
             DeviceContext->Unmap(ConstantBuffer, 0);
         }
@@ -363,6 +367,9 @@ private:
 
         FVector Color;
         float Pad;
+
+        FVector PlayerOffset;
+        float IsEnemy;
     };
 };
 ///////////////////////////////////////////////
