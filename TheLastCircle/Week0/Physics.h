@@ -4,13 +4,6 @@
 #include <cmath>
 
 
-/*
-#include "Character.h"
-#include "CharacterPlayer.h"
-#include "CharacterEnemy.h"
-*/
-
-
 ///////////////////////////////////////////////
 // Structure for a Primitive
 class UPrimitive
@@ -98,5 +91,7 @@ const FVector DIRECTION_UP(0.f, 1.f, 0.f);
 const FVector DIRECTION_DOWN(0.f, -1.f, 0.f);
 
 
-
-//void HandleCollision(UCharacterPlayer* Player, UCharacter** CharacterList, const float DELTA_TIME);
+// Handle Collisions
+class UCharacterPlayer;
+class UCharacter;
+void HandleCollision(UCharacterPlayer* Player, UCharacter** CharacterList, const float DELTA_TIME);

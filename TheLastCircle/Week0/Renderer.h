@@ -14,11 +14,6 @@
 #include "Math.h"
 #include "Shapes.h"
 
-/*
-#include "CharacterPlayer.h"
-#include "CharacterEnemy.h"
-#include "Projectile.h"
-*/
 
 ///////////////////////////////////////////////
 // Rnederer Class
@@ -371,3 +366,11 @@ private:
     };
 };
 ///////////////////////////////////////////////
+
+
+// TODO: 
+class UCharacterPlayer;
+class UCharacterEnemy;
+class UProjectile;
+void DrawCharacters(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
+    UProjectile** ProjectilePlayerList, INT32 ProjectilePlayerListCount, UProjectile** ProjectileEnemyList, INT32 ProjectileEnemyListCount, URenderer* Renderer);
