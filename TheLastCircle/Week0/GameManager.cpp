@@ -76,6 +76,7 @@ void UGameManager::ResetGame()
 {
     GameTime = 0.0f;
     EnemySpawnTimer = 0.0f;
+    Score = 0;
 
     currentState = Playing;
 
@@ -119,6 +120,18 @@ void UGameManager::Win()
     }
 
     currentState = GameClear;
+}
+
+void UGameManager::ReturnToTitle()
+{
+    ClearEnemies();
+    ClearProjectiles();
+
+    GameTime = 0.0f;
+    EnemySpawnTimer = 0.0f;
+    Score = 0;
+
+    currentState = Title;
 }
 
 #pragma endregion
@@ -335,6 +348,21 @@ FVector UGameManager::GetEnemySpawnPosition()
         sinf(RandomAngle) * RandomRadius;
 
     return FVector(X, Y, 0.0f);
+}
+
+void UGameManager::SetDifficulty(EGameDifficulty NewDifficulty)
+{
+    Difficulty = NewDifficulty;
+
+    switch (Difficulty)
+    {
+    case EGameDifficulty::Easy:
+        // 쉬움모드에서 변경할 내용
+        break;
+    case EGameDifficulty::Hard:
+        // 어려움모드에서 변경할 내용
+        break;
+    }
 }
 
 void UGameManager::UpdateGameTime(float DeltaTime)

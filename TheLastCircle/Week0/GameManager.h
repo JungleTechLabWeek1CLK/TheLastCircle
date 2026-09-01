@@ -17,6 +17,12 @@ enum EGameState
 	GameClear,
 };
 
+enum class EGameDifficulty
+{
+	Easy,
+	Hard
+};
+
 class UGameManager
 {
 public:
@@ -62,9 +68,45 @@ public:
 		return ProjectileCount;
 	}
 
+	EGameState GetGameState() const
+	{
+		return currentState;
+	}
+
+	void SetDifficulty(EGameDifficulty NewDifficulty);
+
+	void ReturnToTitle();
+
+	float GetGameTime() const
+	{
+		return GameTime;
+	}
+
+	float GetRemainingTime() const
+	{
+		float RemainingTime = GameClearTime - GameTime;
+
+		if (RemainingTime < 0.0f)
+		{
+			RemainingTime = 0.0f;
+		}
+
+		return RemainingTime;
+	}
+
+	int GetScore() const
+	{
+		return Score;
+	}
+
+
 
 private:
 	EGameState currentState = Title;
+	EGameDifficulty Difficulty = EGameDifficulty::Easy;
+
+	int Score = 0;
+
 	float GameTime;
 	float GameClearTime;
 
