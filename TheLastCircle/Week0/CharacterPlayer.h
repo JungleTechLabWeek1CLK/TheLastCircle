@@ -5,7 +5,8 @@ enum class ETypeUpgrade {
     ETU_Damage,
     ETU_Hp,
     ETU_bullets,
-    ETU_Speed
+    ETU_Speed,
+    COUNT
 };
 
 class UCharacterPlayer : public UCharacter
@@ -20,7 +21,7 @@ public:
     float GuardTime = 0.f;
     float GuardDelay = 3.f;
     float MaxHp;
-    ETypeUpgrade Upgrades[3] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed};
+    ETypeUpgrade Upgrades[4] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets };
 
     UCharacterPlayer()
     {
@@ -40,6 +41,7 @@ public:
     int LevelUp();
     void Upgrade(ETypeUpgrade type);
     void GetEXP(int exp);
+    ETypeUpgrade* RandomUpgrade();
     int GetLevel() {
         return Level;
     }

@@ -210,6 +210,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             int LevelUpCnt = Player->LevelUp();
             if (LevelUpCnt > 0) {
+                Player->RandomUpgrade();
                 GameManager.SetGameState(EGameState::Upgrade);
             }
         }
