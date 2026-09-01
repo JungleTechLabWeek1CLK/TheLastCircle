@@ -155,8 +155,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
             gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
             &Renderer);
-
-
+        UCharacterPlayer* Player = gameManager.GetPlayer();
+        UCharacterEnemy** EnemyList = gameManager.GetEnemyList();
+        int EnemyListCount = gameManager.GetEnemyListCount();
+        if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
+            Player->Move({Player->Location.x - 1, Player->Location.y, 0}, DeltaTime);
+        }
+        if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { //오른쪽
+            Player->Move({ Player->Location.x + 1, Player->Location.y, 0 }, DeltaTime);
+        }
+        if (GetAsyncKeyState(VK_UP) & 0x8000) { //위
+            Player->Move({ Player->Location.x, Player->Location.y + 1, 0 }, DeltaTime);
+        }
+        if (GetAsyncKeyState(VK_DOWN) & 0x8000) { //아래
+            Player->Move({ Player->Location.x, Player->Location.y - 1, 0 }, DeltaTime);
+        }
+        for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
+        {
+            EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
+        }
         /*
         /// ImGui - start
         ImGui_ImplDX11_NewFrame();

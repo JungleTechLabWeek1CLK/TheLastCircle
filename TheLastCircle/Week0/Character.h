@@ -19,11 +19,12 @@ public:
     // Required for test
     FVector Location;
     FVector Velocity;
-    float Radius = 0.1f;
+    float Radius = 0.05f;
     float Mass;
     float Hp;
     float Speed;
     float Damage;
+    float range;
     ETypePrimitive HitBox;
     FVector Color;
     ETypeCharacter CharacterType;
@@ -36,8 +37,8 @@ public:
     {
     }
 
-    void Move();
-    void Attack();
+    void Move(FVector location, float delta);
+    void Attack(FVector location);
     void GetDamage();
     void Die();
 private:
