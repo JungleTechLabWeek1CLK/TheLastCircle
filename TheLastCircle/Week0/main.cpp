@@ -15,6 +15,7 @@
 #include "Physics.h"
 #include "Character.h"
 #include "GameManager.h"
+#include "GameUI.h"
 ///////////////////////////////////////////////
 
 
@@ -89,7 +90,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     UGameManager GameManager;
     GameManager.Initialize();
-    GameManager.ResetGame();
+    //GameManager.ResetGame();
+    UGameUI GameUI;
 
     RECT rect;
     GetClientRect(hWnd, &rect);
@@ -204,6 +206,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             GameManager.GetProjectileList(), GameManager.GetProjectileListCount(),
             &Renderer);
 
+        ImGui_ImplDX11_NewFrame();
+        ImGui_ImplWin32_NewFrame();
+        ImGui::NewFrame();
+
+        GameUI.UIRender(&GameManager);
+
+        ImGui::Render();
         
         /*
         /// ImGui - start
@@ -258,6 +267,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         /// ImGui - end
         */
 
+        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
         Renderer.SwapBuffer();
         ////////////////////////////////////////////

@@ -49,6 +49,8 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
 
 void UGameUI::RenderTitle(UGameManager* GameManager)
 {
+    // 폰트 스케일 테스트
+   
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
     ImVec2 Center = Viewport->GetCenter();
 
@@ -64,6 +66,7 @@ void UGameUI::RenderTitle(UGameManager* GameManager)
         ImGuiWindowFlags_NoTitleBar;
 
     ImGui::Begin("TitleWindow", nullptr, WindowFlags);
+    ImGui::GetIO().FontGlobalScale = 5.0f;
 
     const char* TitleText = "THE LAST CIRCLE";
 
@@ -76,7 +79,31 @@ void UGameUI::RenderTitle(UGameManager* GameManager)
 
     ImGui::Text("%s", TitleText);
 
+    // 버튼 폰트 스케일
+    ImGui::SetWindowFontScale(3.0f);
 
+    ImGui::Spacing();
+    // Dummy로 여백 만들기
+    ImGui::Dummy(ImVec2(300, 100));
+
+    if (ImGui::Button("Start"))
+    {
+        ImGui::OpenPopup("DifficultyPopup");
+    }
+
+    if (ImGui::Button("Credit"))
+    {
+
+    }
+
+    if (ImGui::Button("Exit"))
+    {
+
+    }
+
+    RenderDifficultyPopup(GameManager);
+
+    ImGui::End();
 }
 
 void UGameUI::RenderPausePopup(UGameManager* GameManager)
@@ -110,6 +137,67 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
     }
 
     ImGui::End();
+}
+
+void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
+{
+    ImGuiViewport* Viewport = ImGui::GetMainViewport();
+    ImVec2 Center = Viewport->GetCenter();
+
+    // 팝업 위치를 화면 중앙
+    ImGui::SetNextWindowPos(Center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+    ImGui::SetNextWindowSize(ImVec2(400.0f, 300.0f), ImGuiCond_Appearing);
+
+    if (ImGui::BeginPopupModal("DifficultyPopup", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::SetWindowFontScale(3.0f);
+
+        const char* Text = "SELECT DIFFICULTY";
+
+        float TextWidth = ImGui::CalcTextSize(Text).x;
+
+        ImGui::SetCursorPosX(
+            (ImGui::GetWindowWidth() - TextWidth) * 0.5f
+        );
+
+        ImGui::Text("%s", Text);
+
+        ImGui::SetWindowFontScale(1.5f);
+
+        ImGui::Dummy(ImVec2(0.0f, 40.0f));
+
+        ImGui::SetWindowFontScale(1.5f);
+        // EASY
+        if (ImGui::Button("EASY", ImVec2(160.0f, 60.0f)))
+        {
+            GameManager->SetDifficulty(EGameDifficulty::Easy);
+            GameManager->ResetGame();
+
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::SameLine();
+
+        // HARD
+        if (ImGui::Button("HARD", ImVec2(160.0f, 60.0f)))
+        {
+            GameManager->SetDifficulty(EGameDifficulty::Easy);
+            GameManager->ResetGame();
+
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::Spacing();
+
+        if (ImGui::Button("Back", ImVec2(160.0f, 60.0f)))
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
 }
 
 void UGameUI::RenderGameOverPopup(UGameManager* GameManager)
