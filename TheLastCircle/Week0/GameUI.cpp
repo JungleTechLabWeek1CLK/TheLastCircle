@@ -15,15 +15,23 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
     // 현재 화면의 중앙
     ImVec2 Center = Viewport->GetCenter();
 
+    ImVec2 ScreenSize = Viewport->Size;
+
+    // 화면 크기의 비율로 UI 크기 결정
+    ImVec2 WindowSize(
+        ScreenSize.x * 0.4f,   // 화면 가로의 40%
+        ScreenSize.y * 0.5f    // 화면 세로의 50%
+    );
+
+    // 화면 중앙 배치
     ImGui::SetNextWindowPos(
         Center,
         ImGuiCond_Always,
         ImVec2(0.5f, 0.5f)
     );
 
-    // 윈도우 사이즈 고정
     ImGui::SetNextWindowSize(
-        ImVec2(320.0f, 280.0f),
+        WindowSize,
         ImGuiCond_Always
     );
 
@@ -50,14 +58,25 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
 void UGameUI::RenderTitle(UGameManager* GameManager)
 {
     // 폰트 스케일 테스트
-   
+    ImGui::GetIO().FontGlobalScale = 4.0f;
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
     ImVec2 Center = Viewport->GetCenter();
+    ImVec2 ScreenSize = Viewport->Size;
 
-    ImGui::SetNextWindowSize(
-        ImVec2(400.0f, 400.0f),
-        ImGuiCond_Always
+    // 화면 크기의 비율로 UI 크기 결정
+    ImVec2 WindowSize(
+        ScreenSize.x * 1.0f,   // 화면 가로의 40%
+        ScreenSize.y * 1.0f    // 화면 세로의 50%
     );
+
+    // 화면 중앙 배치
+    ImGui::SetNextWindowPos(
+        Center,
+        ImGuiCond_Always,
+        ImVec2(0.5f, 0.5f)
+    );
+
+    ImGui::SetNextWindowSize(WindowSize,ImGuiCond_Always);
 
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |
@@ -66,37 +85,70 @@ void UGameUI::RenderTitle(UGameManager* GameManager)
         ImGuiWindowFlags_NoTitleBar;
 
     ImGui::Begin("TitleWindow", nullptr, WindowFlags);
-    ImGui::GetIO().FontGlobalScale = 5.0f;
 
     const char* TitleText = "THE LAST CIRCLE";
 
-    float TitleTextWidth =
-        ImGui::CalcTextSize(TitleText).x;
+    ImVec2 TitleTextSize = ImGui::CalcTextSize(TitleText);
 
-    ImGui::SetCursorPosY(60.0f);
+    float TitleTextWidth = ImGui::CalcTextSize(TitleText).x;
 
-    ImGui::SetCursorPosX((ImGui::GetWindowWidth() - TitleTextWidth) * 0.5f );
+    // 가로 가운데
+    float TitleX =
+        (ImGui::GetWindowWidth() - TitleTextSize.x) * 0.5f;
+
+    // 세로 가운데
+    float TitleY =
+        (ImGui::GetWindowHeight() - TitleTextSize.y) * 0.15f;
+
+    ImGui::SetCursorPos(
+        ImVec2(TitleX, TitleY)
+    );
 
     ImGui::Text("%s", TitleText);
 
     // 버튼 폰트 스케일
-    ImGui::SetWindowFontScale(3.0f);
+    ImGui::SetWindowFontScale(2.0f);
 
     ImGui::Spacing();
     // Dummy로 여백 만들기
-    ImGui::Dummy(ImVec2(300, 100));
+    ImGui::Dummy(ImVec2(0.f, ScreenSize.y*0.15f));
 
-    if (ImGui::Button("Start"))
+    // 버튼 크기도 비율로
+    ImVec2 ButtonSize(
+        WindowSize.x * 0.5f,
+        WindowSize.y * 0.12f
+    );
+
+    // Start 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowSize.x - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Start", ButtonSize))
     {
         ImGui::OpenPopup("DifficultyPopup");
     }
 
-    if (ImGui::Button("Credit"))
+    ImGui::Spacing();
+
+    // Credit 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowSize.x - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Credit", ButtonSize))
     {
 
     }
 
-    if (ImGui::Button("Exit"))
+    ImGui::Spacing();
+
+    // Exit 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowSize.x - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Exit", ButtonSize))
     {
 
     }
@@ -113,13 +165,28 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse;
 
+    float WindowWidth = ImGui::GetWindowWidth();
+    float WindowHeight = ImGui::GetWindowHeight();
+
     ImGui::Begin("PausePopup", nullptr, WindowFlags);
 
     const char* PauseText = "PAUSED";
-    int tmpScore = 999;
 
+    int Score = 111;
+    const char* ScoreText = "SCORE : 9999";
+
+    float TextWidth = ImGui::CalcTextSize(PauseText).x;
+    float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
+
+    ImGui::SetCursorPosX(
+        (WindowWidth - TextWidth) * 0.5f
+    );
     ImGui::Text("%s", PauseText);
-    ImGui::Text("%d", tmpScore);
+
+    ImGui::SetCursorPosX(
+        (WindowWidth - ScoreWidth) * 0.5f
+    );
+    ImGui::Text("Score: %d", Score);
 
     if (ImGui::Button("Resume"))
     {
@@ -144,14 +211,23 @@ void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
     ImVec2 Center = Viewport->GetCenter();
 
+    ImVec2 ScreenSize = Viewport->Size;
+
+    ImVec2 PopupSize(
+        ScreenSize.x * 0.5f,
+        ScreenSize.y * 0.5f
+    );
+
     // 팝업 위치를 화면 중앙
-    ImGui::SetNextWindowPos(Center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowPos(Center, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
 
-    ImGui::SetNextWindowSize(ImVec2(400.0f, 300.0f), ImGuiCond_Appearing);
+    ImGui::SetNextWindowSize(ImVec2(PopupSize), ImGuiCond_Always);
 
-    if (ImGui::BeginPopupModal("DifficultyPopup", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+    ImGui::SetWindowFontScale(2.0f);
+
+    if (ImGui::BeginPopupModal("DifficultyPopup", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar))
     {
-        ImGui::SetWindowFontScale(3.0f);
+        ImGui::SetWindowFontScale(1.0f);
 
         const char* Text = "SELECT DIFFICULTY";
 
@@ -165,11 +241,27 @@ void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
 
         ImGui::SetWindowFontScale(1.5f);
 
-        ImGui::Dummy(ImVec2(0.0f, 40.0f));
+        ImGui::Dummy(
+            ImVec2(0.0f, PopupSize.y * 0.1f)
+        );
 
-        ImGui::SetWindowFontScale(1.5f);
-        // EASY
-        if (ImGui::Button("EASY", ImVec2(160.0f, 60.0f)))
+        ImVec2 ButtonSize(
+            PopupSize.x * 0.3f,
+            PopupSize.y * 0.15f
+        );
+
+        ImVec2 SmallButtonSize(
+            PopupSize.x * 0.2f,
+            PopupSize.y * 0.1f
+        );
+
+        ImGui::SetWindowFontScale(1.0f);
+        
+        // 가운데 정렬
+        ImGui::SetCursorPosX(
+            (PopupSize.x - ButtonSize.x) * 0.5f
+        );
+        if (ImGui::Button("EASY", ButtonSize))
         {
             GameManager->SetDifficulty(EGameDifficulty::Easy);
             GameManager->ResetGame();
@@ -177,10 +269,16 @@ void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
             ImGui::CloseCurrentPopup();
         }
 
-        ImGui::SameLine();
+        ImGui::Dummy(
+            ImVec2(0.0f, PopupSize.y * 0.05f)
+        );
+        //ImGui::SameLine();
 
         // HARD
-        if (ImGui::Button("HARD", ImVec2(160.0f, 60.0f)))
+        ImGui::SetCursorPosX(
+            (PopupSize.x - ButtonSize.x) * 0.5f
+        );
+        if (ImGui::Button("HARD", ButtonSize))
         {
             GameManager->SetDifficulty(EGameDifficulty::Easy);
             GameManager->ResetGame();
@@ -188,9 +286,17 @@ void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
             ImGui::CloseCurrentPopup();
         }
 
+        ImGui::Dummy(
+            ImVec2(0.0f, PopupSize.y * 0.2f)
+        );
         ImGui::Spacing();
 
-        if (ImGui::Button("Back", ImVec2(160.0f, 60.0f)))
+        ImGui::SetWindowFontScale(0.7f);
+
+        ImGui::SetCursorPosX(
+            (PopupSize.x - SmallButtonSize.x) * 0.5f
+        );
+        if (ImGui::Button("Back", SmallButtonSize))
         {
             ImGui::CloseCurrentPopup();
         }
@@ -207,20 +313,58 @@ void UGameUI::RenderGameOverPopup(UGameManager* GameManager)
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse;
 
-    ImGui::Begin("GameOverPopup", nullptr, WindowFlags);
+    float WindowWidth = ImGui::GetWindowWidth();
+    float WindowHeight = ImGui::GetWindowHeight();
 
-    const char* PauseText = "Game Over!!";
-    int tmpScore = 000;
+    ImGui::Begin("PausePopup", nullptr, WindowFlags);
 
-    ImGui::Text("%s", PauseText);
-    ImGui::Text("%d", tmpScore);
+    const char* GameOverText = "GameOver!";
 
-    if (ImGui::Button("Restart"))
+    ImVec2 ButtonSize(
+        WindowWidth * 0.5f,
+        WindowHeight * 0.12f
+    );
+
+    ImVec2 WindowSize(
+        WindowWidth,
+        WindowHeight
+    );
+
+    int Score = 111;
+    const char* ScoreText = "SCORE : 9999";
+
+    float TextWidth = ImGui::CalcTextSize(GameOverText).x;
+    float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
+
+    ImGui::SetCursorPosX(
+        (WindowWidth - TextWidth) * 0.5f
+    );
+    ImGui::Text("%s", GameOverText);
+
+    ImGui::SetCursorPosX(
+        (WindowWidth - ScoreWidth) * 0.5f
+    );
+    ImGui::Text("SCORE: %d", Score);
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y*0.1f));
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Restart", ButtonSize))
     {
         GameManager->ResetGame();
     }
 
-    if (ImGui::Button("Home"))
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
+
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Home", ButtonSize))
     {
         GameManager->ReturnToTitle();
     }
@@ -235,20 +379,58 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse;
 
+    float WindowWidth = ImGui::GetWindowWidth();
+    float WindowHeight = ImGui::GetWindowHeight();
+
     ImGui::Begin("GameClearPopup", nullptr, WindowFlags);
 
-    const char* PauseText = "Game Clear!!";
-    int tmpScore = 999;
+    const char* GameClearText = "GameClear!";
 
-    ImGui::Text("%s", PauseText);
-    ImGui::Text("%d", tmpScore);
+    ImVec2 ButtonSize(
+        WindowWidth * 0.5f,
+        WindowHeight * 0.12f
+    );
 
-    if (ImGui::Button("Restart"))
+    ImVec2 WindowSize(
+        WindowWidth,
+        WindowHeight
+    );
+
+    int Score = 111;
+    const char* ScoreText = "SCORE : 9999";
+
+    float TextWidth = ImGui::CalcTextSize(GameClearText).x;
+    float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
+
+    ImGui::SetCursorPosX(
+        (WindowWidth - TextWidth) * 0.5f
+    );
+    ImGui::Text("%s", GameClearText);
+
+    ImGui::SetCursorPosX(
+        (WindowWidth - ScoreWidth) * 0.5f
+    );
+    ImGui::Text("SCORE: %d", Score);
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Restart", ButtonSize))
     {
         GameManager->ResetGame();
     }
 
-    if (ImGui::Button("Home"))
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
+
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Home", ButtonSize))
     {
         GameManager->ReturnToTitle();
     }
