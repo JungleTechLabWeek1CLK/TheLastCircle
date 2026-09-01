@@ -11,7 +11,10 @@ cbuffer constants : register(b0)
     float Radius;
     
     float3 PlayerOffset;
-    float CharacterType; // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP, 100 = background
+    
+    // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP
+    // 100.5 = background, 99.5 = health bar, 98.5 = exp bar
+    float CharacterType; 
 }
 
 struct VS_INPUT
@@ -46,6 +49,26 @@ PS_INPUT mainVS(VS_INPUT Input)
         Position.xy = Position2D;
         // translation
         Output.Position = float4(Position + Offset, 1.0f);
+    }
+    else if (CharacterType > 99 && CharacterType < 100)
+    {
+        // health bar
+        float Width = 0.3f;
+        float Height = 0.04f;
+        
+        float3 Box = float3(Input.Position.x * Width, Input.Position.y * Height, 0.f);
+        
+        Output.Position = float4(Box + Offset, 1.0f);
+    }
+    else if (CharacterType > 98 && CharacterType < 99)
+    {
+        // exp bar
+        float Width = 0.3f;
+        float Height = 0.04f;
+        
+        float3 Box = float3(Input.Position.x * Width, Input.Position.y * Height, 0.f);
+        
+        Output.Position = float4(Box + Offset, 1.0f);
     }
     else
     {
@@ -95,13 +118,39 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
     else if (CharacterType > 4 && CharacterType < 5)
     {
         // EXP
-        float3 Color = { 1.f, 1.f, 0.f };
+        float3 Color = { 0.9f, 0.9f, 0.15f };
         TextureColor = float4(Color, 1.f);
     }
     else if (CharacterType > 100)
     {
         // Background
         TextureColor = BackgroundTexture.Sample(MainSampler, Input.UV);
+    }
+    else if (CharacterType > 99 && CharacterType < 100)
+    {
+        // health bar
+        float BorderWidth = 0.02f;
+        float BorderHeight = 0.1f;
+        
+        if (Input.UV.x < BorderWidth || Input.UV.x > 1.f - BorderWidth || Input.UV.y < BorderHeight || Input.UV.y > 1.f - BorderHeight)
+            TextureColor = float4(1.f, 1.f, 1.f, 1.f);
+        else if (Input.UV.x < (PlayerOffset.x / PlayerOffset.y))
+            TextureColor = float4(0.9f, 0.15f, 0.15f, 1.f);
+        else
+            TextureColor = float4(0.15f, 0.15f, 0.15f, 1.f);
+    }
+    else if (CharacterType > 98 && CharacterType < 99)
+    {
+        // exp bar
+        float BorderWidth = 0.02f;
+        float BorderHeight = 0.1f;
+        
+        if (Input.UV.x < BorderWidth || Input.UV.x > 1.f - BorderWidth || Input.UV.y < BorderHeight || Input.UV.y > 1.f - BorderHeight)
+            TextureColor = float4(1.f, 1.f, 1.f, 1.f);
+        else if (Input.UV.x < (PlayerOffset.x / PlayerOffset.y))
+            TextureColor = float4(0.9f, 0.9f, 0.9f, 1.f);
+        else
+            TextureColor = float4(0.15f, 0.15f, 0.15f, 1.f);
     }
     
     return TextureColor;

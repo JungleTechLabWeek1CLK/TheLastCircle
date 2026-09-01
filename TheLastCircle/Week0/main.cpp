@@ -242,6 +242,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui::NewFrame();
 
         GameUI.UIRender(&GameManager);
+        DrawUI(Player, &Renderer, GameManager.IsPlaying());
 
         ImGui::Render();
 
