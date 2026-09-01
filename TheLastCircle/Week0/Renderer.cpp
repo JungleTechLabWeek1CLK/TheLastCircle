@@ -7,7 +7,7 @@
 void DrawCharacters(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
     UProjectile** ProjectilePlayerList, INT32 ProjectilePlayerListCount, UProjectile** ProjectileEnemyList, INT32 ProjectileEnemyListCount, URenderer* Renderer)
 {
-    // TODO: temporary color
+    // TODO: currently temporary color is being used
     FVector BallColor;
 
     BallColor = FVector(1.f, 1.0f, 1.0f);

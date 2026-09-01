@@ -368,7 +368,7 @@ private:
 ///////////////////////////////////////////////
 
 
-// TODO: 
+// TODO: decrease the number of parameters
 class UCharacterPlayer;
 class UCharacterEnemy;
 class UProjectile;

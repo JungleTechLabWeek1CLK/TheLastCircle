@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////
-
+// Headers
 
 // ImgGui
 #include "ImGui/imgui.h"
@@ -15,14 +15,7 @@
 #include "Physics.h"
 #include "Character.h"
 #include "GameManager.h"
-
 ///////////////////////////////////////////////
-
-
-
-// Initialize Ball Number to 0
-int UBall::TotalNumBalls = 0;
-
 
 
 
@@ -87,9 +80,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     bool bIsExit = false;
     bool bIsGravityOn = true;
 
-    UPrimitive** PrimitiveList = nullptr;
-    INT32 CurrentListSize = 8;
-    PrimitiveList = new UPrimitive * [CurrentListSize];
 
     LARGE_INTEGER Frequency;
     QueryPerformanceFrequency(&Frequency);
@@ -98,6 +88,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
     // Game Manager
+    // TODO: change class name to use GameManager as the name of the variable
     GameManager gameManager;
     gameManager.Initialize();
     gameManager.ResetGame();
@@ -119,6 +110,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
         }
 
+        UCharacterPlayer* Player = gameManager.GetPlayer();
+        UCharacterEnemy** EnemyList = gameManager.GetEnemyList();
+
+
         // Physics Process
         ////////////////////////////////////////////
         LARGE_INTEGER CurrentTime;
@@ -128,19 +123,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         if (DeltaTime > 0.1f)
             DeltaTime = 0.1f;
 
-        /*
-        if (bIsGravityOn)
-        {
-            ApplyGravity(PrimitiveList, DeltaTime);
-        }
-
-        HandleCollision(PrimitiveList, DeltaTime);
-
-        MoveBalls(PrimitiveList, DeltaTime);
-        */
-
-
-        //void HandleCollision(UCharacterPlayer * Player, UCharacter * *CharacterList, const float DELTA_TIME)
+        HandleCollision(Player, EnemyList, gameManager.GetEnemyListCount(),
+            gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
+            gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(), DeltaTime);
 
         ////////////////////////////////////////////
 
@@ -150,13 +135,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ////////////////////////////////////////////
         Renderer.Prepare();
         gameManager.Update(DeltaTime);
-        //DrawBalls(PrimitiveList, &Renderer);
-        DrawCharacters(gameManager.GetPlayer(), gameManager.GetEnemyList(), gameManager.GetEnemyListCount(),
+        
+        DrawCharacters(Player, EnemyList, gameManager.GetEnemyListCount(),
             gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
             gameManager.GetPlayerProjectileList(), gameManager.GetPlayerProjectileListCount(),
             &Renderer);
-        UCharacterPlayer* Player = gameManager.GetPlayer();
-        UCharacterEnemy** EnemyList = gameManager.GetEnemyList();
+
         int EnemyListCount = gameManager.GetEnemyListCount();
         if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
             Player->Move({Player->Location.x - 1, Player->Location.y, 0}, DeltaTime);
@@ -231,13 +215,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         Renderer.SwapBuffer();
         ////////////////////////////////////////////
     }
-    // Releasing UBalls
-    for (INT32 CurrentIndex = 0, OriginalBallNumnber = UBall::TotalNumBalls; CurrentIndex < OriginalBallNumnber; ++CurrentIndex)
-    {
-        delete PrimitiveList[CurrentIndex];
-    }
-    delete[] PrimitiveList;
-
 
     // Destroying ImGui
     ImGui_ImplDX11_Shutdown();
