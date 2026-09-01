@@ -141,6 +141,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         GetCursorPos(&pt);
         ScreenToClient(hWnd, &pt);
         if (GameManager.IsPlaying()) {
+            if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+            {
+                GameManager.PauseGame();
+            }
             if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
                 Player->Move({ Player->Location.x - 1, Player->Location.y, 0 }, DeltaTime);
             }
