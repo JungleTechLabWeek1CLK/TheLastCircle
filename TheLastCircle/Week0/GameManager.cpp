@@ -175,7 +175,7 @@ void UGameManager::SpawnPlayer()
     
     if (Player.Hp <= 100.f)
     {
-        Player.Hp = 1000.f;
+        Player.Hp = Player.MaxHp;
     }
 }
 

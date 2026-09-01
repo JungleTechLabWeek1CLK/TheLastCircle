@@ -24,8 +24,8 @@ public:
 
     UCharacterPlayer()
     {
-        MaxHp = 100;
-        Hp = 100;
+        MaxHp = 1000;
+        Hp = 1000;
         Damage = 100;
         Delay = 1.f;
         Speed = 0.5f;
