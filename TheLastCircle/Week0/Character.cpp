@@ -7,8 +7,8 @@ void UCharacter::Move(FVector location, float delta) {
     }
     else {
         Velocity = { (location.x - Location.x) / d, (location.y - Location.y) / d, 0 };
-        Location.x += Velocity.x * delta;
-        Location.y += Velocity.y * delta;
+        Location.x += Velocity.x * delta * Speed;
+        Location.y += Velocity.y * delta * Speed;
     }
     return;
 }
@@ -26,14 +26,4 @@ void UCharacter::Die() {
 }
 bool UCharacter::IsActive() {
     return bIsActive;
-}
-
-void UCharacter::UpdateTime(float delta) {
-    if (!bIsShoot) {
-        ShootTime += delta;
-    }
-    if (Delay <= ShootTime) {
-        bIsShoot = true;
-        ShootTime = 0;
-    }
 }

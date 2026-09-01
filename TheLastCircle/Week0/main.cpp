@@ -161,7 +161,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
             if (Player->bIsShoot) {
-                FVector V = { ((float)pt.x / centerX) - 1.f, 1.f - ((float)pt.y / centerY), 0 };
+                FVector V = { ((float)pt.x / centerX) - 1.f - Player->Location.x, 1.f - ((float)pt.y / centerY) - Player->Location.y, 0 };
                 V.Normalize();
                 GameManager.SpawnProjectile(Player->Location, V, ETypeCharacter::ETC_PlayerProjectile);
                 Player->bIsShoot = false;
@@ -177,8 +177,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     V.Normalize();
                     GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile);
                     EnemyList[CurrentIndex]->bIsShoot = false;
-                }
-                EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
+                }else
+                    EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
             }
             else
                 GameManager.RemoveEnemy(CurrentIndex);

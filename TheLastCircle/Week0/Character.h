@@ -47,7 +47,7 @@ public:
 	virtual void Move(FVector location, float delta);
 	virtual void Attack(FVector location);
 	void GetDamage(float damage);
-	void Die();
+	virtual void Die();
 	bool IsActive();
 	void UpdateTime(float delta);
 private:

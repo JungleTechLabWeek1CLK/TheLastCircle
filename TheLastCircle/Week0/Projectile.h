@@ -7,6 +7,7 @@ class UProjectile : public UCharacter
 public:
 	UProjectile() {
 		Radius = 0.01f;
+		Speed = 1.f;
 	}
 	void Move(FVector location, float delta)
 	{
