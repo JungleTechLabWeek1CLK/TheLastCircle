@@ -18,7 +18,9 @@ UGameManager::UGameManager()
     EnemySpawnInterval(1.0f),
     ProjectileList(nullptr),
     ProjectileCount(0),
-    ProjectileCapacity(30)
+    ProjectileCapacity(30),
+    EXPList(nullptr), EXPCount(0),
+    EXPCapacity(30)
 {
 
 }
@@ -49,7 +51,9 @@ void UGameManager::Initialize()
     ProjectileCapacity = 30;
     ProjectileList = new UProjectile * [ProjectileCapacity]();
 
-
+    EXPCount = 0;
+    EXPCapacity = 30;
+    EXPList = new UItemEXP * [EXPCapacity]();
     // 60초 생존하면 게임 클리어
     GameClearTime = 10.0f;
 }
