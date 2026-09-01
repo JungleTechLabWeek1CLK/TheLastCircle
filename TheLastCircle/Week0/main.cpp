@@ -189,6 +189,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
                 }
                 else {
+                    GameManager.AddKill();
                     GameManager.SpawnEXP(EnemyList[CurrentIndex]->Location, EnemyList[CurrentIndex]->Reward);
                     GameManager.RemoveEnemy(CurrentIndex--);
                 }

@@ -43,6 +43,7 @@ void UGameManager::Initialize()
     currentState = Title;
 
     Score = 0.f;
+    KillCount = 0;
     GameTime = 0.0f;
     EnemyCount = 0;
     EnemyCapacity = 30;
@@ -69,7 +70,7 @@ void UGameManager::Update(float DeltaTime)
     UpdateEnemySpawn(DeltaTime);
     //UpdateProjectiles(DeltaTime);
 
-    UpdateScore(DeltaTime);
+    UpdateScore();
     CheckGameOver();
     CheckGameClear();
 }
@@ -82,6 +83,8 @@ void UGameManager::ResetGame()
     GameTime = 0.0f;
     EnemySpawnTimer = 0.0f;
     Score = 0;
+
+    KillCount = 0;
 
     currentState = Playing;
 
@@ -164,6 +167,11 @@ bool UGameManager::IsPaused() const
 bool UGameManager::IsUpgrade() const
 {
     return (currentState == Upgrade) ? true : false;
+}
+
+void UGameManager::AddKill()
+{
+    ++KillCount;
 }
 
 #pragma region SpawnFunction
@@ -463,9 +471,25 @@ void UGameManager::SetDifficulty(EGameDifficulty NewDifficulty)
     }
 }
 
-void UGameManager::UpdateScore(float DeltaTime)
+void UGameManager::UpdateScore()
 {
-    Score += DeltaTime;
+    float DifficultyMultiplier = 1.0f;
+
+    switch (Difficulty)
+    {
+    case EGameDifficulty::Easy:
+        DifficultyMultiplier = 1.0f;
+        break;
+
+    case EGameDifficulty::Hard:
+        DifficultyMultiplier = 1.5f;
+        break;
+    }
+
+    const float TimeScoreMultiplier = 10.0f;
+    const float KillScoreMultiplier = 100.0f;
+
+    Score = DifficultyMultiplier *(GameTime * TimeScoreMultiplier + KillCount * KillScoreMultiplier);
 }
 
 void UGameManager::UpdateGameTime(float DeltaTime)

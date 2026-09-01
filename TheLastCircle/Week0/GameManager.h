@@ -128,8 +128,9 @@ public:
 		this->Score = 0;
 	}
 
-	void StartUpgrade();
-	void FinishUpgrade();
+	void AddKill();
+
+
 
 
 private:
@@ -137,6 +138,7 @@ private:
 	EGameDifficulty Difficulty = EGameDifficulty::Easy;
 
 	float Score = 0.f;
+	int KillCount = 0;
 
 	float GameTime;
 	float GameClearTime;
@@ -176,7 +178,7 @@ private:
 	void ClearProjectiles();
 	void ResizeProjectileList();
 
-	void UpdateScore(float DeltaTime);
+	void UpdateScore();
 	void UpdateGameTime(float DeltaTime);
 	void CheckGameOver();
 	void CheckGameClear();
