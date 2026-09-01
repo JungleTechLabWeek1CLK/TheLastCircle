@@ -4,12 +4,13 @@
 class UItemEXP : public UItem
 {
 public:
-	float Reword;
+	float Reward;
+	float LootableRadius = Radius * 5.f;
 	bool bIsFollow = false;
 	bool bIsActive = true;
-	UItemEXP(float reword) : UItem()
+	UItemEXP(float reward) : UItem()
 	{
-		Reword = reword;
+		Reward = reward;
 		ItemType = ETI_EXP;
 	}
 	void Die() {

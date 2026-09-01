@@ -204,15 +204,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         // Physics Process
         HandleCollision(Player, EnemyList, GameManager.GetEnemyListCount(),
-            GameManager.GetProjectileList(), GameManager.GetProjectileListCount(), DeltaTime, GameManager.IsPaused());
+            GameManager.GetProjectileList(), GameManager.GetProjectileListCount(), 
+            GameManager.GetEXPList(), GameManager.GetEXPListCount(),
+            DeltaTime, GameManager.IsPaused());
 
 
         // Rendering Process
         ////////////////////////////////////////////
         Renderer.Prepare();
 
-        DrawCharacters(Player, EnemyList, GameManager.GetEnemyListCount(),
+        // TODO: drop item list will be added
+        DrawObjects(Player, EnemyList, GameManager.GetEnemyListCount(),
             GameManager.GetProjectileList(), GameManager.GetProjectileListCount(),
+            GameManager.GetEXPList(), GameManager.GetEXPListCount(),
             &Renderer, GameManager.IsTitle());
 
         ImGui_ImplDX11_NewFrame();

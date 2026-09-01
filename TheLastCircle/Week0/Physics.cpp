@@ -5,11 +5,12 @@
 #include "CharacterPlayer.h"
 #include "CharacterEnemy.h"
 #include "Projectile.h"
-
+#include "ItemEXP.h"
 
 
 void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, const float DELTA_TIME, bool bIsPaused)
+    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
+    const float DELTA_TIME, bool bIsPaused)
 {
     if (bIsPaused)
         return;
@@ -48,6 +49,42 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
             Player->GetDamage(CurrentEnemyProjectile->Damage);
 
             CurrentEnemyProjectile->Die();
+        }
+    }
+    // Player - ItemEXP (magnetic check)
+    for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
+    {
+        UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
+        if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow)
+            continue;
+
+        // Sphere - Sphere Collision
+        FVector CollisionNormal = CurrentItemEXP->Location - Player->Location; // not normalized yet
+        const float DISTANCE = CollisionNormal.GetMagnitude();
+
+        if (DISTANCE < (Player->Radius + CurrentItemEXP->LootableRadius))
+        {
+            // collision detected
+            CurrentItemEXP->bIsFollow = true;
+        }
+    }
+    // Player - ItemEXP (collision check)
+    for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
+    {
+        UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
+        if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow == false)
+            continue;
+
+        // Sphere - Sphere Collision
+        FVector CollisionNormal = CurrentItemEXP->Location - Player->Location; // not normalized yet
+        const float DISTANCE = CollisionNormal.GetMagnitude();
+
+        if (DISTANCE < (Player->Radius + CurrentItemEXP->Radius))
+        {
+            // collision detected
+            Player->GetEXP(CurrentItemEXP->Reward);
+
+            CurrentItemEXP->Die();
         }
     }
     // ----------

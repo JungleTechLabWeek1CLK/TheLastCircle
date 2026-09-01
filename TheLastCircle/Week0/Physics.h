@@ -15,5 +15,7 @@ const FVector DIRECTION_DOWN(0.f, -1.f, 0.f);
 class UCharacterPlayer;
 class UCharacterEnemy;
 class UProjectile;
+class UItemEXP;
 void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, const float DELTA_TIME, bool bIsPaused);
+    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
+    const float DELTA_TIME, bool bIsPaused);
