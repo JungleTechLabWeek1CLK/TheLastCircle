@@ -184,6 +184,23 @@ void UGameManager::SpawnEnemy(ETypeCharacter EnemyType)
     ++EnemyCount;
 
 }
+void UGameManager::ResizeEXPList()
+{
+    int NewCapacity = EXPCapacity * 2;
+
+    UItemEXP** NewList =
+        new UItemEXP * [NewCapacity]();
+
+    for (int i = 0; i < EXPCount; ++i)
+    {
+        NewList[i] = EXPList[i];
+    }
+
+    delete[] EXPList;
+
+    EXPList = NewList;
+    EXPCapacity = NewCapacity;
+}
 
 // 꽉차면 크기 2배로 확장
 void UGameManager::ResizeEnemyList()
@@ -283,6 +300,36 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
     ProjectileList[ProjectileCount] = NewProjectile;
 
     ++ProjectileCount;
+}
+
+void UGameManager::SpawnEXP(FVector location, float reword) {
+    if (EXPCount >= EXPCapacity)
+    {
+        ResizeEXPList();
+    }
+
+    UItemEXP* NewEXP = new UItemEXP(reword);
+
+    NewEXP->Location = location;
+
+    EXPList[EXPCount] = NewEXP;
+
+    ++EXPCount;
+}
+
+void UGameManager::RemoveEXP(int Index) {
+    if (Index < 0 || Index >= EXPCount)
+    {
+        return;
+    }
+
+    delete EXPList[Index];
+
+    EXPList[Index] = EXPList[EXPCount - 1];
+
+    EXPList[EXPCount - 1] = nullptr;
+
+    --EXPCount;
 }
 
 void UGameManager::ClearProjectiles()
