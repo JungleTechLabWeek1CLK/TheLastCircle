@@ -156,6 +156,11 @@ bool UGameManager::IsPaused() const
     return (currentState == Paused) ? true : false;
 }
 
+bool UGameManager::IsUpgrade() const
+{
+    return (currentState == Upgrade) ? true : false;
+}
+
 #pragma region SpawnFunction
 
 void UGameManager::SpawnPlayer()

@@ -495,8 +495,9 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
 
 #pragma endregion
 
-void RenderChoicePopup(UGameManager* GameManager)
+void UGameUI::RenderChoicePopup(UGameManager* GameManager, float * choices)
 {
+    ImGuiViewport* Viewport = ImGui::GetMainViewport();
 
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |

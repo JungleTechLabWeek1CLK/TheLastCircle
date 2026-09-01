@@ -28,6 +28,6 @@ private:
     void RenderGameOverPopup(UGameManager* GameManager);
     void RenderGameClearPopup(UGameManager* GameManager);
 
-    void RenderChoicePopup(UGameManager* GameManager);
+    void RenderChoicePopup(UGameManager* GameManager, float* choices);
 
 };

@@ -51,6 +51,7 @@ public:
 	bool IsTitle() const;
 	bool IsPlaying() const;
 	bool IsPaused() const;
+	bool IsUpgrade() const;
 
 	UCharacterPlayer* GetPlayer()
 	{
