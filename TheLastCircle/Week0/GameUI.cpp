@@ -163,42 +163,77 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse;
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoTitleBar;
 
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
 
     ImGui::Begin("PausePopup", nullptr, WindowFlags);
 
-    const char* PauseText = "PAUSED";
+    const char* GameClearText = "Paused";
+
+    ImVec2 ButtonSize(
+        WindowWidth * 0.7f,
+        WindowHeight * 0.2f
+    );
+
+    ImVec2 WindowSize(
+        WindowWidth,
+        WindowHeight
+    );
 
     int Score = 111;
-    const char* ScoreText = "SCORE : 9999";
+    const char* ScoreText = "SCORE:999";
 
-    float TextWidth = ImGui::CalcTextSize(PauseText).x;
+    float TextWidth = ImGui::CalcTextSize(GameClearText).x;
     float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
 
     ImGui::SetCursorPosX(
         (WindowWidth - TextWidth) * 0.5f
     );
-    ImGui::Text("%s", PauseText);
+    ImGui::Text("%s", GameClearText);
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
 
     ImGui::SetCursorPosX(
         (WindowWidth - ScoreWidth) * 0.5f
     );
-    ImGui::Text("Score: %d", Score);
 
-    if (ImGui::Button("Resume"))
+    ImGui::Text("SCORE:%d", Score);
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Resume", ButtonSize))
     {
         GameManager->ResumeGame();
     }
 
-    if (ImGui::Button("Restart"))
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Restart", ButtonSize))
     {
         GameManager->ResetGame();
     }
 
-    if (ImGui::Button("Home"))
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
+
+    // 가운데 정렬
+    ImGui::SetCursorPosX(
+        (WindowWidth - ButtonSize.x) * 0.5f
+    );
+
+    if (ImGui::Button("Home", ButtonSize))
     {
         GameManager->ReturnToTitle();
     }
@@ -311,18 +346,19 @@ void UGameUI::RenderGameOverPopup(UGameManager* GameManager)
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse;
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoTitleBar;
 
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
 
-    ImGui::Begin("PausePopup", nullptr, WindowFlags);
+    ImGui::Begin("GameOverPopup", nullptr, WindowFlags);
 
-    const char* GameOverText = "GameOver!";
+    const char* GameOverText = "Game Over";
 
     ImVec2 ButtonSize(
-        WindowWidth * 0.5f,
-        WindowHeight * 0.12f
+        WindowWidth * 0.7f,
+        WindowHeight * 0.2f
     );
 
     ImVec2 WindowSize(
@@ -331,22 +367,28 @@ void UGameUI::RenderGameOverPopup(UGameManager* GameManager)
     );
 
     int Score = 111;
-    const char* ScoreText = "SCORE : 9999";
+    const char* ScoreText = "SCORE:999";
 
     float TextWidth = ImGui::CalcTextSize(GameOverText).x;
     float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
 
     ImGui::SetCursorPosX(
         (WindowWidth - TextWidth) * 0.5f
     );
     ImGui::Text("%s", GameOverText);
 
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+
     ImGui::SetCursorPosX(
         (WindowWidth - ScoreWidth) * 0.5f
     );
-    ImGui::Text("SCORE: %d", Score);
 
-    ImGui::Dummy(ImVec2(0.f, WindowSize.y*0.1f));
+    ImGui::Text("SCORE:%d", Score);
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+
     // 가운데 정렬
     ImGui::SetCursorPosX(
         (WindowWidth - ButtonSize.x) * 0.5f
@@ -377,18 +419,19 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
     ImGuiWindowFlags WindowFlags =
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse;
+        ImGuiWindowFlags_NoCollapse | 
+        ImGuiWindowFlags_NoTitleBar;
 
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
 
     ImGui::Begin("GameClearPopup", nullptr, WindowFlags);
 
-    const char* GameClearText = "GameClear!";
+    const char* GameClearText = "Game Clear";
 
     ImVec2 ButtonSize(
-        WindowWidth * 0.5f,
-        WindowHeight * 0.12f
+        WindowWidth * 0.7f,
+        WindowHeight * 0.2f
     );
 
     ImVec2 WindowSize(
@@ -397,20 +440,25 @@ void UGameUI::RenderGameClearPopup(UGameManager* GameManager)
     );
 
     int Score = 111;
-    const char* ScoreText = "SCORE : 9999";
+    const char* ScoreText = "SCORE:999";
 
     float TextWidth = ImGui::CalcTextSize(GameClearText).x;
     float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
 
     ImGui::SetCursorPosX(
         (WindowWidth - TextWidth) * 0.5f
     );
     ImGui::Text("%s", GameClearText);
 
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+
     ImGui::SetCursorPosX(
         (WindowWidth - ScoreWidth) * 0.5f
     );
-    ImGui::Text("SCORE: %d", Score);
+
+    ImGui::Text("SCORE:%d", Score);
 
     ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
     // 가운데 정렬
