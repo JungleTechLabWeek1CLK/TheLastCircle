@@ -295,7 +295,7 @@ private:
 
         // revised one
         GenerateTriangle();
-        GenerateCircle(10, 30);
+        GenerateCircle(10);
         GenerateBackgroundQuad(10);
 
         NumVerticesTriangle = VerticesTriangle.size();
@@ -347,7 +347,7 @@ private:
             { -1.0f, -1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 1.0f }  // Bottom-Left
         };
     }
-    void GenerateCircle(float Radius, INT32 SliceCount)
+    void GenerateCircle(INT32 SliceCount)
     {
         FVertexSimple Center;
         Center.x = 0.0f; Center.y = 0.0f; Center.z = 0.0f;
@@ -359,10 +359,10 @@ private:
             float Theta1 = 2.0f * PI * (float)CurrentCount / SliceCount;
             float Theta2 = 2.0f * PI * (float)(CurrentCount + 1) / SliceCount;
 
-            auto MakeEdgeVertex = [Radius](float Theta) -> FVertexSimple {
+            auto MakeEdgeVertex = [](float Theta) -> FVertexSimple {
                 FVertexSimple V;
-                V.x = Radius * cos(Theta);
-                V.y = Radius * sin(Theta);
+                V.x = cos(Theta);
+                V.y = sin(Theta);
                 V.z = 0.0f;
                 V.r = 1.0f; V.g = 1.0f; V.b = 1.0f; V.a = 1.0f;
 
