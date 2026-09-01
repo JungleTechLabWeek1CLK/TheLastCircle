@@ -3,6 +3,8 @@
 #include "CharacterPlayer.h"
 #include "CharacterEnemy.h"
 #include "Projectile.h"
+#include "ProjectileEnemy.h"
+#include "ProjectilePlayer.h"
 
 
 // 게임 현재 상태
@@ -27,7 +29,7 @@ public:
 
 	void SpawnPlayer();
 	void SpawnEnemy(ETypeCharacter EnemyType);
-	void SpawnProjectile(FVector Location, FVector Velocity);
+	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type);
 
 	void PauseGame();
 	void ResumeGame();
@@ -88,15 +90,14 @@ private:
 	int ProjectileCount;
 	int ProjectileCapacity;
 
+	
 	void UpdateProjectiles(float DeltaTime);
 	void RemoveProjectile(int Index);
 	void ClearProjectiles();
+	void ResizeProjectileList();
 
 	void UpdateGameTime(float DeltaTime);
 	void CheckGameOver();
 	void CheckGameClear();
-
-
-
 
 };

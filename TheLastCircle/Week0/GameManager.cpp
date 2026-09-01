@@ -209,14 +209,50 @@ void UGameManager::ClearEnemies()
     EnemyCount = 0;
 }
 
-void UGameManager::SpawnProjectile(FVector Location, FVector Velocity)
+void UGameManager::ResizeProjectileList()
 {
+    int NewCapacity = ProjectileCapacity * 2;
+
+    UProjectile** NewList =
+        new UProjectile * [NewCapacity]();
+
+    for (int i = 0; i < ProjectileCount; ++i)
+    {
+        NewList[i] = ProjectileList[i];
+    }
+
+    delete[] ProjectileList;
+
+    ProjectileList = NewList;
+    ProjectileCapacity = NewCapacity;
+}
+
+void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type)
+{
+    UProjectile* NewProjectile = nullptr;
+
     if (ProjectileCount >= ProjectileCapacity)
+    {
+        ResizeProjectileList();
+    }
+
+    if (type == ETypeCharacter::ETC_EnemyProjectile)
+    {
+        NewProjectile = new UProjectileEnemy();
+    }
+    else if (type == ETypeCharacter::ETC_PlayerProjectile)
+    {
+        NewProjectile = new UProjectilePlayer();
+    }
+    else
     {
         return;
     }
 
-    UProjectile* NewProjectile = new UProjectile();
+    if (NewProjectile == nullptr)
+    {
+        return;
+    }
 
     NewProjectile->Location = Location;
     NewProjectile->Velocity = Velocity;
