@@ -1,12 +1,23 @@
 #include "CharacterPlayer.h"
 
 void UCharacterPlayer::UpdateTime(float delta) {
-    if (!bIsShoot) {
-        ShootTime += delta;
+    
+    ShootTime += delta;
+    GuardTime += delta;
+    if (GuardDelay <= GuardTime) {
+        bIsGuard = false;
     }
     if (Delay <= ShootTime) {
         bIsShoot = true;
         ShootTime = 0;
+    }
+}
+
+void UCharacterPlayer::GetDamage(float damage) {
+    if (!bIsGuard) {
+        UCharacter::GetDamage(damage);
+        bIsGuard = true;
+        GuardTime = 0;
     }
 }
 

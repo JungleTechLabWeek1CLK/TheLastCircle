@@ -9,9 +9,6 @@ cbuffer constants : register(b0)
     float3 Offset;
     float Radius;
     
-    float3 Color;
-    float Pad;
-    
     float3 PlayerOffset;
     float CharacterType; // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 enemy projectile
 }

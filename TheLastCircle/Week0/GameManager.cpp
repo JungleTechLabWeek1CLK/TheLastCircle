@@ -18,7 +18,9 @@ UGameManager::UGameManager()
     EnemySpawnInterval(1.0f),
     ProjectileList(nullptr),
     ProjectileCount(0),
-    ProjectileCapacity(30)
+    ProjectileCapacity(30),
+    EXPList(nullptr), EXPCount(0),
+    EXPCapacity(30)
 {
 
 }
@@ -49,7 +51,9 @@ void UGameManager::Initialize()
     ProjectileCapacity = 30;
     ProjectileList = new UProjectile * [ProjectileCapacity]();
 
-
+    EXPCount = 0;
+    EXPCapacity = 30;
+    EXPList = new UItemEXP * [EXPCapacity]();
     // 60초 생존하면 게임 클리어
     GameClearTime = 10.0f;
 }
@@ -184,6 +188,23 @@ void UGameManager::SpawnEnemy(ETypeCharacter EnemyType)
     ++EnemyCount;
 
 }
+void UGameManager::ResizeEXPList()
+{
+    int NewCapacity = EXPCapacity * 2;
+
+    UItemEXP** NewList =
+        new UItemEXP * [NewCapacity]();
+
+    for (int i = 0; i < EXPCount; ++i)
+    {
+        NewList[i] = EXPList[i];
+    }
+
+    delete[] EXPList;
+
+    EXPList = NewList;
+    EXPCapacity = NewCapacity;
+}
 
 // 꽉차면 크기 2배로 확장
 void UGameManager::ResizeEnemyList()
@@ -283,6 +304,36 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
     ProjectileList[ProjectileCount] = NewProjectile;
 
     ++ProjectileCount;
+}
+
+void UGameManager::SpawnEXP(FVector location, float reword) {
+    if (EXPCount >= EXPCapacity)
+    {
+        ResizeEXPList();
+    }
+
+    UItemEXP* NewEXP = new UItemEXP(reword);
+
+    NewEXP->Location = location;
+
+    EXPList[EXPCount] = NewEXP;
+
+    ++EXPCount;
+}
+
+void UGameManager::RemoveEXP(int Index) {
+    if (Index < 0 || Index >= EXPCount)
+    {
+        return;
+    }
+
+    delete EXPList[Index];
+
+    EXPList[Index] = EXPList[EXPCount - 1];
+
+    EXPList[EXPCount - 1] = nullptr;
+
+    --EXPCount;
 }
 
 void UGameManager::ClearProjectiles()

@@ -164,6 +164,8 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shapes.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemEXP.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ShaderW0.hlsl">

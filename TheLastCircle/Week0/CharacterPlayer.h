@@ -9,6 +9,9 @@ public:
     float EXP;
     float MaxEXP = 100;
     int Level = 1;
+    bool bIsGuard = false;
+    float GuardTime = 0.f;
+    float GuardDelay = 3.f;
     UCharacterPlayer()
     {
         Hp = 100;
@@ -21,6 +24,7 @@ public:
     ~UCharacterPlayer()
     {
     }
+    void GetDamage(float damage) override;
     void UpdateTime(float delta);
     void LevelUp();
     void Upgrade();
