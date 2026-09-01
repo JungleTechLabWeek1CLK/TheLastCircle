@@ -5,7 +5,7 @@
 #include "Projectile.h"
 
 void DrawCharacters(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectilePlayerList, INT32 ProjectilePlayerListCount, UProjectile** ProjectileEnemyList, INT32 ProjectileEnemyListCount, URenderer* Renderer)
+    UProjectile** ProjectileList, INT32 ProjectileListCount, URenderer* Renderer)
 {
     // TODO: currently temporary color is being used
     FVector BallColor;
@@ -22,16 +22,19 @@ void DrawCharacters(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32
     }
 
     BallColor = FVector(0.f, 0.3f, 0.3f);
-    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectilePlayerListCount; ++CurrentIndex)
+    FVector BallColorEnemyProjectile = FVector(0.5f, 0.7f, 0.3);
+    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
     {
-        Renderer->UpdateConstantBuffer(ProjectilePlayerList[CurrentIndex]->Location, ProjectilePlayerList[CurrentIndex]->Radius, BallColor);
-        Renderer->RenderPrimitive(EPT_Sphere);
-    }
+        UProjectile* CurrentProjectile = ProjectileList[CurrentIndex];
 
-    BallColor = FVector(0.5f, 0.7f, 0.3f);
-    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileEnemyListCount; ++CurrentIndex)
-    {
-        Renderer->UpdateConstantBuffer(ProjectileEnemyList[CurrentIndex]->Location, ProjectileEnemyList[CurrentIndex]->Radius, BallColor);
+        if (CurrentProjectile->IsActive() == false)
+            continue;
+
+        if(CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location, CurrentProjectile->Radius, BallColor);
+        else
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location, CurrentProjectile->Radius, BallColorEnemyProjectile);
+
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 }

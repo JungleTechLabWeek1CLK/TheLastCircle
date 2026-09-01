@@ -53,11 +53,11 @@ public:
 	{
 		return EnemyCount;
 	}
-	UProjectile** GetPlayerProjectileList()
+	UProjectile** GetProjectileList()
 	{
 		return ProjectileList;
 	}
-	int GetPlayerProjectileListCount()
+	int GetProjectileListCount()
 	{
 		return ProjectileCount;
 	}

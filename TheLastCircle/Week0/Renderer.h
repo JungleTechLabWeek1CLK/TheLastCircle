@@ -368,9 +368,8 @@ private:
 ///////////////////////////////////////////////
 
 
-// TODO: decrease the number of parameters
 class UCharacterPlayer;
 class UCharacterEnemy;
 class UProjectile;
 void DrawCharacters(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectilePlayerList, INT32 ProjectilePlayerListCount, UProjectile** ProjectileEnemyList, INT32 ProjectileEnemyListCount, URenderer* Renderer);
+    UProjectile** ProjectileList, INT32 ProjectileListCount, URenderer* Renderer);

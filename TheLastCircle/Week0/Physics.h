@@ -16,4 +16,4 @@ class UCharacterPlayer;
 class UCharacterEnemy;
 class UProjectile;
 void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectilePlayerList, INT32 ProjectilePlayerListCount, UProjectile** ProjectileEnemyList, INT32 ProjectileEnemyListCount, const float DELTA_TIME);
+    UProjectile** ProjectileList, INT32 ProjectileListCount, const float DELTA_TIME);

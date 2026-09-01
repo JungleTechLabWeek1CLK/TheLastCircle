@@ -3,10 +3,10 @@
 #include "Projectile.h"
 #include "Character.h"
 
-class UProjectilePlayer : public UProjectile
+class UProjectileEnemy : public UProjectile
 {
 public:
-	UProjectilePlayer() : UProjectile()
+	UProjectileEnemy() : UProjectile()
 	{
 		CharacterType = ETypeCharacter::ETC_EnemyProjectile;
 	}
