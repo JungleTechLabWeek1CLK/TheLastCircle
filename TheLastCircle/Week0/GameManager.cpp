@@ -136,6 +136,11 @@ void UGameManager::ReturnToTitle()
 
 #pragma endregion
 
+bool UGameManager::IsTitle() const
+{
+    return currentState == Title;
+}
+
 bool UGameManager::IsPlaying() const
 {
     return (currentState == Playing) ? true : false;
@@ -245,7 +250,7 @@ void UGameManager::ResizeProjectileList()
     ProjectileCapacity = NewCapacity;
 }
 
-void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type)
+void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage)
 {
     UProjectile* NewProjectile = nullptr;
 
@@ -256,11 +261,11 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
 
     if (type == ETypeCharacter::ETC_EnemyProjectile)
     {
-        NewProjectile = new UProjectileEnemy();
+        NewProjectile = new UProjectileEnemy(Damage);
     }
     else if (type == ETypeCharacter::ETC_PlayerProjectile)
     {
-        NewProjectile = new UProjectilePlayer();
+        NewProjectile = new UProjectilePlayer(Damage);
     }
     else
     {

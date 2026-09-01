@@ -160,28 +160,30 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
                     float finalRad = baseRad + (offsetDeg * DEG2RAD);
 
-                    GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile);
+                    GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage);
                 }
 
                 Player->bIsShoot = false;
             }
         }
         Player->UpdateTime(DeltaTime);
-        for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
+        for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEnemyListCount(); ++CurrentIndex)
         {
             if (EnemyList[CurrentIndex] != nullptr && EnemyList[CurrentIndex]->IsActive()) {
                 EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
                 if (EnemyList[CurrentIndex]->bIsShoot) {
                     FVector V = { Player->Location.x - EnemyList[CurrentIndex]->Location.x, Player->Location.y - EnemyList[CurrentIndex]->Location.y ,0 };
                     V.Normalize();
-                    GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile);
+                    GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile, EnemyList[CurrentIndex]->Damage);
                     EnemyList[CurrentIndex]->bIsShoot = false;
                 }
                 else
                     EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
             }
-            else
-                GameManager.RemoveEnemy(CurrentIndex);
+            else {
+                Player->GetEXP(EnemyList[CurrentIndex]->Reward);
+                GameManager.RemoveEnemy(CurrentIndex--);
+            }
         }
 
         UProjectile** ProjectileList = GameManager.GetProjectileList();

@@ -35,7 +35,7 @@ public:
 
 	void SpawnPlayer();
 	void SpawnEnemy(ETypeCharacter EnemyType);
-	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type);
+	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage);
 
 	void RemoveEnemy(int Index);
 
@@ -45,6 +45,7 @@ public:
 	void Lose();
 	void Win();
 
+	bool IsTitle() const;
 	bool IsPlaying() const;
 	bool IsPaused() const;
 

@@ -6,7 +6,7 @@
 class UProjectileEnemy : public UProjectile
 {
 public:
-	UProjectileEnemy() : UProjectile()
+	UProjectileEnemy(float damage) : UProjectile(damage)
 	{
 		CharacterType = ETypeCharacter::ETC_EnemyProjectile;
 	}
