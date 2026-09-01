@@ -5,7 +5,7 @@ class UItemEXP : public UItem
 {
 public:
 	float Reward;
-	float LootableRadius = Radius * 50.f;
+	float LootableRadius = Radius * 10.f;
 	bool bIsFollow = false;
 	bool bIsActive = true;
 	UItemEXP(float reward) : UItem()

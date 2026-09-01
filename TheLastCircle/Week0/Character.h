@@ -19,7 +19,7 @@ public:
 	// Required for test
 	FVector Location;
 	FVector Velocity;
-	float Radius = 0.01f;
+	float Radius = 0.05f;
 	float Mass;
 	float Hp;
 	float Speed;
