@@ -148,7 +148,7 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         if (Input.UV.x < BorderWidth || Input.UV.x > 1.f - BorderWidth || Input.UV.y < BorderHeight || Input.UV.y > 1.f - BorderHeight)
             TextureColor = float4(1.f, 1.f, 1.f, 1.f);
         else if (Input.UV.x < (PlayerOffset.x / PlayerOffset.y))
-            TextureColor = float4(0.9f, 0.9f, 0.9f, 1.f);
+            TextureColor = float4(0.9f, 0.9f, 0.15f, 1.f);
         else
             TextureColor = float4(0.15f, 0.15f, 0.15f, 1.f);
     }

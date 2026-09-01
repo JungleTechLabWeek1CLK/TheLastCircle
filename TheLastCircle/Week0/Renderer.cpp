@@ -73,7 +73,7 @@ void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying)
     Renderer->RenderPrimitive(EPT_UIQuad);
 
     // Exp bar
-    Position = { 0.3f, 0.92f, 0.f };
+    Position = { 0.639f, 0.92f, 0.f };
     Info.x = Player->GetCurrentEXP();
     Info.y = Player->GetMaxEXP();
     Renderer->UpdateConstantBuffer(Position, 1.f, Info, 98.5f);
