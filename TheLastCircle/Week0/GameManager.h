@@ -37,6 +37,8 @@ public:
 	void SpawnEnemy(ETypeCharacter EnemyType);
 	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type);
 
+	void RemoveEnemy(int Index);
+
 	void PauseGame();
 	void ResumeGame();
 
@@ -124,7 +126,6 @@ private:
 	int EnemyCapacity;
 
 	void ResizeEnemyList();
-	void RemoveEnemy(int Index);
 	void ClearEnemies();
 	void UpdateEnemySpawn(float DeltaTime);
 

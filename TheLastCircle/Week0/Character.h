@@ -19,7 +19,7 @@ public:
 	// Required for test
 	FVector Location;
 	FVector Velocity;
-	float Radius = 0.05f;
+	float Radius = 0.01f;
 	float Mass;
 	float Hp;
 	float Speed;
@@ -28,21 +28,28 @@ public:
 	ETypePrimitive HitBox;
 	FVector Color;
 	ETypeCharacter CharacterType;
+
+	float Delay;
+	float ShootTime = 0;
+	bool bIsShoot = true;
 	////////
 
 	UCharacter(FVector location = {0,0,0}, FVector velocity = {0,0,0})
 	{
 		Location = location;
 		Velocity = velocity;
+		Damage = 100;
 	}
 	~UCharacter()
 	{
 	}
 
-	void Move(FVector location, float delta);
-	void Attack(FVector location);
-	void GetDamage();
+	virtual void Move(FVector location, float delta);
+	virtual void Attack(FVector location);
+	void GetDamage(float damage);
 	void Die();
+	bool IsActive();
+	void UpdateTime(float delta);
 private:
-
+	bool bIsActive = true;
 };

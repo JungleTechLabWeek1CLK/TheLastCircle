@@ -25,7 +25,7 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
         if (DISTANCE < (Player->Radius + CurrentEnemy->Radius))
         {
             // collision detected
-            Player->GetDamage();
+            Player->GetDamage(CurrentEnemy->Damage);
         }
     }
     // Player - Enemy Projectile 
@@ -42,7 +42,7 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
         if (DISTANCE < (Player->Radius + CurrentEnemyProjectile->Radius))
         {
             // collision detected
-            Player->GetDamage();
+            Player->GetDamage(CurrentEnemyProjectile->Damage);
 
             CurrentEnemyProjectile->Die();
         }
@@ -70,7 +70,7 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
             if (DISTANCE < (CurrentPlayerProjectile->Radius + CurrentEnemy->Radius))
             {
                 // collision detected
-                CurrentEnemy->GetDamage();
+                CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
 
                 CurrentPlayerProjectile->Die();
                 break;

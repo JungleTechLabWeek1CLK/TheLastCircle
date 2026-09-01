@@ -124,8 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CharacterEnemy.cpp" />
+    <ClCompile Include="CharacterEnemyRanger.cpp" />
     <ClCompile Include="CharacterPlayer.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="GameUI.h" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
@@ -142,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterEnemy.h" />
+    <ClInclude Include="CharacterEnemyRanger.h" />
     <ClInclude Include="CharacterPlayer.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />

@@ -5,6 +5,9 @@
 class UProjectile : public UCharacter
 {
 public:
+	UProjectile() {
+		Radius = 0.01f;
+	}
 	void Move(FVector location, float delta)
 	{
 		if (bIsActive)
