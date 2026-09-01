@@ -102,7 +102,6 @@ public:
 	}
 
 
-
 private:
 	EGameState currentState = Title;
 	EGameDifficulty Difficulty = EGameDifficulty::Easy;
@@ -134,7 +133,7 @@ private:
 	int ProjectileCapacity;
 
 	
-	void UpdateProjectiles(float DeltaTime);
+	//void UpdateProjectiles(float DeltaTime);
 	void RemoveProjectile(int Index);
 	void ClearProjectiles();
 	void ResizeProjectileList();
@@ -142,5 +141,4 @@ private:
 	void UpdateGameTime(float DeltaTime);
 	void CheckGameOver();
 	void CheckGameClear();
-
 };
