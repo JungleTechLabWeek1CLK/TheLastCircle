@@ -91,6 +91,12 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         UvOffset.y = 0.5f;
         TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
     }
+    else if (CharacterType > 4 && CharacterType < 5)
+    {
+        // EXP
+        float3 Color = { 1.f, 1.f, 0.f };
+        TextureColor = float4(Color, 1.f);
+    }
     
     return TextureColor;
 }

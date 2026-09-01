@@ -15,7 +15,7 @@ class UItem
 public:
 	FVector Location;
 	FVector Velocity;
-	float Radius = 0.01f;
+	float Radius = 0.005f;
 	float Mass;
 	float Speed;
 	ETypePrimitive HitBox;
