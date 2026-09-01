@@ -16,7 +16,8 @@ enum ETypePrimitive
     EPT_Triangle,
     EPT_Cube,
     EPT_Sphere,
-    EPT_Quad,
+    EPT_BackgroundQuad,
+    EPT_UIQuad,
     EPT_Max,
 };
 

@@ -4,6 +4,7 @@
 #include "CharacterEnemy.h"
 #include "Projectile.h"
 #include "ItemEXP.h"
+#include "GameManager.h"
 
 void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
     UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
@@ -57,5 +58,24 @@ void DrawBackground(URenderer* Renderer, bool bIsTitle)
 
     FVector Temp = { 0.f, 0.f, 0.f };
     Renderer->UpdateConstantBuffer(Temp, 1.f, Temp, 100.5f);
-    Renderer->RenderPrimitive(EPT_Quad);
+    Renderer->RenderPrimitive(EPT_BackgroundQuad);
+}
+
+void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying)
+{
+    if (bIsPlaying == false)
+        return;
+
+    // Health bar
+    FVector Position = { -0.65f, 0.92f, 0.f};
+    FVector Info = { Player->GetCurrentHp(), Player->GetMaxHp(), 0.f };
+    Renderer->UpdateConstantBuffer(Position, 1.f, Info, 99.5f);
+    Renderer->RenderPrimitive(EPT_UIQuad);
+
+    // Exp bar
+    Position = { 0.3f, 0.92f, 0.f };
+    Info.x = Player->GetCurrentEXP();
+    Info.y = Player->GetMaxEXP();
+    Renderer->UpdateConstantBuffer(Position, 1.f, Info, 98.5f);
+    Renderer->RenderPrimitive(EPT_UIQuad);
 }

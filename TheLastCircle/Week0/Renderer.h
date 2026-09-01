@@ -99,14 +99,12 @@ public:
         case EPT_Sphere:
             RenderPrimitive(VertexBufferCircle, NumVerticesCircle);
             break;
-        case EPT_Quad:
-            RenderPrimitive(VertexBufferQuad, NumVerticesQuad);
+        case EPT_BackgroundQuad:
+            RenderPrimitive(VertexBufferBackgroundQuad, NumVerticesBackgroundQuad);
             break;
-            /*
-        case EPT_Cube:
-            RenderPrimitive(VertexBufferCube, NumVerticesCube);
+        case EPT_UIQuad:
+            RenderPrimitive(VertexBufferUIQuad, NumVerticesUIQuad);
             break;
-            */
         }
     }
 
@@ -297,14 +295,17 @@ private:
         GenerateTriangle();
         GenerateCircle(10);
         GenerateBackgroundQuad(10);
+        GenerateUIQuad();
 
         NumVerticesTriangle = VerticesTriangle.size();
         NumVerticesCircle = VerticesCircle.size();
-        NumVerticesQuad = VerticesQuad.size();
+        NumVerticesBackgroundQuad = VerticesBackgroundQuad.size();
+        NumVerticesUIQuad = VerticesUIQuad.size();
 
         VertexBufferTriangle = CreateVertexBuffer(VerticesTriangle.data(), NumVerticesTriangle * sizeof(FVertexSimple));
         VertexBufferCircle = CreateVertexBuffer(VerticesCircle.data(), NumVerticesCircle * sizeof(FVertexSimple));
-        VertexBufferQuad = CreateVertexBuffer(VerticesQuad.data(), NumVerticesQuad * sizeof(FVertexSimple));
+        VertexBufferBackgroundQuad = CreateVertexBuffer(VerticesBackgroundQuad.data(), NumVerticesBackgroundQuad * sizeof(FVertexSimple));
+        VertexBufferUIQuad = CreateVertexBuffer(VerticesUIQuad.data(), NumVerticesUIQuad * sizeof(FVertexSimple));
     }
     ID3D11Buffer* CreateVertexBuffer(FVertexSimple* vertices, UINT byteWidth)
     {
@@ -330,7 +331,8 @@ private:
         */
         ReleaseVertexBuffer(VertexBufferTriangle);
         ReleaseVertexBuffer(VertexBufferCircle);
-        ReleaseVertexBuffer(VertexBufferQuad);
+        ReleaseVertexBuffer(VertexBufferBackgroundQuad);
+        ReleaseVertexBuffer(VertexBufferUIQuad);
     }
     void ReleaseVertexBuffer(ID3D11Buffer* vertexBuffer)
     {
@@ -390,7 +392,24 @@ private:
         // (Bottom-Right)
         FVertexSimple bottomRight = { 1.0f, -1.0f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,   RepeatCount, RepeatCount };
 
-        VerticesQuad = {
+        VerticesBackgroundQuad = {
+            topLeft, topRight, bottomRight,
+            topLeft, bottomRight, bottomLeft
+        };
+    }
+
+    void GenerateUIQuad()
+    {
+        // (Top-Left)
+        FVertexSimple topLeft = { -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,   0.0f, 0.0f };
+        // (Top-Right)
+        FVertexSimple topRight = { 1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,   1.f, 0.0f };
+        // (Bottom-Left)
+        FVertexSimple bottomLeft = { -1.0f, -1.0f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,   0.0f, 1.f };
+        // (Bottom-Right)
+        FVertexSimple bottomRight = { 1.0f, -1.0f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,   1.f, 1.f };
+
+        VerticesUIQuad = {
             topLeft, topRight, bottomRight,
             topLeft, bottomRight, bottomLeft
         };
@@ -497,10 +516,12 @@ private:
     // for managing vertex buffers
     ID3D11Buffer* VertexBufferTriangle = nullptr;
     ID3D11Buffer* VertexBufferCircle = nullptr;
-    ID3D11Buffer* VertexBufferQuad = nullptr;
+    ID3D11Buffer* VertexBufferBackgroundQuad = nullptr;
+    ID3D11Buffer* VertexBufferUIQuad = nullptr;
     UINT NumVerticesTriangle;
     UINT NumVerticesCircle;
-    UINT NumVerticesQuad;
+    UINT NumVerticesBackgroundQuad;
+    UINT NumVerticesUIQuad;
 
     /*
     ID3D11Buffer* VertexBufferSphere = nullptr;
@@ -515,7 +536,8 @@ private:
     // for managing primitives
     std::vector<FVertexSimple> VerticesTriangle;
     std::vector<FVertexSimple> VerticesCircle;
-    std::vector<FVertexSimple> VerticesQuad;
+    std::vector<FVertexSimple> VerticesBackgroundQuad;
+    std::vector<FVertexSimple> VerticesUIQuad;
 
     // for managing textures
     ID3D11ShaderResourceView* TextureSrvSprite;
@@ -535,7 +557,7 @@ private:
         float Radius;
 
         FVector PlayerOffset;
-        float CharacterType; // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 enemy projectile
+        float CharacterType; // description is written in shader file
     };
 };
 ///////////////////////////////////////////////
@@ -551,3 +573,5 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
 
 
 void DrawBackground(URenderer* Renderer, bool bIsTitle);
+
+void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying);
