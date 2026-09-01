@@ -15,9 +15,9 @@ class UItem
 public:
 	FVector Location;
 	FVector Velocity;
-	float Radius = 0.005f;
+	float Radius = 0.001f;
 	float Mass;
-	float Speed;
+	float Speed = 1.f;
 	ETypePrimitive HitBox;
 	FVector Color;
 	ETypeItem ItemType;

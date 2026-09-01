@@ -129,6 +129,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         GameManager.Update(DeltaTime);
         UCharacterPlayer* Player = GameManager.GetPlayer();
         UCharacterEnemy** EnemyList = GameManager.GetEnemyList();
+        UItemEXP** EXPList = GameManager.GetEXPList();
         ////////////////////////////////////////////
 
 
@@ -184,11 +185,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         EnemyList[CurrentIndex]->UpdateTime(DeltaTime);
                 }
                 else {
-                    //Player->GetEXP(EnemyList[CurrentIndex]->Reward);
                     GameManager.SpawnEXP(EnemyList[CurrentIndex]->Location, EnemyList[CurrentIndex]->Reward);
                     GameManager.RemoveEnemy(CurrentIndex--);
                 }
             }
+
+
+
+            for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEXPListCount(); ++CurrentIndex)
+            {
+                if (EXPList[CurrentIndex] != nullptr && EXPList[CurrentIndex]->IsActive() && EXPList[CurrentIndex]->bIsFollow) {
+                    EXPList[CurrentIndex]->Move(Player->Location, DeltaTime);
+                }
+            }
+
+
 
             UProjectile** ProjectileList = GameManager.GetProjectileList();
             int ProjectileListCount = GameManager.GetProjectileListCount();

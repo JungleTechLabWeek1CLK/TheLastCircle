@@ -5,7 +5,7 @@ class UItemEXP : public UItem
 {
 public:
 	float Reward;
-	float LootableRadius = Radius * 5.f;
+	float LootableRadius = Radius * 50.f;
 	bool bIsFollow = false;
 	bool bIsActive = true;
 	UItemEXP(float reward) : UItem()
@@ -19,4 +19,5 @@ public:
 	bool IsActive() {
 		return bIsActive;
 	}
+	void Move(FVector location, float delta);
 };
