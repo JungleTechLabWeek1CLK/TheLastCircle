@@ -9,7 +9,7 @@
 
 
 
-GameManager::GameManager() 
+UGameManager::UGameManager()
     : currentState(Title), 
     GameTime(0.0f), 
     GameClearTime(60.0f), 
@@ -24,7 +24,7 @@ GameManager::GameManager()
 }
 
 
-GameManager::~GameManager()
+UGameManager::~UGameManager()
 {
     ClearEnemies();
     ClearProjectiles();
@@ -36,7 +36,7 @@ GameManager::~GameManager()
     ProjectileList = nullptr;
 }
 
-void GameManager::Initialize()
+void UGameManager::Initialize()
 {
     currentState = Title;
 
@@ -54,7 +54,7 @@ void GameManager::Initialize()
     GameClearTime = 60.0f;
 }
 
-void GameManager::Update(float DeltaTime)
+void UGameManager::Update(float DeltaTime)
 {
     if (currentState != Playing)
     {
@@ -72,7 +72,7 @@ void GameManager::Update(float DeltaTime)
 
 #pragma region GameStateFunction
 
-void GameManager::ResetGame()
+void UGameManager::ResetGame()
 {
     GameTime = 0.0f;
     EnemySpawnTimer = 0.0f;
@@ -85,7 +85,7 @@ void GameManager::ResetGame()
 
 }
 
-void GameManager::PauseGame()
+void UGameManager::PauseGame()
 {
     if (currentState == Playing)
     {
@@ -93,7 +93,7 @@ void GameManager::PauseGame()
     }
 }
 
-void GameManager::ResumeGame()
+void UGameManager::ResumeGame()
 {
     if (currentState == Paused)
     {
@@ -101,7 +101,7 @@ void GameManager::ResumeGame()
     }
 }
 
-void GameManager::Lose()
+void UGameManager::Lose()
 {
     if (currentState != Playing)
     {
@@ -111,7 +111,7 @@ void GameManager::Lose()
     currentState = GameOver;
 }
 
-void GameManager::Win()
+void UGameManager::Win()
 {
     if (currentState != Playing)
     {
@@ -123,26 +123,26 @@ void GameManager::Win()
 
 #pragma endregion
 
-bool GameManager::IsPlaying() const
+bool UGameManager::IsPlaying() const
 {
     return (currentState == Playing) ? true : false;
 }
 
-bool GameManager::IsPaused() const
+bool UGameManager::IsPaused() const
 {
     return (currentState == Paused) ? true : false;
 }
 
 #pragma region SpawnFunction
 
-void GameManager::SpawnPlayer()
+void UGameManager::SpawnPlayer()
 {
     FVector SpawnPosition(0.0f, 0.0f, 0.0f);
 
     Player.Location = SpawnPosition;
 }
 
-void GameManager::SpawnEnemy(ETypeCharacter EnemyType)
+void UGameManager::SpawnEnemy(ETypeCharacter EnemyType)
 {
     //float minRadius;
 
@@ -163,7 +163,7 @@ void GameManager::SpawnEnemy(ETypeCharacter EnemyType)
 }
 
 // 꽉차면 크기 2배로 확장
-void GameManager::ResizeEnemyList()
+void UGameManager::ResizeEnemyList()
 {
     int NewCapacity = EnemyCapacity * 2;
 
@@ -182,7 +182,7 @@ void GameManager::ResizeEnemyList()
 }
 
 // 맨 마지막 적을 빈자리에 넣기
-void GameManager::RemoveEnemy(int Index)
+void UGameManager::RemoveEnemy(int Index)
 {
     if (Index < 0 || Index >= EnemyCount)
     {
@@ -198,7 +198,7 @@ void GameManager::RemoveEnemy(int Index)
     --EnemyCount;
 }
 
-void GameManager::ClearEnemies()
+void UGameManager::ClearEnemies()
 {
     for (int i = 0; i < EnemyCount; ++i)
     {
@@ -209,7 +209,7 @@ void GameManager::ClearEnemies()
     EnemyCount = 0;
 }
 
-void GameManager::SpawnProjectile(FVector Location, FVector Velocity)
+void UGameManager::SpawnProjectile(FVector Location, FVector Velocity)
 {
     if (ProjectileCount >= ProjectileCapacity)
     {
@@ -226,7 +226,7 @@ void GameManager::SpawnProjectile(FVector Location, FVector Velocity)
     ++ProjectileCount;
 }
 
-void GameManager::ClearProjectiles()
+void UGameManager::ClearProjectiles()
 {
     for (int i = 0; i < ProjectileCount; ++i)
     {
@@ -237,7 +237,7 @@ void GameManager::ClearProjectiles()
     ProjectileCount = 0;
 }
 
-void GameManager::RemoveProjectile(int Index)
+void UGameManager::RemoveProjectile(int Index)
 {
     if (Index < 0 || Index >= ProjectileCount)
     {
@@ -254,7 +254,7 @@ void GameManager::RemoveProjectile(int Index)
     --ProjectileCount;
 }
 
-void GameManager::UpdateEnemySpawn(float DeltaTime)
+void UGameManager::UpdateEnemySpawn(float DeltaTime)
 {
     EnemySpawnTimer += DeltaTime;
 
@@ -278,7 +278,7 @@ void GameManager::UpdateEnemySpawn(float DeltaTime)
 #pragma endregion
 
 
-FVector GameManager::GetEnemySpawnPosition()
+FVector UGameManager::GetEnemySpawnPosition()
 {
     float RandomAngle =
         ((float)rand() / RAND_MAX) * 2.0f * 3.141592f;
@@ -301,17 +301,17 @@ FVector GameManager::GetEnemySpawnPosition()
     return FVector(X, Y, 0.0f);
 }
 
-void GameManager::UpdateGameTime(float DeltaTime)
+void UGameManager::UpdateGameTime(float DeltaTime)
 {
     GameTime += DeltaTime;
 }
 
-void GameManager::CheckGameOver()
+void UGameManager::CheckGameOver()
 {
 
 }
 
-void GameManager::CheckGameClear()
+void UGameManager::CheckGameClear()
 {
 
 }

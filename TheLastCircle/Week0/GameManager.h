@@ -15,11 +15,11 @@ enum EGameState
 	GameClear,
 };
 
-class GameManager
+class UGameManager
 {
 public:
-	GameManager();
-	~GameManager();
+	UGameManager();
+	~UGameManager();
 
 	void Initialize();
 	void Update(float DeltaTime);
