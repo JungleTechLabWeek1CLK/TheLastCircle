@@ -21,18 +21,19 @@ void UCharacterPlayer::GetDamage(float damage) {
     }
 }
 
-void UCharacterPlayer::LevelUp() {
+int UCharacterPlayer::LevelUp() {
+    int cnt = 0;
     while (MaxEXP <= EXP) {
+        cnt++;
         Level++;
         EXP -= MaxEXP;
         MaxEXP *= 1.1f;
-        Upgrade();
     }
+    return cnt;
 }
 void UCharacterPlayer::Upgrade() {
     Damage += 100;
 }
 void UCharacterPlayer::GetEXP(int exp) {
     EXP += exp;
-    LevelUp();
 }

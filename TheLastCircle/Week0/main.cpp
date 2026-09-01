@@ -208,6 +208,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 ProjectileList[CurrentIndex]->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
             }
 
+            int LevelUpCnt = Player->LevelUp();
+            if (LevelUpCnt > 0) {
+                GameManager.SetGameState(EGameState::Upgrade);
+            }
         }
         ////////////////////////////////////////////
 

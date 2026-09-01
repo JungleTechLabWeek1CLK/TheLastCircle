@@ -443,6 +443,11 @@ void UGameManager::SetDifficulty(EGameDifficulty NewDifficulty)
     }
 }
 
+void UGameManager::SetGameState(EGameState currentState)
+{
+    this->currentState = currentState;
+}
+
 void UGameManager::UpdateGameTime(float DeltaTime)
 {
     GameTime += DeltaTime;

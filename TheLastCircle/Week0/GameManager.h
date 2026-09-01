@@ -90,10 +90,7 @@ public:
 		return currentState;
 	}
 
-	void SetGameState(EGameState currentState)
-	{
-		currentState = currentState;
-	}
+	void SetGameState(EGameState currentState);
 
 
 	void SetDifficulty(EGameDifficulty NewDifficulty);

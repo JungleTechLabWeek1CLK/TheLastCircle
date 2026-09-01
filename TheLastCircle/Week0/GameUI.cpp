@@ -590,8 +590,8 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
                 // 공격속도 증가
                 break;
             }*/
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 

@@ -19,10 +19,12 @@ public:
     bool bIsGuard = false;
     float GuardTime = 0.f;
     float GuardDelay = 3.f;
+    float MaxHp;
     ETypeUpgrade Upgrades[3] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed};
 
     UCharacterPlayer()
     {
+        MaxHp = 100;
         Hp = 100;
         Damage = 100;
         Delay = 1.f;
@@ -35,9 +37,24 @@ public:
     }
     void GetDamage(float damage) override;
     void UpdateTime(float delta);
-    void LevelUp();
+    int LevelUp();
     void Upgrade();
     void GetEXP(int exp);
+    int GetLevel() {
+        return Level;
+    }
+    float GetCurrentEXP() {
+        return EXP;
+    }
+    float GetMaxEXP() {
+        return MaxEXP;
+    }
+    float GetCurrentHp() {
+        return Hp;
+    }
+    float GetMaxHp() {
+        return MaxHp;
+    }
 private:
 
 };
