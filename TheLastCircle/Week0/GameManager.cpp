@@ -51,7 +51,7 @@ void UGameManager::Initialize()
 
 
     // 60초 생존하면 게임 클리어
-    GameClearTime = 60.0f;
+    GameClearTime = 5.0f;
 }
 
 void UGameManager::Update(float DeltaTime)
@@ -153,6 +153,7 @@ void UGameManager::SpawnPlayer()
     FVector SpawnPosition(0.0f, 0.0f, 0.0f);
 
     Player.Location = SpawnPosition;
+    Player.Hp = 10;
 }
 
 void UGameManager::SpawnEnemy(ETypeCharacter EnemyType)
@@ -372,7 +373,7 @@ void UGameManager::UpdateGameTime(float DeltaTime)
 
 void UGameManager::CheckGameOver()
 {
-    if (Player.Hp <= 0.0f)
+     if (Player.Hp <= 0.0f)
     {
         Lose();
     }

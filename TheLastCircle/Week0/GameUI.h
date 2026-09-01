@@ -13,8 +13,7 @@ enum class EPopupType
 class UGameUI
 {
 public:
-    UGameUI();
-    ~UGameUI();
+
 
     void UIRender(UGameManager* GameManager);
 

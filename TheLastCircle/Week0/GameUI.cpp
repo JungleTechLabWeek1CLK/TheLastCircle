@@ -3,13 +3,6 @@
 
 #include "ImGui/imgui.h"
 
-UGameUI::UGameUI()
-{
-}
-
-UGameUI::~UGameUI()
-{
-}
 
 #pragma region Popups
 
@@ -40,8 +33,10 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
         RenderPausePopup(GameManager);
         break;
     case EPopupType::GameOver:
+        RenderGameOverPopup(GameManager);
         break;
     case EPopupType::GameClear:
+        RenderGameClearPopup(GameManager);
         break;
     default:
         break;
@@ -93,7 +88,7 @@ void UGameUI::RenderGameOverPopup(UGameManager* GameManager)
     ImGui::Begin("GameOverPopup", nullptr, WindowFlags);
 
     const char* PauseText = "Game Over!!";
-    int tmpScore = 999;
+    int tmpScore = 000;
 
     ImGui::Text("%s", PauseText);
     ImGui::Text("%d", tmpScore);

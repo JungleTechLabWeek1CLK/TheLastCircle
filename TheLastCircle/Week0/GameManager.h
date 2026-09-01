@@ -94,11 +94,6 @@ public:
 		return RemainingTime;
 	}
 
-	EGameState GetGameState() const
-	{
-		return currentState;
-	}
-
 	int GetScore() const
 	{
 		return Score;
