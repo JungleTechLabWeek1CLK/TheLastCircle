@@ -372,10 +372,16 @@ void UGameManager::UpdateGameTime(float DeltaTime)
 
 void UGameManager::CheckGameOver()
 {
-
+    if (Player.Hp <= 0.0f)
+    {
+        Lose();
+    }
 }
 
 void UGameManager::CheckGameClear()
 {
-
+    if (GameTime >= GameClearTime)
+    {
+        Win();
+    }
 }
