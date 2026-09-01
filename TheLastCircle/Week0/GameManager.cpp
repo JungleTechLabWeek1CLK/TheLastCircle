@@ -56,10 +56,10 @@ void GameManager::Initialize()
 
 void GameManager::Update(float DeltaTime)
 {
-    /*if (currentState != Playing)
+    if (currentState != Playing)
     {
         return;
-    }*/
+    }
 
     UpdateGameTime(DeltaTime);
     UpdateEnemySpawn(DeltaTime);
@@ -209,7 +209,7 @@ void GameManager::ClearEnemies()
     EnemyCount = 0;
 }
 
-void GameManager::SpawnProjectile()
+void GameManager::SpawnProjectile(FVector Location, FVector Velocity)
 {
     if (ProjectileCount >= ProjectileCapacity)
     {
@@ -217,6 +217,9 @@ void GameManager::SpawnProjectile()
     }
 
     UProjectile* NewProjectile = new UProjectile();
+
+    NewProjectile->Location = Location;
+    NewProjectile->Velocity = Velocity;
 
     ProjectileList[ProjectileCount] = NewProjectile;
 
