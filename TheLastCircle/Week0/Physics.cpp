@@ -51,7 +51,6 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
             CurrentEnemyProjectile->Die();
         }
     }
-    /*
     // Player - ItemEXP (magnetic check)
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
     {
@@ -69,16 +68,12 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
             CurrentItemEXP->bIsFollow = true;
         }
     }
-    */
     // Player - ItemEXP (collision check)
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
     {
         UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
-        /*
         if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow == false)
             continue;
-            */
-
 
         // Sphere - Sphere Collision
         FVector CollisionNormal = CurrentItemEXP->Location - Player->Location; // not normalized yet
