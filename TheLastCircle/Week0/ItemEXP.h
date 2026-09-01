@@ -8,5 +8,6 @@ public:
 	UItemEXP(float reword) : UItem()
 	{
 		Reword = reword;
+
 	}
 };

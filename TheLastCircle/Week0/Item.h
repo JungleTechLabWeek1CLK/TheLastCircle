@@ -2,6 +2,14 @@
 #include "Physics.h"
 #include "Renderer.h"
 
+enum ETypeItem
+{
+	ETI_Bomb,
+	ETI_heal,
+	ETI_EXP,
+	ETI_Magnet
+};
+
 class UItem
 {
 public:
@@ -12,6 +20,7 @@ public:
 	float Speed;
 	ETypePrimitive HitBox;
 	FVector Color;
+	ETypeItem ItemType;
 	UItem(FVector location = { 0,0,0 }, FVector velocity = { 0,0,0 })
 	{
 		Location = location;
