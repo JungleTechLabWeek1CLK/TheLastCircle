@@ -87,8 +87,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     QueryPerformanceCounter(&PreviousTime);
 
 
-    // Game Manager
-    // TODO: change class name to use GameManager as the name of the variable
     UGameManager GameManager;
     GameManager.Initialize();
     GameManager.ResetGame();
@@ -124,8 +122,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             DeltaTime = 0.1f;
 
         HandleCollision(Player, EnemyList, GameManager.GetEnemyListCount(),
-            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(),
-            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(), DeltaTime);
+            GameManager.GetProjectileList(), GameManager.GetProjectileListCount(), DeltaTime);
 
         ////////////////////////////////////////////
 
@@ -137,13 +134,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         GameManager.Update(DeltaTime);
         
         DrawCharacters(Player, EnemyList, GameManager.GetEnemyListCount(),
-            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(),
-            GameManager.GetPlayerProjectileList(), GameManager.GetPlayerProjectileListCount(),
+            GameManager.GetProjectileList(), GameManager.GetProjectileListCount(),
             &Renderer);
 
         int EnemyListCount = GameManager.GetEnemyListCount();
-        UProjectile** ProjectilePlayerList = GameManager.GetPlayerProjectileList();
-        int ProjectilePlayerListCount = GameManager.GetPlayerProjectileListCount();
+        UProjectile** ProjectileList = GameManager.GetProjectileList();
+        int ProjectileListCount = GameManager.GetProjectileListCount();
         POINT pt;
         GetCursorPos(&pt);
         ScreenToClient(hWnd, &pt);
@@ -161,7 +157,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
             if (Player->bIsShoot) {
-                GameManager.SpawnProjectile(Player->Location, { (float)pt.x / 512 - 1, 1 - (float)pt.y / 512, 0 });
+                GameManager.SpawnProjectile(Player->Location, { (float)pt.x / 512 - 1, 1 - (float)pt.y / 512, 0 }, ETypeCharacter::ETC_PlayerProjectile);
                 Player->bIsShoot = false;
             }
         }
@@ -170,9 +166,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         {
             EnemyList[CurrentIndex]->Move(Player->Location, DeltaTime);
         }
-        for (INT32 CurrentIndex = 0; CurrentIndex < ProjectilePlayerListCount; ++CurrentIndex)
+        for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
         {
-            ProjectilePlayerList[CurrentIndex]->Move(ProjectilePlayerList[CurrentIndex]->Velocity, DeltaTime);
+            ProjectileList[CurrentIndex]->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
         }
         /*
         /// ImGui - start
