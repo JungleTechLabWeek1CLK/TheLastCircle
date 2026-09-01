@@ -173,8 +173,13 @@ void UGameManager::SpawnPlayer()
     FVector SpawnPosition(0.0f, 0.0f, 0.0f);
 
     Player.Location = SpawnPosition;
-
+    Player.MaxHp = 100.f;
     Player.Hp = Player.MaxHp;
+    Player.MaxEXP = 100.f;
+    Player.EXP = 0.f;
+    Player.Bullets = 1;
+    Player.Speed = 0.5f;
+    Player.Damage = 100.f;
 }
 
 void UGameManager::SpawnEnemy(ETypeEnemy EnemyType)

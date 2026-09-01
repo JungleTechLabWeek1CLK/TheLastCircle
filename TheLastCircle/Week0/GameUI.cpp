@@ -153,7 +153,7 @@ void UGameUI::RenderTitle(UGameManager* GameManager)
 
     if (ImGui::Button("Credit", ButtonSize))
     {
-
+        ImGui::OpenPopup("CreditsPopup");
     }
 
     ImGui::Spacing();
@@ -165,10 +165,11 @@ void UGameUI::RenderTitle(UGameManager* GameManager)
 
     if (ImGui::Button("Exit", ButtonSize))
     {
-
+        PostQuitMessage(0);
     }
 
     RenderDifficultyPopup(GameManager);
+    RenderCreditsPopup();
 
     ImGui::End();
 }
@@ -255,6 +256,99 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
     }
 
     ImGui::End();
+}
+
+void UGameUI::RenderCreditsPopup()
+{
+    ImGuiViewport* Viewport = ImGui::GetMainViewport();
+    ImVec2 Center = Viewport->GetCenter();
+
+    ImVec2 ScreenSize = Viewport->Size;
+
+    ImVec2 PopupSize(
+        ScreenSize.x * 0.5f,
+        ScreenSize.y * 0.5f
+    );
+
+    // 팝업 위치를 화면 중앙
+    ImGui::SetNextWindowPos(Center, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+
+    ImGui::SetNextWindowSize(ImVec2(PopupSize), ImGuiCond_Always);
+
+    ImGui::SetWindowFontScale(2.0f);
+
+    if (ImGui::BeginPopupModal("CreditsPopup", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar))
+    {
+        ImGui::SetWindowFontScale(1.0f);
+
+        const char* Text = "Made By";
+        const char* CreditNames[] = {"aaaaaaaaa", "bbbbbbbb", "ccccccccccc"};
+       
+
+        float TextWidth = ImGui::CalcTextSize(Text).x;
+
+        ImGui::SetCursorPosX(
+            (ImGui::GetWindowWidth() - TextWidth) * 0.5f
+        );
+
+        ImGui::Text("%s", Text);
+
+        ImGui::Separator();
+
+        ImGui::SetWindowFontScale(1.0f);
+
+        ImGui::Dummy(
+            ImVec2(0.0f, PopupSize.y * 0.1f)
+        );
+
+        int CreditCount = sizeof(CreditNames) / sizeof(CreditNames[0]);
+
+        for (int i = 0; i < CreditCount; i++)
+        {
+            ImGui::PushID(i);
+
+            float NameWidth = ImGui::CalcTextSize(CreditNames[i]).x;
+
+            ImGui::SetCursorPosX(
+                (ImGui::GetWindowWidth() - NameWidth) * 0.5f
+            );
+
+            ImGui::Text("%s", CreditNames[i]);
+
+            ImGui::Dummy(
+                ImVec2(0.0f, PopupSize.y * 0.05f)
+            );
+
+            if (i == CreditCount - 1)
+            {
+                ImGui::Dummy(
+                    ImVec2(0.0f, PopupSize.y * 0.1f)
+                );
+            }
+
+            ImGui::PopID();
+        }
+        
+
+        ImVec2 SmallButtonSize(
+            PopupSize.x * 0.2f,
+            PopupSize.y * 0.1f
+        );
+
+        ImGui::SetWindowFontScale(1.0f);
+
+        ImGui::SetWindowFontScale(0.7f);
+
+        ImGui::SetCursorPosX(
+            (PopupSize.x - SmallButtonSize.x) * 0.5f
+        );
+        if (ImGui::Button("Back", SmallButtonSize))
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
 }
 
 void UGameUI::RenderDifficultyPopup(UGameManager* GameManager)
@@ -516,8 +610,8 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
 
-    ImGui::SetWindowFontScale(1.0f);
     ImGui::Begin("UpgradePopup", nullptr, WindowFlags);
+    ImGui::SetWindowFontScale(1.0f);
 
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
