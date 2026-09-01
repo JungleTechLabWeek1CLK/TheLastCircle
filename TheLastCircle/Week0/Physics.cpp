@@ -1,112 +1,83 @@
 #include "Physics.h"
 #include <Windows.h>
 
+#include "Character.h"
+#include "CharacterPlayer.h"
+#include "CharacterEnemy.h"
+#include "Projectile.h"
 
 
 
-///////////////////////////////////////////////
-// Physics
+/*
+필수적인 구현 내용
 
-void ApplyGravity(UPrimitive** PrimitiveList, const float DELTA_TIME)
+GetDamage -> 연속적으로 call이 되도, 자체적으로 일정 시간 후에만 처리되도록 해야함
+Die -> projectile의 die가 예상한대로 잘 동작해야함
+*/
+// TODO: 인자 개수 줄이기
+void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
+    UProjectile** ProjectilePlayerList, INT32 ProjectilePlayerListCount, UProjectile** ProjectileEnemyList, INT32 ProjectileEnemyListCount, const float DELTA_TIME)
 {
-    UBall* CurrentBall = nullptr;
-    for (INT32 CurrentIndex = 0; CurrentIndex < UBall::TotalNumBalls; ++CurrentIndex)
+    // ----------
+    // detecting collision regarding player
+    // Player - Enemy 
+    for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
-        CurrentBall = static_cast<UBall*>(PrimitiveList[CurrentIndex]);
-        CurrentBall->Velocity.y -= 9.8f * DELTA_TIME;
-    }
-}
+        UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];
 
-void HandleCollision(UPrimitive** PrimitiveList, const float DELTA_TIME)
-{
-    // detecting collisions
-    UBall* CurrentBall, * BallToCheck = nullptr;
-    for (INT32 CurrentIndex = 0; CurrentIndex < UBall::TotalNumBalls; ++CurrentIndex)
-    {
-        CurrentBall = static_cast<UBall*>(PrimitiveList[CurrentIndex]);
-        for (INT32 IndexToCheck = CurrentIndex + 1; IndexToCheck < UBall::TotalNumBalls; ++IndexToCheck)
+        // Sphere - Sphere Collision
+        FVector CollisionNormal = CurrentEnemy->Location - Player->Location; // not normalized yet
+        const float DISTANCE = CollisionNormal.GetMagnitude();
+
+        if (DISTANCE < (Player->Radius + CurrentEnemy->Radius))
         {
-            BallToCheck = static_cast<UBall*>(PrimitiveList[IndexToCheck]);
+            // collision detected
+            Player->GetDamage();
+        }
+    }
+    // Player - Enemy Projectile 
+    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileEnemyListCount; ++CurrentIndex)
+    {
+        UProjectile* CurrentEnemyProjectile = ProjectileEnemyList[CurrentIndex];
 
-            FVector CollisionNormal = BallToCheck->Location - CurrentBall->Location; // not normalized yet
+        // Sphere - Sphere Collision
+        FVector CollisionNormal = CurrentEnemyProjectile->Location - Player->Location; // not normalized yet
+        const float DISTANCE = CollisionNormal.GetMagnitude();
+
+        if (DISTANCE < (Player->Radius + CurrentEnemyProjectile->Radius))
+        {
+            // collision detected
+            Player->GetDamage();
+
+            CurrentEnemyProjectile->Die();
+        }
+    }
+    // ----------
+
+
+
+    // detecting collision regarding enemy
+    // Player Projectile - Enemy
+    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectilePlayerListCount; ++CurrentIndex)
+    {
+        UCharacter* CurrentCharacterProjectile = ProjectileEnemyList[CurrentIndex];
+        
+        for (INT32 CurrentNestedIndex = 0; CurrentNestedIndex < EnemyListCount; ++CurrentNestedIndex)
+        {
+            UCharacterEnemy* CurrentEnemy = EnemyList[CurrentNestedIndex];
+
+            // Sphere - Sphere Collision
+            FVector CollisionNormal = CurrentEnemy->Location - CurrentCharacterProjectile->Location; // not normalized yet
             const float DISTANCE = CollisionNormal.GetMagnitude();
 
-            // magnetic ball
-            if (DISTANCE > 0.01f)
+            if (DISTANCE < (CurrentCharacterProjectile->Radius + CurrentEnemy->Radius))
             {
-                if (CurrentBall->BallType == EBT_Magnetic || BallToCheck->BallType == EBT_Magnetic)
-                {
-                    FVector Direction = CollisionNormal * (1.f / DISTANCE);
-                    float MagneticStrength = 0.2f;     // can be varied
+                // collision detected
+                CurrentEnemy->GetDamage();
 
-                    float Force = MagneticStrength * (CurrentBall->Mass * BallToCheck->Mass) / (DISTANCE * DISTANCE);
-
-                    // apply magnetic force
-                    CurrentBall->Velocity = CurrentBall->Velocity + Direction * (Force / CurrentBall->Mass) * DELTA_TIME;
-                    BallToCheck->Velocity = BallToCheck->Velocity - Direction * (Force / BallToCheck->Mass) * DELTA_TIME;
-                }
+                CurrentCharacterProjectile->Die();
+                break;
             }
-
-            // collision - ball / ball
-            if (DISTANCE < (CurrentBall->Radius + BallToCheck->Radius))
-            {
-                // apply depenetration
-                const float Depth = (CurrentBall->Radius + BallToCheck->Radius) - DISTANCE;
-                CollisionNormal.Normalize();
-
-                CurrentBall->Location = CurrentBall->Location - (CollisionNormal * ((BallToCheck->Mass / (CurrentBall->Mass + BallToCheck->Mass)) * Depth));
-                BallToCheck->Location = BallToCheck->Location + (CollisionNormal * ((CurrentBall->Mass / (BallToCheck->Mass + CurrentBall->Mass)) * Depth));
-
-                // resolve collision only if the balls face each other
-                FVector RelativeVelocity = BallToCheck->Velocity - CurrentBall->Velocity;
-                if (RelativeVelocity.Dot(CollisionNormal) < 0.f)
-                {
-                    // calcualte collision impulse
-                    const float IMPULSE = -(1 + CurrentBall->Resitution) * (RelativeVelocity.Dot(CollisionNormal)) / (1.0f / CurrentBall->Mass + 1.0f / BallToCheck->Mass);
-
-                    // resolve collision
-                    CurrentBall->Velocity = CurrentBall->Velocity - CollisionNormal * (IMPULSE * (1.f / CurrentBall->Mass));
-                    BallToCheck->Velocity = BallToCheck->Velocity + CollisionNormal * (IMPULSE * (1.f / BallToCheck->Mass));
-                }
-            }
-        }
-
-        // collision - ball / wall
-        if (CurrentBall->Location.x + CurrentBall->Radius > 1)
-        {
-            CurrentBall->Velocity = CurrentBall->Velocity - DIRECTION_LEFT * (1 + CurrentBall->Resitution) * (CurrentBall->Velocity.Dot(DIRECTION_LEFT));
-            CurrentBall->Location.x = 1 - CurrentBall->Radius;
-        }
-        if (CurrentBall->Location.x - CurrentBall->Radius < -1)
-        {
-            CurrentBall->Velocity = CurrentBall->Velocity - DIRECTION_RIGHT * (1 + CurrentBall->Resitution) * (CurrentBall->Velocity.Dot(DIRECTION_RIGHT));
-            CurrentBall->Location.x = -1 + CurrentBall->Radius;
-        }
-        if (CurrentBall->Location.y + CurrentBall->Radius > 1)
-        {
-            CurrentBall->Velocity = CurrentBall->Velocity - DIRECTION_DOWN * (1 + CurrentBall->Resitution) * (CurrentBall->Velocity.Dot(DIRECTION_DOWN));
-            CurrentBall->Location.y = 1 - CurrentBall->Radius;
-        }
-        if (CurrentBall->Location.y - CurrentBall->Radius < -1)
-        {
-            CurrentBall->Velocity = CurrentBall->Velocity - DIRECTION_UP * (1 + CurrentBall->Resitution) * (CurrentBall->Velocity.Dot(DIRECTION_UP));
-            CurrentBall->Location.y = -1 + CurrentBall->Radius;
         }
     }
 }
-
-void MoveBalls(UPrimitive** PrimitiveList, const float DELTA_TIME)
-{
-    UBall* CurrentBall = nullptr;
-    for (INT32 CurrentIndex = 0; CurrentIndex < UBall::TotalNumBalls; ++CurrentIndex)
-    {
-        CurrentBall = static_cast<UBall*>(PrimitiveList[CurrentIndex]);
-        CurrentBall->Location = CurrentBall->Location + CurrentBall->Velocity * DELTA_TIME;
-    }
-}
-///////////////////////////////////////////////
-
-
-
-
-
