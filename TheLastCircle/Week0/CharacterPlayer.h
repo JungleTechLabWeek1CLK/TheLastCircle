@@ -23,7 +23,7 @@ public:
     int Level = 1;
     bool bIsGuard = false;
     float GuardTime = 0.f;
-    float GuardDelay = 3.f;
+    float GuardDelay = 1.5f;
     float MaxHp;
     float InvincibleTime = 0.f;
     float AttackSpeed = 1.5f;
