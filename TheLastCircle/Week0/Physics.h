@@ -16,6 +16,5 @@ class UCharacterPlayer;
 class UCharacterEnemy;
 class UProjectile;
 class UItemEXP;
-void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
-    const float DELTA_TIME, bool bIsPlaying);
+class UGameManager;
+void HandleCollision(UGameManager* gameManager, const float DELTA_TIME);

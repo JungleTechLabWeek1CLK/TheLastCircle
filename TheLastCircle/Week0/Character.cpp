@@ -8,8 +8,8 @@ void UCharacter::Move(FVector location, float delta) {
     else {
         Velocity = { (location.x - Location.x) / d, (location.y - Location.y) / d, 0 };
         FVector deltaLocation = { Velocity.x * delta * Speed , Velocity.y * delta * Speed , 0 };
-        if (Location.x + deltaLocation.x <= MinLocation || Location.x + deltaLocation.x >= MaxLocation ||
-            Location.y + deltaLocation.y <= MinLocation || Location.y + deltaLocation.y >= MaxLocation) return;
+        if (Location.x + deltaLocation.x - Radius <= MinLocation || Location.x + deltaLocation.x + Radius >= MaxLocation ||
+            Location.y + deltaLocation.y - Radius <= MinLocation || Location.y + deltaLocation.y + Radius >= MaxLocation) return;
         Location.x += deltaLocation.x;
         Location.y += deltaLocation.y;
     }

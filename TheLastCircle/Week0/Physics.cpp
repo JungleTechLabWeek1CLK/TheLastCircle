@@ -6,15 +6,20 @@
 #include "CharacterEnemy.h"
 #include "Projectile.h"
 #include "ItemEXP.h"
+#include "GameManager.h"
 
 
-void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
-    UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
-    const float DELTA_TIME, bool bIsPlaying)
+void HandleCollision(UGameManager* gameManager, const float DELTA_TIME)
 {
-    if (bIsPlaying == false)
+    if (gameManager->IsPlaying() == false)
         return;
-
+    UCharacterPlayer* Player = gameManager->GetPlayer();
+    UCharacterEnemy** EnemyList = gameManager->GetEnemyList();
+    INT32 EnemyListCount = gameManager->GetEnemyListCount();
+    UProjectile** ProjectileList = gameManager->GetProjectileList();
+    INT32 ProjectileListCount = gameManager->GetProjectileListCount();
+    UItemEXP** ItemEXPList = gameManager->GetEXPList();
+    INT32 ItemEXPListCount = gameManager->GetEXPListCount();
     // ----------
     // detecting collision regarding player
     // Player - Enemy 
@@ -84,7 +89,7 @@ void HandleCollision(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT3
             // collision detected
             Player->GetEXP(CurrentItemEXP->Reward);
 
-            CurrentItemEXP->Die();
+            CurrentItemEXP->ItemEffect(gameManager);
         }
     }
     // ----------

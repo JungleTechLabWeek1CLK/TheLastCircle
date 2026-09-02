@@ -224,10 +224,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
         // Physics Process
-        HandleCollision(Player, EnemyList, GameManager.GetEnemyListCount(),
-            GameManager.GetProjectileList(), GameManager.GetProjectileListCount(), 
-            GameManager.GetEXPList(), GameManager.GetEXPListCount(),
-            DeltaTime, GameManager.IsPlaying());
+        HandleCollision(&GameManager,DeltaTime);
 
 
         // Rendering Process

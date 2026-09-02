@@ -2,6 +2,8 @@
 #include "Physics.h"
 #include "Renderer.h"
 
+class UGameManager;
+
 enum ETypeItem
 {
 	ETI_Bomb,
@@ -21,6 +23,9 @@ public:
 	ETypePrimitive HitBox;
 	FVector Color;
 	ETypeItem ItemType;
+	
+	bool bIsActive = true;
+
 	UItem(FVector location = { 0,0,0 }, FVector velocity = { 0,0,0 })
 	{
 		Location = location;
@@ -29,5 +34,15 @@ public:
 	}
 	~UItem()
 	{
+	};
+	void Die() {
+		bIsActive = false;
+	}
+	bool IsActive() {
+		return bIsActive;
+	}
+
+	virtual void ItemEffect(UGameManager* gameManager) {
+		this->Die();
 	}
 };

@@ -8,7 +8,6 @@
 #include "Projectile.h"
 
 
-
 UGameManager::UGameManager()
     : currentState(Title), 
     GameTime(0.0f), 
