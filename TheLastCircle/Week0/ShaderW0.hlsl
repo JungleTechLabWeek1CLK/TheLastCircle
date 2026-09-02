@@ -1,7 +1,8 @@
 // ShaderW0.hlsl
 
 Texture2D MainTexture : register(t0);
-Texture2D BackgroundTexture : register(t1);
+Texture2D BombTexture : register(t1);
+Texture2D BackgroundTexture : register(t2);
 SamplerState MainSampler : register(s0);
 
 
@@ -132,8 +133,37 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
     else if (CharacterType > 5 && CharacterType < 6)
     {
         // bomb
-        UvOffset.y = 0.66f;
-        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+        if (PlayerOffset.z < 1)
+        {
+            UvOffset.y = 0.66f;
+            TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+        }
+        else
+        {
+            UvScale.x = 0.5f;
+            UvScale.y = 0.5f;
+            float Ratio = PlayerOffset.x / PlayerOffset.y; // radius / big radius
+            if(Ratio < 0.25f)
+            {
+                ;
+            }
+            else if (Ratio < 0.5f)
+            {
+                UvOffset.x = 0.5f;
+            }
+            else if (Ratio < 0.75f)
+            {
+                UvOffset.y = 0.5f;
+            }
+            else 
+            {
+                UvOffset.x = 0.5f;
+                UvOffset.y = 0.5f;
+            }
+            TextureColor = BombTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+            
+            clip(TextureColor.a - 0.1f);
+        }
     }
     else if (CharacterType > 6 && CharacterType < 7)
     {

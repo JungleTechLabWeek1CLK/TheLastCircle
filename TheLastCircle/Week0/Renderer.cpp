@@ -35,9 +35,6 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
 
     Player->PlayerOffset = Player->Location - CameraLocation;
 
-    Renderer->UpdateConstantBuffer(Player->PlayerOffset, Player->Radius, Player->Location, RenderType::PLAYER + RENDER_OFFSET, Player->InvincibleTime);
-    Renderer->RenderPrimitive(EPT_Sphere);
-
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
         UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];
@@ -74,16 +71,28 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
             continue;
 
         float RenderType = -1.f;
+        FVector Info;
+        UItemBomb* CurrentBomb;
         switch (CurrentItem->ItemType)
         {
         case ETypeItem::ETI_EXP: RenderType = RenderType::ITEM_EXP + RENDER_OFFSET; break;
-        case ETypeItem::ETI_Bomb: RenderType = RenderType::ITEM_BOMB + RENDER_OFFSET; break;
+        case ETypeItem::ETI_Bomb: 
+            RenderType = RenderType::ITEM_BOMB + RENDER_OFFSET; 
+            CurrentBomb = dynamic_cast<UItemBomb*>(CurrentItem);
+            Info.x = CurrentBomb->Radius;
+            Info.y = CurrentBomb->BigRadius;
+            Info.z = CurrentBomb->IsExploded;
+            break;
         case ETypeItem::ETI_Heal: RenderType = RenderType::ITEM_HEAL + RENDER_OFFSET; break;
         case ETypeItem::ETI_Magnet: RenderType = RenderType::ITEM_MAGNET + RENDER_OFFSET; break;
         }
-        Renderer->UpdateConstantBuffer(CurrentItem->Location - CameraLocation, CurrentItem->Radius, Player->PlayerOffset, RenderType);
+
+        Renderer->UpdateConstantBuffer(CurrentItem->Location - CameraLocation, CurrentItem->Radius, Info, RenderType);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
+
+    Renderer->UpdateConstantBuffer(Player->PlayerOffset, Player->Radius, Player->Location, RenderType::PLAYER + RENDER_OFFSET, Player->InvincibleTime);
+    Renderer->RenderPrimitive(EPT_Sphere);
 }
 
 void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle)

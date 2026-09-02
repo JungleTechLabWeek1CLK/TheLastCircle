@@ -371,8 +371,8 @@ void UGameManager::SpawnItem(FVector location) {
     }
 
     int roll = rand() % 100;
-    UItem* NewItem;;
-    if (roll < 100) {
+    UItem* NewItem;
+    if (roll < 10) {
         NewItem = new UItemBomb();
     }
     else if (roll < 20) {

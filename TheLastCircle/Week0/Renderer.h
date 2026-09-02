@@ -32,7 +32,7 @@ public:
         CreateShader();
         CreateConstantBuffer();
         CreateVertexBuffers();
-        CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/tile.png");    // texture location
+        CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/bomb.png", L"Asset/tile.png");    // texture location
         CreateSamplerState();
 
         ResetCameraLocation();
@@ -303,7 +303,8 @@ private:
         }
 
         DeviceContext->PSSetShaderResources(0, 1, &TextureSrvSprite);
-        DeviceContext->PSSetShaderResources(1, 1, &TextureSrvTile);
+        DeviceContext->PSSetShaderResources(1, 1, &TextureSrvSpriteBomb);
+        DeviceContext->PSSetShaderResources(2, 1, &TextureSrvTile);
         DeviceContext->PSSetSamplers(0, 1, &SamplerState);
     }
 
@@ -477,7 +478,7 @@ private:
     }
 
     // Texture
-    void CreateShaderResourceViews(const wchar_t* FilePathSprite, const wchar_t* FilePathTile)
+    void CreateShaderResourceViews(const wchar_t* FilePathSprite, const wchar_t* FilePathSpriteBomb, const wchar_t* FilePathTile)
     {
         // use srgb
         HRESULT Resut = DirectX::CreateWICTextureFromFileEx(
@@ -493,12 +494,30 @@ private:
             nullptr,
             &TextureSrvSprite
         );
-
         if (FAILED(Resut))
         {
             MessageBox(NULL, L"Failed to load sprite.", L"Error", MB_OK | MB_ICONERROR);
             abort();
         }
+        Resut = DirectX::CreateWICTextureFromFileEx(
+            Device,
+            DeviceContext,
+            FilePathSpriteBomb,
+            0,
+            D3D11_USAGE_DEFAULT,
+            D3D11_BIND_SHADER_RESOURCE,
+            0,
+            0,
+            DirectX::WIC_LOADER_FORCE_SRGB,
+            nullptr,
+            &TextureSrvSpriteBomb
+        );
+        if (FAILED(Resut))
+        {
+            MessageBox(NULL, L"Failed to load sprite bomb.", L"Error", MB_OK | MB_ICONERROR);
+            abort();
+        }
+        
 
         // use rgb
         Resut = DirectX::CreateWICTextureFromFile(
@@ -508,7 +527,6 @@ private:
             nullptr,
             &TextureSrvTile
         );
-
         if (FAILED(Resut))
         {
             MessageBox(NULL, L"Failed to load tile.", L"Error", MB_OK | MB_ICONERROR);
@@ -519,6 +537,8 @@ private:
     {
         TextureSrvSprite->Release();
         TextureSrvSprite = nullptr;
+        TextureSrvSpriteBomb->Release();
+        TextureSrvSpriteBomb = nullptr;
         TextureSrvTile->Release();
         TextureSrvTile = nullptr;
     }
@@ -584,6 +604,7 @@ private:
 
     // for managing textures
     ID3D11ShaderResourceView* TextureSrvSprite;
+    ID3D11ShaderResourceView* TextureSrvSpriteBomb;
     ID3D11ShaderResourceView* TextureSrvTile;
     ID3D11SamplerState* SamplerState;
 
