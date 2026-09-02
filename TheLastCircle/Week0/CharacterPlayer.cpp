@@ -47,8 +47,8 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
         Damage += 10;
         break;
     case ETypeUpgrade::ETU_Hp:
-        MaxHp += 10;
-        Hp += 10;
+        MaxHp += 100;
+        Hp += 100;
         break;
     case ETypeUpgrade::ETU_bullets:
         Bullets++;

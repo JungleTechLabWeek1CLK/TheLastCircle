@@ -181,15 +181,16 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
     }
     else if (CharacterType > 10 && CharacterType < 11)
     {
-        // enemy walker
-        UvOffset.x = 0.33f;
-        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
-    }
-    else if (CharacterType > 11 && CharacterType < 12)
-    {
         // enemy runner
         UvOffset.x = 0.66f;
         UvOffset.y = 0.33f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+
+    }
+    else if (CharacterType > 11 && CharacterType < 12)
+    {
+        // enemy walker
+        UvOffset.x = 0.33f;
         TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
     }
     else if (CharacterType > 12 && CharacterType < 13)
