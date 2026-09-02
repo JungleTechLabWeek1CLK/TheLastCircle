@@ -11,7 +11,7 @@ void UCharacterPlayer::UpdateTime(float delta) {
         bIsGuard = false;
         InvincibleTime = 0.f;
     }
-    if (Delay <= ShootTime) {
+    if (AttackSpeed <= ShootTime) {
         bIsShoot = true;
         ShootTime = 0;
     }
@@ -50,6 +50,16 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
         break;
     case ETypeUpgrade::ETU_Speed:
         Speed += 0.05f;
+        break;
+    case ETypeUpgrade::ETU_Penetration:
+        Penetration++;
+        break;
+    case ETypeUpgrade::ETU_Scale:
+        if(Radius > 0.01f)
+        Radius -= 0.001f;
+        break;
+    case ETypeUpgrade::ETU_AttackSpeed:
+        AttackSpeed -= 0.1f;
         break;
     }
 }

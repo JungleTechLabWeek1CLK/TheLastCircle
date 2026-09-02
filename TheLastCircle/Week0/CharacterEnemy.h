@@ -20,6 +20,7 @@ public:
         bIsShoot = false;
         ShootTime = 5.f;
         EnemyType = enemyType;
+        Radius = 0.05f;
         switch (EnemyType)
         {
         case ETypeEnemy::ETE_Walker:

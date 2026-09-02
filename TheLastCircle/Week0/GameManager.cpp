@@ -216,6 +216,7 @@ void UGameManager::SpawnPlayer()
     Player.Speed = 0.6f;
     Player.Damage = 100.f;
     Player.InvincibleTime = 0.f;
+    Player.Radius = 0.05f;
     Player.bIsGuard = false;
 }
 
@@ -332,7 +333,7 @@ void UGameManager::ResizeProjectileList()
     ProjectileCapacity = NewCapacity;
 }
 
-void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage)
+void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage, int Cnt)
 {
     UProjectile* NewProjectile = nullptr;
 
@@ -347,7 +348,7 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
     }
     else if (type == ETypeCharacter::ETC_PlayerProjectile)
     {
-        NewProjectile = new UProjectilePlayer(Damage);
+        NewProjectile = new UProjectilePlayer(Damage, Cnt);
     }
     else
     {

@@ -6,9 +6,15 @@
 class UProjectilePlayer : public UProjectile
 {
 public:
-	UProjectilePlayer(float damage) : UProjectile(damage)
+	int Penetration;
+	int Cnt;
+	UCharacterEnemy** HitEnemyList;
+	UProjectilePlayer(float damage, int cnt) : UProjectile(damage)
 	{
 		CharacterType = ETypeCharacter::ETC_PlayerProjectile;
+		Penetration = cnt;
+		Cnt = 0;
+		HitEnemyList = new UCharacterEnemy * [cnt]();
 	}
 private:
 };

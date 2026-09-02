@@ -6,6 +6,9 @@ enum class ETypeUpgrade {
     ETU_Hp,
     ETU_bullets,
     ETU_Speed,
+    ETU_Penetration,
+    ETU_AttackSpeed,
+    ETU_Scale,
     COUNT
 };
 
@@ -13,7 +16,8 @@ class UCharacterPlayer : public UCharacter
 {
 public:
     int Bullets;
-    float Radian;
+    int Penetration;
+    float Radian; //총이 퍼지는 각도
     float EXP;
     float MaxEXP = 100;
     int Level = 1;
@@ -22,7 +26,9 @@ public:
     float GuardDelay = 3.f;
     float MaxHp;
     float InvincibleTime = 0.f;
-    ETypeUpgrade Upgrades[4] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets };
+    float AttackSpeed = 1.5f;
+    ETypeUpgrade Upgrades[7] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets ,
+                                        ETypeUpgrade::ETU_Penetration ,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale };
     FVector PlayerOffset;
 
     UCharacterPlayer()
@@ -30,10 +36,11 @@ public:
         MaxHp = 1000;
         Hp = 1000;
         Damage = 100;
-        Delay = 1.f;
+        AttackSpeed = 1.5f;
         Speed = 0.6f;
         Bullets = 5;
         Radian = 10.f;
+        Penetration = 2;
     }
     ~UCharacterPlayer()
     {

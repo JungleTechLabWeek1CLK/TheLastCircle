@@ -105,10 +105,34 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
             if (DISTANCE < (CurrentPlayerProjectile->Radius + CurrentEnemy->Radius))
             {
                 // collision detected
-                CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-
-                CurrentPlayerProjectile->Die();
-                break;
+                UProjectilePlayer* PlayerProjectile = static_cast<UProjectilePlayer*>(CurrentPlayerProjectile);
+                if (PlayerProjectile->Cnt != 0) {
+                    bool sw = false;
+                    for (int i = 0; i < PlayerProjectile->Cnt; i++) {
+                        if (PlayerProjectile->HitEnemyList[i] != CurrentEnemy) {
+                            PlayerProjectile->Cnt++;
+                            CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
+                            if (PlayerProjectile->Cnt == PlayerProjectile->Cnt)
+                                CurrentPlayerProjectile->Die();
+                            else {
+                                PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                            }
+                            sw = true;
+                            break;
+                        }
+                    }
+                    if (sw)  break;
+                }
+                else {
+                    PlayerProjectile->Cnt++;
+                    CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
+                    if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
+                        CurrentPlayerProjectile->Die();
+                    else {
+                        PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                    }
+                    break;
+                }
             }
         }
     }

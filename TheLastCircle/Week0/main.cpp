@@ -144,16 +144,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             {
                 GameManager.PauseGame();
             }
-            if (GetAsyncKeyState(VK_LEFT) & 0x8000) { //왼쪽
+            if (GetAsyncKeyState(VK_LEFT) & 0x8000 || GetAsyncKeyState(0x41) & 0x8000) { //왼쪽
                 Player->Move({ Player->Location.x - 1, Player->Location.y, 0 }, DeltaTime);
             }
-            if (GetAsyncKeyState(VK_RIGHT) & 0x8000) { //오른쪽
+            if (GetAsyncKeyState(VK_RIGHT) & 0x8000 || GetAsyncKeyState(0x44) & 0x8000) { //오른쪽
                 Player->Move({ Player->Location.x + 1, Player->Location.y, 0 }, DeltaTime);
             }
-            if (GetAsyncKeyState(VK_UP) & 0x8000) { //위
+            if (GetAsyncKeyState(VK_UP) & 0x8000 || GetAsyncKeyState(0x57) & 0x8000) { //위
                 Player->Move({ Player->Location.x, Player->Location.y + 1, 0 }, DeltaTime);
             }
-            if (GetAsyncKeyState(VK_DOWN) & 0x8000) { //아래
+            if (GetAsyncKeyState(VK_DOWN) & 0x8000 || GetAsyncKeyState(0x53) & 0x8000) { //아래
                 Player->Move({ Player->Location.x, Player->Location.y - 1, 0 }, DeltaTime);
             }
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
@@ -166,7 +166,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
                         float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
                         float finalRad = baseRad + (offsetDeg * DEG2RAD);
-                        GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage);
+                        GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage, Player->Penetration);
                     }
 
                     Player->bIsShoot = false;
@@ -180,7 +180,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     if (EnemyList[CurrentIndex]->bIsShoot) {
                         FVector V = { Player->Location.x - EnemyList[CurrentIndex]->Location.x, Player->Location.y - EnemyList[CurrentIndex]->Location.y ,0 };
                         V.Normalize();
-                        GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile, EnemyList[CurrentIndex]->Damage);
+                        GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile, EnemyList[CurrentIndex]->Damage, 1);
                         EnemyList[CurrentIndex]->bIsShoot = false;
                     }
                     else
