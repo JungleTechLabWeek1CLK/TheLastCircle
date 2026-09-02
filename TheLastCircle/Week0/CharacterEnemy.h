@@ -28,7 +28,7 @@ public:
             break;
         case ETypeEnemy::ETE_Runner:
             Range = -1.f;
-            Speed = 0.7f;
+            Speed = 0.5f;
             break;
         case ETypeEnemy::ETE_Ranger:
             Range = 0.3f;

@@ -158,7 +158,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { //마우스 왼쪽
                 if (Player->bIsShoot) {
-                    FVector V = { ((float)pt.x / centerX) - 1.f - Player->Location.x, 1.f - ((float)pt.y / centerY) - Player->Location.y, 0 };
+                    FVector V = { ((float)pt.x / centerX) - 1.f - Player->PlayerOffset.x, 1.f - ((float)pt.y / centerY) - Player->PlayerOffset.y, 0 };
                     V.Normalize();
                     float baseRad = atan2(V.x, V.y);
                     constexpr float DEG2RAD = 3.14159265f / 180.0f;
@@ -166,7 +166,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
                         float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
                         float finalRad = baseRad + (offsetDeg * DEG2RAD);
-
                         GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage);
                     }
 
@@ -233,11 +232,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         DrawBackground(Player, &Renderer, GameManager.IsTitle());
 
-        // TODO: drop item list will be added
-        DrawObjects(Player, EnemyList, GameManager.GetEnemyListCount(),
-            GameManager.GetProjectileList(), GameManager.GetProjectileListCount(),
-            GameManager.GetEXPList(), GameManager.GetEXPListCount(),
-            &Renderer, GameManager.IsTitle());
+        DrawObjects(&GameManager, &Renderer, GameManager.IsTitle());
 
 
         ImGui_ImplDX11_NewFrame();

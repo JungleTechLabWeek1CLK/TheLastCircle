@@ -185,7 +185,7 @@ void UGameManager::SpawnPlayer()
     Player.MaxEXP = 100.f;
     Player.EXP = 0.f;
     Player.Bullets = 1;
-    Player.Speed = 0.5f;
+    Player.Speed = 0.6f;
     Player.Damage = 100.f;
     Player.InvincibleTime = 0.f;
     Player.bIsGuard = false;
