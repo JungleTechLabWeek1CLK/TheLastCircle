@@ -7,6 +7,7 @@ class UItemBomb : public UItem
 {
 public:
 	float Damage = 100;
+	bool IsExploded = false;
 	UItemBomb() : UItem(ETypeItem::ETI_Bomb)
 	{
 		Radius = 0.06f;
