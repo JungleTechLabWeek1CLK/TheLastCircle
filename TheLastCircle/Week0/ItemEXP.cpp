@@ -11,7 +11,7 @@ void UItemEXP::Move(FVector location, float delta) {
 
 void UItemEXP::ItemEffect(UGameManager* gameManager) {
     USoundManager::GetInstance().PlaySFX(ESFXType::Coin);
-    gameManager->GetPlayer()->GetEXP(this->Reward);
+    gameManager->GetPlayer()->GetEXP(static_cast<int>(this->Reward));
     UItem::ItemEffect(gameManager);
 }
 

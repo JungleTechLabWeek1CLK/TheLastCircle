@@ -328,10 +328,10 @@ private:
         GenerateBackgroundQuad(10);
         GenerateUIQuad();
 
-        NumVerticesTriangle = VerticesTriangle.size();
-        NumVerticesCircle = VerticesCircle.size();
-        NumVerticesBackgroundQuad = VerticesBackgroundQuad.size();
-        NumVerticesUIQuad = VerticesUIQuad.size();
+        NumVerticesTriangle = static_cast<UINT>(VerticesTriangle.size());
+        NumVerticesCircle = static_cast<UINT>(VerticesCircle.size());
+        NumVerticesBackgroundQuad = static_cast<UINT>(VerticesBackgroundQuad.size());
+        NumVerticesUIQuad = static_cast<UINT>(VerticesUIQuad.size());
 
         VertexBufferTriangle = CreateVertexBuffer(VerticesTriangle.data(), NumVerticesTriangle * sizeof(FVertexSimple));
         VertexBufferCircle = CreateVertexBuffer(VerticesCircle.data(), NumVerticesCircle * sizeof(FVertexSimple));
@@ -593,8 +593,8 @@ private:
 
     // Camera Lock
     FVector CameraLocation;
-    const float CAMERA_DEADZONE_X = 0.2;
-    const float CAMERA_DEADZONE_Y = 0.1;
+    const float CAMERA_DEADZONE_X = 0.2f;
+    const float CAMERA_DEADZONE_Y = 0.1f;
 
     // for managing primitives
     std::vector<FVertexSimple> VerticesTriangle;
