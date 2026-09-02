@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "ProjectileEnemy.h"
 #include "ProjectilePlayer.h"
+#include "ProjectileAxe.h"
 #include "ItemEXP.h"
 #include "ItemBomb.h"
 #include "ItemHeal.h"

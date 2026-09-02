@@ -86,33 +86,66 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
             if (DISTANCE < (CurrentPlayerProjectile->Radius + CurrentEnemy->Radius))
             {
                 // collision detected
-                UProjectilePlayer* PlayerProjectile = dynamic_cast<UProjectilePlayer*>(CurrentPlayerProjectile);
-                if (PlayerProjectile->Cnt != 0) {
-                    bool sw = true;
-                    for (int i = 0; i < PlayerProjectile->Cnt; i++) {
-                        if (PlayerProjectile->HitEnemyList[i] == CurrentEnemy) {
-                            sw = false;
-                            break;
+                if (CurrentPlayerProjectile->ProjectileType == ETypeProjectile::ETP_Axe)
+                {
+                    UProjectileAxe* PlayerProjectile = dynamic_cast<UProjectileAxe*>(CurrentPlayerProjectile);
+                    if (PlayerProjectile->Cnt != 0) {
+                        bool sw = true;
+                        for (int i = 0; i < PlayerProjectile->Cnt; i++) {
+                            if (PlayerProjectile->HitEnemyList[i] == CurrentEnemy) {
+                                sw = false;
+                                break;
+                            }
+                        }
+                        if (!sw)  break;
+                        PlayerProjectile->Cnt++;
+                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
+                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
+                            CurrentPlayerProjectile->Die();
+                        else {
+                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
                         }
                     }
-                    if (!sw)  break;
-                    PlayerProjectile->Cnt++;
-                    CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-                    if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
-                        CurrentPlayerProjectile->Die();
                     else {
-                        PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                        PlayerProjectile->Cnt++;
+                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
+                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
+                            CurrentPlayerProjectile->Die();
+                        else {
+                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                        }
+                        break;
                     }
                 }
-                else {
-                    PlayerProjectile->Cnt++;
-                    CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-                    if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
-                        CurrentPlayerProjectile->Die();
-                    else {
-                        PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                else if (CurrentPlayerProjectile->ProjectileType == ETypeProjectile::ETP_Projectile) {
+                    UProjectilePlayer* PlayerProjectile = dynamic_cast<UProjectilePlayer*>(CurrentPlayerProjectile);
+                    if (PlayerProjectile->Cnt != 0) {
+                        bool sw = true;
+                        for (int i = 0; i < PlayerProjectile->Cnt; i++) {
+                            if (PlayerProjectile->HitEnemyList[i] == CurrentEnemy) {
+                                sw = false;
+                                break;
+                            }
+                        }
+                        if (!sw)  break;
+                        PlayerProjectile->Cnt++;
+                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
+                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
+                            CurrentPlayerProjectile->Die();
+                        else {
+                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                        }
                     }
-                    break;
+                    else {
+                        PlayerProjectile->Cnt++;
+                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
+                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
+                            CurrentPlayerProjectile->Die();
+                        else {
+                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
+                        }
+                        break;
+                    }
                 }
             }
         }

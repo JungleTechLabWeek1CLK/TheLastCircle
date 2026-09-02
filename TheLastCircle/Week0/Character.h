@@ -11,7 +11,11 @@ enum class ETypeCharacter
 	ETC_PlayerProjectile,
 	ETC_EnemyProjectile
 };
-
+enum class ETypeProjectile
+{
+	ETP_Projectile,
+	ETP_Axe
+};
 class UCharacter
 {
 public:

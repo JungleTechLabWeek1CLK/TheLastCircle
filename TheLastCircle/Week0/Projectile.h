@@ -5,12 +5,13 @@
 class UProjectile : public UCharacter
 {
 public:
-	UProjectile(float damage) {
+	UProjectile(float damage, ETypeProjectile projectileType) {
 		Radius = 0.01f;
 		Speed = 1.f;
 		Damage = damage;
+		ProjectileType = projectileType;
 	}
-	void Move(FVector location, float delta)
+	virtual void Move(FVector location, float delta)
 	{
 		if (bIsActive)
 		{
@@ -30,6 +31,13 @@ public:
 	{
 		return bIsActive;
 	}
+	float GetDealthTimer() {
+		return DealthTimer;
+	}
+	void SetDealthTimer(float dealthTimer) {
+		DealthTimer = dealthTimer;
+	}
+	ETypeProjectile ProjectileType;
 private:
 	float DealthTimer = 5.f;
 	bool bIsActive = true;

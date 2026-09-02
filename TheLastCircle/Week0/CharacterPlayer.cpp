@@ -5,6 +5,8 @@ void UCharacterPlayer::UpdateTime(float delta) {
     
     if(bIsShoot == false)
         ShootTime += delta;
+    if (bIsAxe)
+        AxeTime += delta;
     GuardTime += delta;
     if (bIsGuard) {
         InvincibleTime += delta;
@@ -16,6 +18,10 @@ void UCharacterPlayer::UpdateTime(float delta) {
     if (AttackSpeed <= ShootTime) {
         bIsShoot = true;
         ShootTime = 0;
+    }
+    if (AxeDelay <= AxeTime) {
+        bIsAxe = false;
+        AxeTime = 0.f;
     }
 }
 

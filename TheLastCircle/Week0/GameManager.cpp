@@ -369,7 +369,10 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
     }
     else if (type == ETypeCharacter::ETC_PlayerProjectile)
     {
-        NewProjectile = new UProjectilePlayer(Damage, Cnt);
+        if(Cnt < 100)
+            NewProjectile = new UProjectilePlayer(Damage, Cnt);
+        else
+            NewProjectile = new UProjectileAxe(Damage, Cnt);
     }
     else
     {

@@ -9,7 +9,7 @@ public:
 	int Penetration;
 	int Cnt;
 	UCharacterEnemy** HitEnemyList;
-	UProjectilePlayer(float damage, int cnt) : UProjectile(damage)
+	UProjectilePlayer(float damage, int cnt) : UProjectile(damage, ETypeProjectile::ETP_Projectile)
 	{
 		CharacterType = ETypeCharacter::ETC_PlayerProjectile;
 		Penetration = cnt;

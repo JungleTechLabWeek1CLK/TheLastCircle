@@ -190,6 +190,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     Player->bIsShoot = false;
                 }
             }
+            if (!Player->bIsAxe) {
+                for (int i = 0; i < Player->AxeCnt; i++) {
+                    float angleRadian = (75.0f + ((float)rand() / RAND_MAX) * 30.0f) * (3.14159265f / 180.0f);
+                    GameManager.SpawnProjectile(Player->Location, { cos(angleRadian), sin(angleRadian), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage, 999);
+                }
+                Player->bIsAxe = true;
+            }
             Player->UpdateTime(DeltaTime);
             for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEnemyListCount(); ++CurrentIndex)
             {
@@ -230,7 +237,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             int ProjectileListCount = GameManager.GetProjectileListCount();
             for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
             {
-                ProjectileList[CurrentIndex]->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
+                switch (ProjectileList[CurrentIndex]->ProjectileType) {
+                case ETypeProjectile::ETP_Projectile:
+                    ProjectileList[CurrentIndex]->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
+                    break;
+                case ETypeProjectile::ETP_Axe:
+                    static_cast<UProjectileAxe*>(ProjectileList[CurrentIndex])->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
+                    break;
+                }
             }
 
             int LevelUpCnt = Player->LevelUp();

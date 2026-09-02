@@ -9,6 +9,7 @@ enum class ETypeUpgrade {
     ETU_Penetration,
     ETU_AttackSpeed,
     ETU_Scale,
+    ETU_Axe,
     COUNT
 };
 
@@ -22,13 +23,17 @@ public:
     float MaxEXP = 100;
     int Level = 1;
     bool bIsGuard = false;
+    bool bIsAxe = false;
+    int AxeCnt = 2;
+    float AxeDelay = 2.f;
+    float AxeTime = 0.f;
     float GuardTime = 0.f;
     float GuardDelay = 1.5f;
     float MaxHp;
     float InvincibleTime = 0.f;
     float AttackSpeed = 1.5f;
-    ETypeUpgrade Upgrades[7] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets ,
-                                        ETypeUpgrade::ETU_Penetration ,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale };
+    ETypeUpgrade Upgrades[8] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets ,
+                                        ETypeUpgrade::ETU_Penetration ,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale, ETypeUpgrade::ETU_Axe };
     FVector PlayerOffset;
 
     UCharacterPlayer()
