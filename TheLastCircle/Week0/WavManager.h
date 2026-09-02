@@ -15,9 +15,9 @@ public:
 
     bool LoadSound(const wchar_t* FilePath);
 
-    bool Play();
+    bool Play() {};
 
-    void Release();
+    void Release() {};
 
 private:
 

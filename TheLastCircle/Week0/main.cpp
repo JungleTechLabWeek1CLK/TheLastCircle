@@ -89,7 +89,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
     UGameManager GameManager;
-    GameManager.Initialize();
+    GameManager.Initialize(&Renderer);
     //GameManager.ResetGame();
     UGameUI GameUI;
 

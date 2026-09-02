@@ -6,7 +6,7 @@
 #include "CharacterPlayer.h"
 #include "CharacterEnemy.h"
 #include "Projectile.h"
-
+#include "Renderer.h"
 
 UGameManager::UGameManager()
     : currentState(Title), 
@@ -37,7 +37,7 @@ UGameManager::~UGameManager()
     ProjectileList = nullptr;
 }
 
-void UGameManager::Initialize()
+void UGameManager::Initialize(URenderer* InputRenderer)
 {
     SoundManager.Initialize();
     currentState = Title;
@@ -57,6 +57,8 @@ void UGameManager::Initialize()
     ItemCapacity = 30;
     ItemList = new UItem * [ItemCapacity]();
     // 60초 생존하면 게임 클리어
+
+    Renderer = InputRenderer;
 }
 
 void UGameManager::Update(float DeltaTime)
@@ -96,6 +98,7 @@ void UGameManager::ResetGame()
     SpawnPlayer();
 
     SoundManager.PlayBGM();
+    Renderer->ResetCameraLocation();
 }
 
 void UGameManager::PauseGame()

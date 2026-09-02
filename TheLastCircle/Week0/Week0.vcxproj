@@ -149,6 +149,8 @@
     <ClCompile Include="Projectile.h" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shapes.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="WavManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
@@ -172,9 +174,11 @@
     <ClInclude Include="ProjectilePlayer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shapes.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemEXP.h" />
+    <ClInclude Include="WavManager.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ShaderW0.hlsl">

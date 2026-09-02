@@ -29,13 +29,14 @@ enum class EGameDifficulty
 	Hard
 };
 
+class URenderer;
 class UGameManager
 {
 public:
 	UGameManager();
 	~UGameManager();
 
-	void Initialize();
+	void Initialize(URenderer*);
 	void Update(float DeltaTime);
 	void ResetGame();
 
@@ -178,11 +179,12 @@ private:
 	int ProjectileCount;
 	int ProjectileCapacity;
 
-	
 	//void UpdateProjectiles(float DeltaTime);
 	void RemoveProjectile(int Index);
 	void ClearProjectiles();
 	void ResizeProjectileList();
+
+	URenderer* Renderer;
 
 	void UpdateScore();
 	void UpdateGameTime(float DeltaTime);
