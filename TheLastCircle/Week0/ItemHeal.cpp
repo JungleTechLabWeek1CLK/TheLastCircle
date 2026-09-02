@@ -2,16 +2,11 @@
 #include "GameManager.h"
 
 void UItemHeal::ItemEffect(UGameManager* gameManager) {
-    UCharacterEnemy** EnemyList = gameManager->GetEnemyList();
-    INT32 EnemyListCount = gameManager->GetEnemyListCount();
-    for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
-    {
-        UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];
-        CurrentEnemy->Die();
-    }
+    UCharacterPlayer* Player = gameManager->GetPlayer();
+    Player->Hp = min(Player->Hp + 100, Player->MaxHp);
     UItem::ItemEffect(gameManager);
 }
 
 void UItemHeal::CollisionCheck(UGameManager* gameManager) {
-
+    UItem::CollisionCheck(gameManager);
 }

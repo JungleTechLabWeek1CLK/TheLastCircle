@@ -347,13 +347,13 @@ void UGameManager::SpawnItem(FVector location) {
 
     int roll = rand() % 100;
     UItem* NewItem;;
-    if (roll < 0) {
+    if (roll < 10) {
         NewItem = new UItemBomb();
     }
-    else if (roll < 1) {
+    else if (roll < 20) {
         NewItem = new UItemHeal();
     }
-    else if (roll < 2) {
+    else if (roll < 30) {
         NewItem = new UItemMagnet();
     }
     else {

@@ -7,11 +7,19 @@ void UItemBomb::ItemEffect(UGameManager* gameManager) {
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
         UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];
-        CurrentEnemy->Die();
+
+        // Sphere - Sphere Collision
+        FVector CollisionNormal = CurrentEnemy->Location - Location; // not normalized yet
+        const float DISTANCE = CollisionNormal.GetMagnitude();
+
+        if (DISTANCE < (BigRadius + CurrentEnemy->Radius))
+        {
+            CurrentEnemy->Die();
+        }
     }
     UItem::ItemEffect(gameManager);
 }
 
 void UItemBomb::CollisionCheck(UGameManager* gameManager) {
-
+    UItem::CollisionCheck(gameManager);
 }
