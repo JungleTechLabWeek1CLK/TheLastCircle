@@ -6,7 +6,7 @@ class UGameManager;
 class UItemMagnet : public UItem
 {
 public:
-	UItemMagnet() : UItem()
+	UItemMagnet() : UItem(ETypeItem::ETI_Magnet)
 	{
 		BigRadius = 0;
 		bIsMagnet = false;

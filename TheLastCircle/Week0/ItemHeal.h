@@ -6,7 +6,7 @@ class UGameManager;
 class UItemHeal : public UItem
 {
 public:
-	UItemHeal() : UItem()
+	UItemHeal() : UItem(ETypeItem::ETI_Heal)
 	{
 		BigRadius = 0;
 		bIsMagnet = false;
