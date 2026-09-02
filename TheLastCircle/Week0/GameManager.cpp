@@ -372,7 +372,7 @@ void UGameManager::SpawnItem(FVector location) {
 
     int roll = rand() % 100;
     UItem* NewItem;;
-    if (roll < 10) {
+    if (roll < 100) {
         NewItem = new UItemBomb();
     }
     else if (roll < 20) {
@@ -532,6 +532,7 @@ void UGameManager::UpdateScore()
 void UGameManager::UpdateGameTime(float DeltaTime)
 {
     GameTime += DeltaTime;
+    Delta = DeltaTime;
 }
 
 void UGameManager::CheckGameOver()

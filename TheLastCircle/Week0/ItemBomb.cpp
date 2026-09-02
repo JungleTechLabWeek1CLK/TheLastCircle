@@ -5,7 +5,7 @@ void UItemBomb::ItemEffect(UGameManager* gameManager) {
     IsExploded = true;
     UCharacterEnemy** EnemyList = gameManager->GetEnemyList();
     INT32 EnemyListCount = gameManager->GetEnemyListCount();
-    //Radius += gameManager.GetDeltaTime();
+    Radius += gameManager->GetDeltaTime();
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
         UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];

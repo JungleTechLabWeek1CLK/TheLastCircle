@@ -136,7 +136,9 @@ public:
 
 	void AddKill();
 
-
+	float GetDeltaTime() {
+		return Delta;
+	}
 
 
 private:
@@ -149,6 +151,7 @@ private:
 
 	float GameTime;
 	float GameClearTime;
+	float Delta;
 
 	float EnemySpawnTimer;
 	float EnemySpawnInterval;

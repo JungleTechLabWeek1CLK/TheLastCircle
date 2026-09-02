@@ -11,7 +11,7 @@ public:
 	UItemBomb() : UItem(ETypeItem::ETI_Bomb)
 	{
 		Radius = 0.06f;
-		BigRadius = Radius * 100.f;
+		BigRadius = Radius * 7.5f;
 		bIsMagnet = false;
 	}
 	void ItemEffect(UGameManager* gameManager) override;
