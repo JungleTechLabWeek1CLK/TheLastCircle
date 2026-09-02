@@ -11,6 +11,7 @@ void USoundManager::Initialize()
     DirectX::AUDIO_ENGINE_FLAGS Flags = DirectX::AudioEngine_Default;
 
     AudioEngine = std::make_unique<DirectX::AudioEngine>(Flags);
+    AudioEngine->SetMasterVolume(MasterVolume);
 
 }
 
@@ -87,6 +88,14 @@ bool USoundManager::LoadBGM(const wchar_t* FilePath)
         return false;
     }
 
+    if (BGMInstance != nullptr)
+    {
+        BGMInstance->Stop(true);
+        BGMInstance.reset();
+    }
+
+    BGMSound.reset();
+
     try
     {
         BGMSound = std::make_unique<DirectX::SoundEffect>(AudioEngine.get(), FilePath);
@@ -101,8 +110,8 @@ bool USoundManager::LoadBGM(const wchar_t* FilePath)
     }
     catch (...)
     {
-        BGMSound = nullptr;
-        BGMInstance = nullptr;
+        BGMInstance.reset();
+        BGMSound.reset();
 
         return false;
     }

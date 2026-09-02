@@ -180,6 +180,7 @@ void UGameManager::ReturnToTitle()
 {
     ClearEnemies();
     ClearProjectiles();
+    ClearItem();
 
     GameTime = 0.0f;
     EnemySpawnTimer = 0.0f;
