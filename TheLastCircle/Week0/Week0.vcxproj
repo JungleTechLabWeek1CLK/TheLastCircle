@@ -138,8 +138,12 @@
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemBomb.cpp" />
     <ClCompile Include="ItemEXP.cpp" />
+    <ClCompile Include="ItemHeal.cpp" />
     <ClCompile Include="ItemHeal.h" />
+    <ClCompile Include="ItemMagnet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Projectile.h" />

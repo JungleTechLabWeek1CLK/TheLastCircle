@@ -13,3 +13,19 @@ void UItemEXP::ItemEffect(UGameManager* gameManager) {
     gameManager->GetPlayer()->GetEXP(this->Reward);
     UItem::ItemEffect(gameManager);
 }
+
+void UItemEXP::CollisionCheck(UGameManager* gameManager) {
+    if (!bIsActive || bIsFollow) {
+        UItem::CollisionCheck(gameManager);
+        return;
+    }
+    UCharacterPlayer* Player = gameManager->GetPlayer();
+    // Sphere - Sphere Collision
+    FVector CollisionNormal = Location - Player->Location; // not normalized yet
+    const float DISTANCE = CollisionNormal.GetMagnitude();
+
+    if (DISTANCE < (Player->Radius + BigRadius))
+    {
+        bIsFollow = true;
+    }
+}

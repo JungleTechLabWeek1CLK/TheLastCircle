@@ -19,6 +19,7 @@ enum RenderType
 constexpr float RENDER_OFFSET = 0.5f;
 
 void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
+
 {
     if (bIsTitle)
         return;
@@ -28,8 +29,8 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
     INT32 EnemyListCount = GameManager->GetEnemyListCount();
     UProjectile** ProjectileList = GameManager->GetProjectileList();
     INT32 ProjectileListCount = GameManager->GetProjectileListCount();
-    UItemEXP** ItemEXPList = GameManager->GetEXPList();
-    INT32 ItemEXPListCount = GameManager->GetEXPListCount();
+    UItem** ItemList = GameManager->GetItemList();
+    INT32 ItemListCount = GameManager->GetItemListCount();
 
     FVector CameraLocation;
     CameraLocation.x = std::clamp(Player->Location.x, Player->MinLocation + 1, Player->MaxLocation - 1);
@@ -70,9 +71,9 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 
-    for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
+    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
     {
-        UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
+        UItem* CurrentItemEXP = ItemList[CurrentIndex];
         if (CurrentItemEXP->IsActive() == false)
             continue;
 

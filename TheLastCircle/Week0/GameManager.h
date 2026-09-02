@@ -6,7 +6,9 @@
 #include "ProjectileEnemy.h"
 #include "ProjectilePlayer.h"
 #include "ItemEXP.h"
-
+#include "ItemBomb.h"
+#include "ItemHeal.h"
+#include "ItemMagnet.h"
 
 // 게임 현재 상태
 enum EGameState
@@ -38,10 +40,10 @@ public:
 	void SpawnPlayer();
 	void SpawnEnemy(ETypeEnemy EnemyType);
 	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage);
-	void SpawnEXP(FVector location, float reword);
+	void SpawnItem(FVector location);
 
 	void RemoveEnemy(int Index);
-	void RemoveEXP(int Index);
+	void RemoveItem(int Index);
 
 	void PauseGame();
 	void ResumeGame();
@@ -68,13 +70,13 @@ public:
 		return EnemyCount;
 	}
 
-	UItemEXP** GetEXPList()
+	UItem** GetItemList()
 	{
-		return EXPList;
+		return ItemList;
 	}
-	int GetEXPListCount()
+	int GetItemListCount()
 	{
-		return EXPCount;
+		return ItemCount;
 	}
 
 	UProjectile** GetProjectileList()
@@ -157,13 +159,13 @@ private:
 	int EnemyCount;
 	int EnemyCapacity;
 
-	UItemEXP** EXPList;
+	UItem** ItemList;
 
-	int EXPCount;
-	int EXPCapacity;
+	int ItemCount;
+	int ItemCapacity;
 
-	void ResizeEXPList();
-	void ClearEXP();
+	void ResizeItemList();
+	void ClearItem();
 
 	void ResizeEnemyList();
 	void ClearEnemies();

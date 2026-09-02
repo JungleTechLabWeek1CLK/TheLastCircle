@@ -188,18 +188,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
                 else {
                     GameManager.AddKill();
-                    GameManager.SpawnEXP(EnemyList[CurrentIndex]->Location, EnemyList[CurrentIndex]->Reward);
+                    GameManager.SpawnItem(EnemyList[CurrentIndex]->Location);
                     GameManager.RemoveEnemy(CurrentIndex--);
                 }
             }
 
 
 
-            UItemEXP** EXPList = GameManager.GetEXPList();
-            for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEXPListCount(); ++CurrentIndex)
+            UItem** ItemList = GameManager.GetItemList();
+            for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetItemListCount(); ++CurrentIndex)
             {
-                if (EXPList[CurrentIndex] != nullptr && EXPList[CurrentIndex]->IsActive() && EXPList[CurrentIndex]->bIsFollow) {
-                    EXPList[CurrentIndex]->Move(Player->Location, DeltaTime);
+                if (ItemList[CurrentIndex] != nullptr && ItemList[CurrentIndex]->IsActive() && 
+                    ItemList[CurrentIndex]->bIsMagnet) {
+                    UItemEXP* ItemExp = static_cast<UItemEXP*>(ItemList[CurrentIndex]);
+                    if(ItemExp->bIsFollow)
+                        ItemExp ->Move(Player->Location, DeltaTime);
                 }
             }
 
@@ -233,6 +236,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         DrawBackground(Player, &Renderer, GameManager.IsTitle());
 
         DrawObjects(&GameManager, &Renderer, GameManager.IsTitle());
+
 
 
         ImGui_ImplDX11_NewFrame();

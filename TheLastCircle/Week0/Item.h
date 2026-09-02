@@ -4,14 +4,6 @@
 
 class UGameManager;
 
-enum ETypeItem
-{
-	ETI_Bomb,
-	ETI_heal,
-	ETI_EXP,
-	ETI_Magnet
-};
-
 class UItem
 {
 public:
@@ -20,17 +12,16 @@ public:
 	float Radius = 0.01f;
 	float Mass;
 	float Speed = 0.1f;
+	float BigRadius;
 	ETypePrimitive HitBox;
 	FVector Color;
-	ETypeItem ItemType;
 	
 	bool bIsActive = true;
-
-	UItem(FVector location = { 0,0,0 }, FVector velocity = { 0,0,0 })
+	bool bIsMagnet;
+	UItem( FVector location = { 0,0,0 }, FVector velocity = { 0,0,0 })
 	{
 		Location = location;
 		Velocity = velocity;
-		
 	}
 	~UItem()
 	{
@@ -45,4 +36,6 @@ public:
 	virtual void ItemEffect(UGameManager* gameManager) {
 		this->Die();
 	}
+
+	virtual void CollisionCheck(UGameManager* gameManager);
 };

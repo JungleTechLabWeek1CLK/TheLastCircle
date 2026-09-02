@@ -13,13 +13,14 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
 {
     if (GameManager->IsPlaying() == false)
         return;
+
     UCharacterPlayer* Player = GameManager->GetPlayer();
     UCharacterEnemy** EnemyList = GameManager->GetEnemyList();
     INT32 EnemyListCount = GameManager->GetEnemyListCount();
     UProjectile** ProjectileList = GameManager->GetProjectileList();
     INT32 ProjectileListCount = GameManager->GetProjectileListCount();
-    UItemEXP** ItemEXPList = GameManager->GetEXPList();
-    INT32 ItemEXPListCount = GameManager->GetEXPListCount();
+    UItem** ItemList = GameManager->GetItemList();
+    INT32 ItemListCount = GameManager->GetItemListCount();
     // ----------
     // detecting collision regarding player
     // Player - Enemy 
@@ -57,10 +58,11 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
         }
     }
     // Player - ItemEXP (magnetic check)
-    for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
+/*    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
     {
-        UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
-        if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow)
+        UItem* CurrentItemEXP = ItemList[CurrentIndex];
+        ItemList[CurrentIndex]->CollisionCheck(gameManager);
+        if (CurrentItemEXP->bIsActive == false)
             continue;
 
         // Sphere - Sphere Collision
@@ -72,25 +74,13 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
             // collision detected
             CurrentItemEXP->bIsFollow = true;
         }
-    }
+    }*/
     // Player - ItemEXP (collision check)
-    for (INT32 CurrentIndex = 0; CurrentIndex < ItemEXPListCount; ++CurrentIndex)
+    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
     {
-        UItemEXP* CurrentItemEXP = ItemEXPList[CurrentIndex];
-        if (CurrentItemEXP->bIsActive == false || CurrentItemEXP->bIsFollow == false)
-            continue;
 
-        // Sphere - Sphere Collision
-        FVector CollisionNormal = CurrentItemEXP->Location - Player->Location; // not normalized yet
-        const float DISTANCE = CollisionNormal.GetMagnitude();
-
-        if (DISTANCE < (Player->Radius + CurrentItemEXP->Radius))
-        {
-            // collision detected
-            Player->GetEXP(CurrentItemEXP->Reward);
-
-            CurrentItemEXP->ItemEffect(GameManager);
-        }
+        UItem* CurrentItemEXP = ItemList[CurrentIndex];
+        CurrentItemEXP->CollisionCheck(GameManager);
     }
     // ----------
 

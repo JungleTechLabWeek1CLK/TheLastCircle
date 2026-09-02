@@ -18,8 +18,8 @@ UGameManager::UGameManager()
     ProjectileList(nullptr),
     ProjectileCount(0),
     ProjectileCapacity(30),
-    EXPList(nullptr), EXPCount(0),
-    EXPCapacity(30)
+    ItemList(nullptr), ItemCount(0),
+    ItemCapacity(30)
 {
 
 }
@@ -52,9 +52,9 @@ void UGameManager::Initialize()
     ProjectileCapacity = 30;
     ProjectileList = new UProjectile * [ProjectileCapacity]();
 
-    EXPCount = 0;
-    EXPCapacity = 30;
-    EXPList = new UItemEXP * [EXPCapacity]();
+    ItemCount = 0;
+    ItemCapacity = 30;
+    ItemList = new UItem * [ItemCapacity]();
     // 60초 생존하면 게임 클리어
 }
 
@@ -89,7 +89,7 @@ void UGameManager::ResetGame()
 
     ClearEnemies();
     ClearProjectiles();
-    ClearEXP();
+    ClearItem();
     SpawnPlayer();
 
 }
@@ -210,22 +210,22 @@ void UGameManager::SpawnEnemy(ETypeEnemy EnemyType)
     ++EnemyCount;
 
 }
-void UGameManager::ResizeEXPList()
+void UGameManager::ResizeItemList()
 {
-    int NewCapacity = EXPCapacity * 2;
+    int NewCapacity = ItemCapacity * 2;
 
-    UItemEXP** NewList =
-        new UItemEXP * [NewCapacity]();
+    UItem** NewList =
+        new UItem * [NewCapacity]();
 
-    for (int i = 0; i < EXPCount; ++i)
+    for (int i = 0; i < ItemCount; ++i)
     {
-        NewList[i] = EXPList[i];
+        NewList[i] = ItemList[i];
     }
 
-    delete[] EXPList;
+    delete[] ItemList;
 
-    EXPList = NewList;
-    EXPCapacity = NewCapacity;
+    ItemList = NewList;
+    ItemCapacity = NewCapacity;
 }
 
 // 꽉차면 크기 2배로 확장
@@ -264,15 +264,15 @@ void UGameManager::RemoveEnemy(int Index)
     --EnemyCount;
 }
 
-void UGameManager::ClearEXP()
+void UGameManager::ClearItem()
 {
-    for (int i = 0; i < EXPCount; ++i)
+    for (int i = 0; i < ItemCount; ++i)
     {
-        delete EXPList[i];
-        EXPList[i] = nullptr;
+        delete ItemList[i];
+        ItemList[i] = nullptr;
     }
 
-    EXPCount = 0;
+    ItemCount = 0;
 }
 
 void UGameManager::ClearEnemies()
@@ -339,34 +339,47 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
     ++ProjectileCount;
 }
 
-void UGameManager::SpawnEXP(FVector location, float reword) {
-    if (EXPCount >= EXPCapacity)
+void UGameManager::SpawnItem(FVector location) {
+    if (ItemCount >= ItemCapacity)
     {
-        ResizeEXPList();
+        ResizeItemList();
     }
 
-    UItemEXP* NewEXP = new UItemEXP(reword);
+    int roll = rand() % 100;
+    UItem* NewItem;;
+    if (roll < 0) {
+        NewItem = new UItemBomb();
+    }
+    else if (roll < 1) {
+        NewItem = new UItemHeal();
+    }
+    else if (roll < 2) {
+        NewItem = new UItemMagnet();
+    }
+    else {
+        NewItem = new UItemEXP();
+    }
 
-    NewEXP->Location = location;
+    NewItem->Location = location;
 
-    EXPList[EXPCount] = NewEXP;
+    ItemList[ItemCount] = NewItem;
 
-    ++EXPCount;
+    ++ItemCount;
 }
 
-void UGameManager::RemoveEXP(int Index) {
-    if (Index < 0 || Index >= EXPCount)
+void UGameManager::RemoveItem(int Index) {
+    if (Index < 0 || Index >= ItemCount)
     {
         return;
     }
 
-    delete EXPList[Index];
+    delete ItemList[Index];
 
-    EXPList[Index] = EXPList[EXPCount - 1];
+    ItemList[Index] = ItemList[ItemCount - 1];
 
-    EXPList[EXPCount - 1] = nullptr;
+    ItemList[ItemCount - 1] = nullptr;
 
-    --EXPCount;
+    --ItemCount;
 }
 
 void UGameManager::ClearProjectiles()
