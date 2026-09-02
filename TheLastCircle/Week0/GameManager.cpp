@@ -405,8 +405,7 @@ void UGameManager::UpdateEnemySpawn(float DeltaTime)
     {
         int RandomValue = rand() % 100;
 
-        SpawnEnemy(ETypeEnemy::ETE_Ranger);
-        /*
+
         if (RandomValue < 40)
         {
             SpawnEnemy(ETypeEnemy::ETE_Walker);
@@ -418,7 +417,7 @@ void UGameManager::UpdateEnemySpawn(float DeltaTime)
         else
         {
             SpawnEnemy(ETypeEnemy::ETE_Ranger);
-        }*/
+        }
 
         EnemySpawnTimer = 0.0f;
     }

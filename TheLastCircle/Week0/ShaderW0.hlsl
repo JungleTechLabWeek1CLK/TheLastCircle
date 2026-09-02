@@ -12,7 +12,8 @@ cbuffer constants : register(b0)
     
     float3 PlayerOffset;
     
-    // .5 = player, 1.5 = enmey, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP
+    // .5 = player, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP
+    // 10.5 = enemy_walker, 11.5 = enemy_runner, 12.5 = enemy_ranger
     // 100.5 = background, 99.5 = health bar, 98.5 = exp bar
     float CharacterType; 
     
@@ -37,26 +38,7 @@ PS_INPUT mainVS(VS_INPUT Input)
 {
     PS_INPUT Output;
     
-    if (CharacterType > 1 && CharacterType < 2)
-    {
-        // enemy
-        
-        // scale
-        float3 Position = Input.Position.xyz * Radius;
-        // rotation
-        float3 Direction = PlayerOffset;
-        if (Direction.x * Direction.x > 0.000001f || Direction.y * Direction.y > 0.000001f)
-            Direction = Offset - PlayerOffset;
-        else
-            Direction = Offset;
-        Direction = normalize(Direction);
-        float2x2 RotationMatrix = float2x2(-Direction.y, Direction.x, -Direction.x, -Direction.y);
-        float2 Position2D = mul(Position.xy, RotationMatrix);
-        Position.xy = Position2D;
-        // translation
-        Output.Position = float4(Position + Offset, 1.0f);
-    }
-    else if (CharacterType > 99 && CharacterType < 100)
+    if (CharacterType > 99 && CharacterType < 100)
     {
         // health bar
         float Width = 0.3f;
@@ -76,6 +58,25 @@ PS_INPUT mainVS(VS_INPUT Input)
         
         Output.Position = float4(Box + Offset, 1.0f);
     }
+    else if (CharacterType > 10 && CharacterType < 13)
+    {
+        // enemy
+        
+        // scale
+        float3 Position = Input.Position.xyz * Radius;
+        // rotation
+        float3 Direction = PlayerOffset;
+        if (Direction.x * Direction.x > 0.000001f || Direction.y * Direction.y > 0.000001f)
+            Direction = Offset - PlayerOffset;
+        else
+            Direction = Offset;
+        Direction = normalize(Direction);
+        float2x2 RotationMatrix = float2x2(-Direction.y, Direction.x, -Direction.x, -Direction.y);
+        float2 Position2D = mul(Position.xy, RotationMatrix);
+        Position.xy = Position2D;
+        // translation
+        Output.Position = float4(Position + Offset, 1.0f);
+    }
     else
     {
         // default
@@ -91,8 +92,8 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
 {
     float4 TextureColor;
     float2 UvScale;
-    UvScale.x = 0.5f;
-    UvScale.y = 0.5f;
+    UvScale.x = 0.33f;
+    UvScale.y = 0.33f;
     float2 UvOffset;
     UvOffset.x = 0.0f;
     UvOffset.y = 0.0f;
@@ -108,23 +109,17 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
             TextureColor.rgb = lerp(TextureColor.rgb, float3(1.0f, 1.0f, 1.0f), Flash);
         }
     }
-    else if (CharacterType > 1 && CharacterType < 2)
-    {
-        // enemy
-        UvOffset.x = 0.5f;
-        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
-    }
     else if (CharacterType > 2 && CharacterType < 3)
     {
         // player projectile
-        UvOffset.y = 0.5f;
+        UvOffset.y = 0.33f;
         TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
     }
     else if (CharacterType > 3 && CharacterType < 4)
     {
         // enemy projectile
-        UvOffset.x = 0.5f;
-        UvOffset.y = 0.5f;
+        UvOffset.x = 0.33f;
+        UvOffset.y = 0.33f;
         TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
     }
     else if (CharacterType > 4 && CharacterType < 5)
@@ -132,6 +127,25 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         // EXP
         float3 Color = { 0.9f, 0.9f, 0.15f };
         TextureColor = float4(Color, 1.f);
+    }
+    else if (CharacterType > 10 && CharacterType < 11)
+    {
+        // enemy walker
+        UvOffset.x = 0.33f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+    }
+    else if (CharacterType > 11 && CharacterType < 12)
+    {
+        // enemy runner
+        UvOffset.x = 0.66f;
+        UvOffset.y = 0.33f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+    }
+    else if (CharacterType > 12 && CharacterType < 13)
+    {
+        // enemy ranger
+        UvOffset.x = 0.66f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
     }
     else if (CharacterType > 100)
     {

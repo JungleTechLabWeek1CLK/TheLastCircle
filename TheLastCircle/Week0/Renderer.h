@@ -449,12 +449,19 @@ private:
     // Texture
     void CreateShaderResourceViews(const wchar_t* FilePathSprite, const wchar_t* FilePathTile)
     {
-        HRESULT Resut = DirectX::CreateWICTextureFromFile(
-            Device,               
-            DeviceContext,              
+        // use srgb
+        HRESULT Resut = DirectX::CreateWICTextureFromFileEx(
+            Device,
+            DeviceContext,
             FilePathSprite,
-            nullptr,              
-            &TextureSrvSprite
+            0,                         
+            D3D11_USAGE_DEFAULT,      
+            D3D11_BIND_SHADER_RESOURCE,   
+            0,                             
+            0,                              
+            DirectX::WIC_LOADER_FORCE_SRGB, 
+            nullptr,                        
+            &TextureSrvSprite              
         );
 
         if (FAILED(Resut))
@@ -463,6 +470,7 @@ private:
             abort();
         }
 
+        // use rgb
         Resut = DirectX::CreateWICTextureFromFile(
             Device,
             DeviceContext,

@@ -8,6 +8,17 @@
 
 #include <algorithm>
 
+
+enum RenderType
+{
+    PLAYER = 0, PROJECTILE_PLAYER = 2, PROJECTILE_ENEMY = 3, ITEM_EXP = 4,
+    ENEMY_WALKER = 10, ENEMY_RUNNER, ENEMY_RANGER,
+    UI_EXP = 98, UI_HEALTH,
+    BACKGROUND = 100
+};
+constexpr float RENDER_OFFSET = 0.5f;
+
+
 void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
     UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
     URenderer* Renderer, bool bIsTitle)
@@ -20,12 +31,20 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
     CameraLocation.y = std::clamp(Player->Location.y, Player->MinLocation + 1, Player->MaxLocation - 1);
     CameraLocation.z = 0.f;
 
-    Renderer->UpdateConstantBuffer(Player->Location - CameraLocation, Player->Radius, Player->Location, 0.5f, Player->InvincibleTime);
+    Renderer->UpdateConstantBuffer(Player->Location - CameraLocation, Player->Radius, Player->Location, RenderType::PLAYER + RENDER_OFFSET, Player->InvincibleTime);
     Renderer->RenderPrimitive(EPT_Sphere);
 
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
-        Renderer->UpdateConstantBuffer(EnemyList[CurrentIndex]->Location - CameraLocation, EnemyList[CurrentIndex]->Radius, Player->Location - CameraLocation, 1.5f);
+        UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];
+        float RenderType = -1.f;
+        switch (CurrentEnemy->EnemyType)
+        {
+        case ETypeEnemy::ETE_Walker: RenderType = RenderType::ENEMY_WALKER + RENDER_OFFSET; break;
+        case ETypeEnemy::ETE_Runner: RenderType = RenderType::ENEMY_RUNNER + RENDER_OFFSET; break;
+        case ETypeEnemy::ETE_Ranger: RenderType = RenderType::ENEMY_RANGER + RENDER_OFFSET; break;
+        }
+        Renderer->UpdateConstantBuffer(CurrentEnemy->Location - CameraLocation, CurrentEnemy->Radius, Player->Location - CameraLocation, RenderType);
         Renderer->RenderPrimitive(EPT_Triangle);
     }
 
@@ -37,9 +56,9 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
             continue;
 
         if(CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->Location, 2.5f);
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->Location, RenderType::PROJECTILE_PLAYER + RENDER_OFFSET);
         else
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->Location, 3.5f);
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->Location, RenderType::PROJECTILE_ENEMY + RENDER_OFFSET);
 
         Renderer->RenderPrimitive(EPT_Sphere);
     }
@@ -50,7 +69,7 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
         if (CurrentItemEXP->IsActive() == false)
             continue;
 
-        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - CameraLocation, CurrentItemEXP->Radius, Player->Location, 4.5f);
+        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - CameraLocation, CurrentItemEXP->Radius, Player->Location, RenderType::ITEM_EXP + RENDER_OFFSET);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 
@@ -69,7 +88,7 @@ void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle
     CameraLocation.z = 0.f;
 
     FVector Origin = { 0.f, 0.f, 0.f };
-    Renderer->UpdateConstantBuffer(Origin, 1.f, CameraLocation, 100.5f);
+    Renderer->UpdateConstantBuffer(Origin, 1.f, CameraLocation, RenderType::BACKGROUND + RENDER_OFFSET);
     Renderer->RenderPrimitive(EPT_BackgroundQuad);
 }
 
@@ -83,13 +102,13 @@ void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying)
     // Health bar
     FVector Position = { -0.65f, 0.92f, 0.f};
     FVector Info = { Player->GetCurrentHp(), Player->GetMaxHp(), 0.f };
-    Renderer->UpdateConstantBuffer(Position, 1.f, Info, 99.5f);
+    Renderer->UpdateConstantBuffer(Position, 1.f, Info, RenderType::UI_HEALTH + RENDER_OFFSET);
     Renderer->RenderPrimitive(EPT_UIQuad);
 
     // Exp bar
     Position = { 0.639f, 0.92f, 0.f };
     Info.x = Player->GetCurrentEXP();
     Info.y = Player->GetMaxEXP();
-    Renderer->UpdateConstantBuffer(Position, 1.f, Info, 98.5f);
+    Renderer->UpdateConstantBuffer(Position, 1.f, Info, RenderType::UI_EXP + RENDER_OFFSET);
     Renderer->RenderPrimitive(EPT_UIQuad);
 }
