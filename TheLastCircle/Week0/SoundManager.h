@@ -6,6 +6,8 @@ enum class ESFXType
 {
     PlayerShoot,
     PlayerHit,
+    PlayerDie,
+    EnemyHit,
     EnemyDie,
     LevelUp,
     GameOver,

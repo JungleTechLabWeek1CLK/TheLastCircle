@@ -16,6 +16,8 @@
 #include "Character.h"
 #include "GameManager.h"
 #include "GameUI.h"
+#include "SoundManager.h"
+
 ///////////////////////////////////////////////
 
 
@@ -162,6 +164,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     V.Normalize();
                     float baseRad = atan2(V.x, V.y);
                     constexpr float DEG2RAD = 3.14159265f / 180.0f;
+
+                    USoundManager::GetInstance().PlaySFX(ESFXType::PlayerShoot);
 
                     for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
                         float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;

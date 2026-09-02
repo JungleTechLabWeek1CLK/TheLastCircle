@@ -1,4 +1,5 @@
 #include "CharacterPlayer.h"
+#include "SoundManager.h"
 
 void UCharacterPlayer::UpdateTime(float delta) {
     
@@ -22,6 +23,8 @@ void UCharacterPlayer::GetDamage(float damage) {
         UCharacter::GetDamage(damage);
         bIsGuard = true;
         GuardTime = 0;
+
+        USoundManager::GetInstance().PlaySFX(ESFXType::PlayerHit);
     }
 }
 
@@ -32,6 +35,8 @@ int UCharacterPlayer::LevelUp() {
         Level++;
         EXP -= MaxEXP;
         MaxEXP *= 1.1f;
+
+        USoundManager::GetInstance().PlaySFX(ESFXType::LevelUp);
     }
     return cnt;
 }
