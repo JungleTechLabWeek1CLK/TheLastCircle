@@ -6,6 +6,8 @@
 #include "ItemEXP.h"
 #include "GameManager.h"
 
+#include <algorithm>
+
 void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 EnemyListCount,
     UProjectile** ProjectileList, INT32 ProjectileListCount, UItemEXP** ItemEXPList, INT32 ItemEXPListCount,
     URenderer* Renderer, bool bIsTitle)
@@ -13,13 +15,17 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
     if (bIsTitle)
         return;
 
-    FVector PlayerOffset = Player->Location;
-    Renderer->UpdateConstantBuffer(Player->Location - PlayerOffset, Player->Radius, Player->Location, 0.5f, Player->InvincibleTime);
+    FVector CameraLocation;
+    CameraLocation.x = std::clamp(Player->Location.x, Player->MinLocation + 1, Player->MaxLocation - 1);
+    CameraLocation.y = std::clamp(Player->Location.y, Player->MinLocation + 1, Player->MaxLocation - 1);
+    CameraLocation.z = 0.f;
+
+    Renderer->UpdateConstantBuffer(Player->Location - CameraLocation, Player->Radius, Player->Location, 0.5f, Player->InvincibleTime);
     Renderer->RenderPrimitive(EPT_Sphere);
 
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
-        Renderer->UpdateConstantBuffer(EnemyList[CurrentIndex]->Location - PlayerOffset, EnemyList[CurrentIndex]->Radius, Player->Location, 1.5f);
+        Renderer->UpdateConstantBuffer(EnemyList[CurrentIndex]->Location - CameraLocation, EnemyList[CurrentIndex]->Radius, Player->Location - CameraLocation, 1.5f);
         Renderer->RenderPrimitive(EPT_Triangle);
     }
 
@@ -31,9 +37,9 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
             continue;
 
         if(CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - PlayerOffset, CurrentProjectile->Radius, Player->Location, 2.5f);
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->Location, 2.5f);
         else
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - PlayerOffset, CurrentProjectile->Radius, Player->Location, 3.5f);
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->Location, 3.5f);
 
         Renderer->RenderPrimitive(EPT_Sphere);
     }
@@ -44,7 +50,7 @@ void DrawObjects(UCharacterPlayer* Player, UCharacterEnemy** EnemyList, INT32 En
         if (CurrentItemEXP->IsActive() == false)
             continue;
 
-        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - PlayerOffset, CurrentItemEXP->Radius, Player->Location, 4.5f);
+        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - CameraLocation, CurrentItemEXP->Radius, Player->Location, 4.5f);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 
@@ -57,10 +63,17 @@ void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle
     if (bIsTitle)
         return;
 
+    FVector CameraLocation;
+    CameraLocation.x = std::clamp(Player->Location.x, Player->MinLocation + 1, Player->MaxLocation - 1);
+    CameraLocation.y = std::clamp(Player->Location.y, Player->MinLocation + 1, Player->MaxLocation - 1);
+    CameraLocation.z = 0.f;
+
     FVector Origin = { 0.f, 0.f, 0.f };
-    Renderer->UpdateConstantBuffer(Origin, 1.f, Player->Location, 100.5f);
+    Renderer->UpdateConstantBuffer(Origin, 1.f, CameraLocation, 100.5f);
     Renderer->RenderPrimitive(EPT_BackgroundQuad);
 }
+
+
 
 void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying)
 {

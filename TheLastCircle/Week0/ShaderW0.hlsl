@@ -44,8 +44,12 @@ PS_INPUT mainVS(VS_INPUT Input)
         // scale
         float3 Position = Input.Position.xyz * Radius;
         // rotation
-        float3 Direction = Offset - PlayerOffset;
-        Direction = normalize(Direction);        
+        float3 Direction = PlayerOffset;
+        if (Direction.x * Direction.x > 0.000001f || Direction.y * Direction.y > 0.000001f)
+            Direction = Offset - PlayerOffset;
+        else
+            Direction = Offset;
+        Direction = normalize(Direction);
         float2x2 RotationMatrix = float2x2(-Direction.y, Direction.x, -Direction.x, -Direction.y);
         float2 Position2D = mul(Position.xy, RotationMatrix);
         Position.xy = Position2D;

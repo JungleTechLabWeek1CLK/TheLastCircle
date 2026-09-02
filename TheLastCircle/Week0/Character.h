@@ -33,8 +33,8 @@ public:
 	float ShootTime = 0;
 	bool bIsShoot = true;
 
-	float MinLocation = -1;
-	float MaxLocation = 1;
+	float MinLocation = -5;
+	float MaxLocation = 5;
 	////////
 
 	UCharacter(FVector location = {0,0,0}, FVector velocity = {0,0,0})
