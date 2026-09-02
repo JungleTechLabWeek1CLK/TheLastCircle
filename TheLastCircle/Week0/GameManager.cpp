@@ -181,7 +181,7 @@ void UGameManager::SpawnPlayer()
     FVector SpawnPosition(0.0f, 0.0f, 0.0f);
 
     Player.Location = SpawnPosition;
-    Player.MaxHp = 100.f;
+    Player.MaxHp = 1000.f;
     Player.Hp = Player.MaxHp;
     Player.MaxEXP = 100.f;
     Player.EXP = 0.f;
