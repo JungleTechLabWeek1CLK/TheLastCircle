@@ -42,9 +42,21 @@ void UGameManager::Initialize(URenderer* InputRenderer)
     USoundManager::GetInstance().Initialize();
 
     // 사운드 추가
-    USoundManager::GetInstance().LoadSFX(ESFXType::GameClear, L"Sound/Test.wav");
+    
+    USoundManager::GetInstance().LoadSFX(ESFXType::PlayerShoot, L"Sound/PlayerShoot.wav");
+    USoundManager::GetInstance().LoadSFX(ESFXType::PlayerHit, L"Sound/PlayerHit.wav");
+    USoundManager::GetInstance().LoadSFX(ESFXType::PlayerDie, L"Sound/PlayerDie.wav");
+
+    USoundManager::GetInstance().LoadSFX(ESFXType::EnemyHit, L"Sound/EnemyHit.wav");
+    USoundManager::GetInstance().LoadSFX(ESFXType::EnemyDie, L"Sound/EnemyDie.wav");
 
 
+    USoundManager::GetInstance().LoadSFX(ESFXType::LevelUp, L"Sound/LevelUp.wav");
+
+    USoundManager::GetInstance().LoadSFX(ESFXType::GameClear, L"Sound/GameClear.wav");
+    USoundManager::GetInstance().LoadSFX(ESFXType::GameOver, L"Sound/GameOver1.wav");
+
+    USoundManager::GetInstance().LoadBGM(L"Sound/MainBGM.wav");
     //
 
     currentState = Title;

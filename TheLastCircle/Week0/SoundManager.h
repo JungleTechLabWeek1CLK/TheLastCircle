@@ -84,8 +84,8 @@ private:
     std::unique_ptr<DirectX::SoundEffectInstance> BGMInstance;
 
     float MasterVolume = 1.0f;
-    float SFXVolume = 1.0f;
-    float BGMVolume = 1.0f;
+    float SFXVolume = 0.5f;
+    float BGMVolume = 0.5f;
 
     // 외부에서 객체 생성 불가능
     USoundManager() = default;
