@@ -2,6 +2,12 @@
 
 void USoundManager::Initialize()
 {
+    // 이미 초기화되어 있다면 다시 생성하지 않는다.
+    if (AudioEngine != nullptr)
+    {
+        return;
+    }
+
     DirectX::AUDIO_ENGINE_FLAGS Flags = DirectX::AudioEngine_Default;
 
     AudioEngine = std::make_unique<DirectX::AudioEngine>(Flags);

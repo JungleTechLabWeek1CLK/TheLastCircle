@@ -18,6 +18,18 @@ class USoundManager
 {
 public:
 
+    // 싱글톤 설정
+    static USoundManager& GetInstance()
+    {
+        static USoundManager Instance;
+        return Instance;
+    }
+
+    // 복사 금지
+    USoundManager(const USoundManager&) = delete;
+    USoundManager& operator=(const USoundManager&) = delete;
+
+
     void Initialize();
 
     void Update();
@@ -72,4 +84,8 @@ private:
     float MasterVolume = 1.0f;
     float SFXVolume = 1.0f;
     float BGMVolume = 1.0f;
+
+    // 외부에서 객체 생성 불가능
+    USoundManager() = default;
+    ~USoundManager() = default;
 };

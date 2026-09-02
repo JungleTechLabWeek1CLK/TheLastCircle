@@ -39,10 +39,13 @@ UGameManager::~UGameManager()
 
 void UGameManager::Initialize(URenderer* InputRenderer)
 {
-    SoundManager.Initialize();
+    USoundManager::GetInstance().Initialize();
 
     // 사운드 추가
-    SoundManager.LoadSFX(ESFXType::GameClear, L"Sound/Test.wav");
+    USoundManager::GetInstance().LoadSFX(ESFXType::GameClear, L"Sound/Test.wav");
+
+
+    //
 
     currentState = Title;
 
@@ -67,7 +70,7 @@ void UGameManager::Initialize(URenderer* InputRenderer)
 
 void UGameManager::Update(float DeltaTime)
 {
-    SoundManager.Update();
+    USoundManager::GetInstance().Update();
 
     if (currentState != Playing)
     {
@@ -101,7 +104,7 @@ void UGameManager::ResetGame()
     ClearItem();
     SpawnPlayer();
 
-    SoundManager.PlayBGM();
+    USoundManager::GetInstance().PlayBGM();
     Renderer->ResetCameraLocation();
 }
 
@@ -111,7 +114,7 @@ void UGameManager::PauseGame()
     {
         currentState = Paused;
 
-        SoundManager.PauseBGM();
+        USoundManager::GetInstance().PauseBGM();
     }
 }
 
@@ -120,12 +123,12 @@ void UGameManager::ResumeGame()
     if (currentState == Paused)
     {
         currentState = Playing;
-        SoundManager.ResumeBGM();
+        USoundManager::GetInstance().ResumeBGM();
     }
     else if (currentState == Upgrade)
     {
         currentState = Playing;
-        SoundManager.ResumeBGM();
+        USoundManager::GetInstance().ResumeBGM();
     }
 }
 
@@ -138,9 +141,9 @@ void UGameManager::Lose()
 
     currentState = GameOver;
 
-    SoundManager.StopBGM();
+    USoundManager::GetInstance().StopBGM();
 
-    SoundManager.PlaySFX(ESFXType::GameOver);
+    USoundManager::GetInstance().PlaySFX(ESFXType::GameOver);
 }
 
 void UGameManager::Win()
@@ -152,9 +155,9 @@ void UGameManager::Win()
 
     currentState = GameClear;
 
-    SoundManager.StopBGM();
+    USoundManager::GetInstance().StopBGM();
 
-    SoundManager.PlaySFX(ESFXType::GameClear);
+    USoundManager::GetInstance().PlaySFX(ESFXType::GameClear);
 }
 
 void UGameManager::ReturnToTitle()
@@ -168,7 +171,7 @@ void UGameManager::ReturnToTitle()
 
     currentState = Title;
 
-    SoundManager.StopBGM();
+    USoundManager::GetInstance().StopBGM();
 }
 
 #pragma endregion

@@ -223,8 +223,8 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
 
     ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
 
-    int BGMVolume = GameManager->GetBGMVolume()*100;
-    int SFXVolume = GameManager->GetSFXVolume()*100;
+    int BGMVolume = USoundManager::GetInstance().GetBGMVolume()*100;
+    int SFXVolume = USoundManager::GetInstance().GetSFXVolume() *100;
 
     float SliderWidth = WindowWidth * 0.5f;
 
@@ -235,7 +235,7 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
 
     if (ImGui::SliderInt(" BGM", &BGMVolume, 0.0f, 100.0f))
     {
-        GameManager->SetBGMVolume(float(BGMVolume / 100.0f));
+        USoundManager::GetInstance().SetBGMVolume(float(BGMVolume / 100.0f));
     }
 
     ImGui::SetCursorPosX((WindowWidth - SliderWidth) * 0.5f);
@@ -244,7 +244,7 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
 
     if (ImGui::SliderInt(" SFX", &SFXVolume, 0.0f, 100.0f))
     {
-        GameManager->SetSFXVolume(float(SFXVolume/100.0f));
+        USoundManager::GetInstance().SetSFXVolume(float(SFXVolume/100.0f));
     }
 
     ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
