@@ -223,6 +223,7 @@ void UGameManager::SpawnPlayer()
     Player.Location = SpawnPosition;
     Player.MaxHp = 1000.f;
     Player.Hp = Player.MaxHp;
+    Player.Level = 1;
     Player.MaxEXP = 100.f;
     Player.EXP = 0.f;
     Player.Bullets = 1;
