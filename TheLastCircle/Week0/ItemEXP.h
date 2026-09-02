@@ -8,7 +8,7 @@ class UItemEXP : public UItem
 public:
 	float Reward = 100;
 	bool bIsFollow = false;
-	UItemEXP() : UItem()
+	UItemEXP() : UItem(ETypeItem::ETI_EXP)
 	{
 		BigRadius = Radius * 10.f;
 		bIsMagnet = true;
