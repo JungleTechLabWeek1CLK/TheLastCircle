@@ -37,8 +37,16 @@ bool USoundManager::LoadSFX(ESFXType Type, const wchar_t* FilePath)
     {
         return false;
     }
-
-    SFXSounds[Index] = std::make_unique<DirectX::SoundEffect>(AudioEngine.get(), FilePath);
+    
+    try
+    {
+        SFXSounds[Index] = std::make_unique<DirectX::SoundEffect>(AudioEngine.get(), FilePath);
+    }
+    catch (...)
+    {
+        return false;
+    }
+    
 
     return true;
 }
@@ -50,11 +58,25 @@ bool USoundManager::LoadBGM(const wchar_t* FilePath)
         return false;
     }
 
-    BGMSound = std::make_unique<DirectX::SoundEffect>(AudioEngine.get(), FilePath);
+    try
+    {
+        BGMSound = std::make_unique<DirectX::SoundEffect>(AudioEngine.get(), FilePath);
+        BGMInstance = BGMSound->CreateInstance();
 
-    BGMInstance = BGMSound->CreateInstance();
+        if (BGMInstance == nullptr)
+        {
+            return false;
+        }
 
-    BGMInstance->SetVolume(BGMVolume);
+        BGMInstance->SetVolume(BGMVolume);
+    }
+    catch (...)
+    {
+        BGMSound = nullptr;
+        BGMInstance = nullptr;
+
+        return false;
+    }
 
     return true;
 }

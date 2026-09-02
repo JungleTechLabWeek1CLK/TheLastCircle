@@ -40,6 +40,10 @@ UGameManager::~UGameManager()
 void UGameManager::Initialize(URenderer* InputRenderer)
 {
     SoundManager.Initialize();
+
+    // 사운드 추가
+    SoundManager.LoadSFX(ESFXType::GameClear, L"Sound/Test.wav");
+
     currentState = Title;
 
     Score = 0.f;
