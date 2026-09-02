@@ -39,6 +39,7 @@ UGameManager::~UGameManager()
 
 void UGameManager::Initialize()
 {
+    SoundManager.Initialize();
     currentState = Title;
 
     Score = 0.f;
@@ -60,6 +61,8 @@ void UGameManager::Initialize()
 
 void UGameManager::Update(float DeltaTime)
 {
+    SoundManager.Update();
+
     if (currentState != Playing)
     {
         return;
@@ -92,6 +95,7 @@ void UGameManager::ResetGame()
     ClearItem();
     SpawnPlayer();
 
+    SoundManager.PlayBGM();
 }
 
 void UGameManager::PauseGame()
@@ -99,6 +103,8 @@ void UGameManager::PauseGame()
     if (currentState == Playing)
     {
         currentState = Paused;
+
+        SoundManager.PauseBGM();
     }
 }
 
@@ -107,10 +113,12 @@ void UGameManager::ResumeGame()
     if (currentState == Paused)
     {
         currentState = Playing;
+        SoundManager.ResumeBGM();
     }
     else if (currentState == Upgrade)
     {
         currentState = Playing;
+        SoundManager.ResumeBGM();
     }
 }
 
@@ -122,6 +130,10 @@ void UGameManager::Lose()
     }
 
     currentState = GameOver;
+
+    SoundManager.StopBGM();
+
+    SoundManager.PlaySFX(ESFXType::GameOver);
 }
 
 void UGameManager::Win()
@@ -132,6 +144,10 @@ void UGameManager::Win()
     }
 
     currentState = GameClear;
+
+    SoundManager.StopBGM();
+
+    SoundManager.PlaySFX(ESFXType::GameClear);
 }
 
 void UGameManager::ReturnToTitle()
@@ -144,6 +160,8 @@ void UGameManager::ReturnToTitle()
     Score = 0;
 
     currentState = Title;
+
+    SoundManager.StopBGM();
 }
 
 #pragma endregion

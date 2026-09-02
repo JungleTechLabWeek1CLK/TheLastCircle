@@ -9,6 +9,8 @@
 #include "ItemBomb.h"
 #include "ItemHeal.h"
 #include "ItemMagnet.h"
+#include "SoundManager.h"
+
 
 // 게임 현재 상태
 enum EGameState
@@ -137,6 +139,7 @@ public:
 
 
 private:
+	USoundManager SoundManager;
 	EGameState currentState = Title;
 	EGameDifficulty Difficulty = EGameDifficulty::Easy;
 
