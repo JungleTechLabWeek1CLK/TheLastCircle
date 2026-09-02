@@ -141,11 +141,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         POINT pt;
         GetCursorPos(&pt);
         ScreenToClient(hWnd, &pt);
-        if (GameManager.IsPlaying()) {
-            if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+
+        static bool bWasEscapePressed = false;
+        bool bIsEscapePressed = (GetAsyncKeyState(VK_ESCAPE) & 0x8000) != 0;
+
+        if (bIsEscapePressed && !bWasEscapePressed)
+        {
+            if (GameManager.IsPlaying())
             {
                 GameManager.PauseGame();
             }
+            else if (GameManager.IsPaused())
+            {
+                GameManager.ResumeGame();
+            }
+        }
+
+        bWasEscapePressed = bIsEscapePressed;
+
+        if (GameManager.IsPlaying()) {
             if (GetAsyncKeyState(VK_LEFT) & 0x8000 || GetAsyncKeyState(0x41) & 0x8000) { //왼쪽
                 Player->Move({ Player->Location.x - 1, Player->Location.y, 0 }, DeltaTime);
             }
@@ -225,6 +239,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 GameManager.SetGameState(EGameState::Upgrade);
             }
         }
+
+        
+        
         ////////////////////////////////////////////
 
 
