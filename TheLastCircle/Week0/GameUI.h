@@ -34,4 +34,6 @@ private:
 
     void RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices);
 
+    void RenderStatus(UGameManager* GameManager);
+
 };

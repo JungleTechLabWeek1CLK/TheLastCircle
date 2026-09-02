@@ -34,8 +34,8 @@ public:
 
 
     void Initialize();
-
     void Update();
+    void Shutdown();
 
     bool LoadSFX(ESFXType Type, const wchar_t* FilePath);
     bool LoadBGM(const wchar_t* FilePath);

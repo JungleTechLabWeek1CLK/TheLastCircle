@@ -30,6 +30,33 @@ void USoundManager::Update()
     }
 }
 
+void USoundManager::Shutdown()
+{
+    if (AudioEngine == nullptr)
+    {
+        return;
+    }
+
+    // 1. 먼저 XAudio2 작업 중지
+    AudioEngine->Suspend();
+
+    // 2. 우리가 직접 만든 BGM Instance 제거
+    if (BGMInstance != nullptr)
+    {
+        BGMInstance->Stop(true);
+        BGMInstance.reset();
+    }
+
+    AudioEngine.reset();
+
+    BGMSound.reset();
+
+    for (int i = 0; i < static_cast<int>(ESFXType::Count); ++i)
+    {
+        SFXSounds[i].reset();
+    }
+}
+
 bool USoundManager::LoadSFX(ESFXType Type, const wchar_t* FilePath)
 {
     if (AudioEngine == nullptr)

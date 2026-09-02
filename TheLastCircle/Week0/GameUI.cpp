@@ -787,6 +787,58 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
     ImGui::End();
 }
 
+void UGameUI::RenderStatus(UGameManager* GameManager)
+{
+    if (GameManager == nullptr || GameManager->GetPlayer() == nullptr)
+    {
+        return;
+    }
+
+    UCharacterPlayer* Player = GameManager->GetPlayer();
+
+    ImGuiViewport* Viewport = ImGui::GetMainViewport();
+
+    ImGuiWindowFlags WindowFlags =
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_AlwaysAutoResize;
+
+    // 좌측 하단
+    ImVec2 Position(
+        Viewport->WorkPos.x + 20.0f,
+        Viewport->WorkPos.y + Viewport->WorkSize.y - 20.0f
+    );
+
+    ImGui::SetNextWindowPos(
+        Position,
+        ImGuiCond_Always,
+        ImVec2(0.0f, 1.0f)
+    );
+
+   
+
+    // 살짝 투명한 배경
+    ImGui::SetNextWindowBgAlpha(0.35f);
+
+    ImGui::Begin("PlayerStatus", nullptr, WindowFlags);
+    ImGui::SetWindowFontScale(0.5f);
+    ImGui::Text("STATUS");
+    ImGui::Separator();
+
+    ImGui::Text("Level: %d", Player->Level);
+    ImGui::Text("MaxHP: %.2f", Player->MaxHp);
+    ImGui::Text("Damage: %.0f", Player->Damage);
+    ImGui::Text("Atk Speed: %.2f", Player->AttackSpeed);
+    ImGui::Text("Speed: %.2f", Player->Speed);
+    ImGui::Text("Scale: %.3f", Player->Radius);
+    ImGui::Text("Bullets: %d", Player->Bullets);
+    ImGui::Text("Piercing: %d", Player->Penetration);
+
+    ImGui::End();
+}
+
 
 void UGameUI::UIRender(UGameManager* GameManager)
 {
@@ -804,6 +856,7 @@ void UGameUI::UIRender(UGameManager* GameManager)
     case Playing:
         // 인게임 UI
         RenderTime(GameManager);
+        RenderStatus(GameManager);
         break;
 
     case Paused:
