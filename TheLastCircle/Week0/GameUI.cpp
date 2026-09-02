@@ -9,6 +9,29 @@
 
 #pragma region Popups
 
+void UGameUI::RenderTime(UGameManager* GameManager)
+{
+    ImGuiWindowFlags window_flags = 0;
+    window_flags |= ImGuiWindowFlags_NoBackground;     
+    window_flags |= ImGuiWindowFlags_NoTitleBar;    
+    window_flags |= ImGuiWindowFlags_NoResize;       
+    window_flags |= ImGuiWindowFlags_NoScrollbar;    
+    window_flags |= ImGuiWindowFlags_AlwaysAutoResize; 
+
+    window_flags |= ImGuiWindowFlags_NoMove;
+
+    auto Position = ImGui::GetMainViewport()->GetCenter();
+    Position.y = 7.f;
+    Position.x -= 130.f;
+    ImGui::SetNextWindowPos(Position, ImGuiCond_Always);
+
+    ImGui::Begin("Timer", nullptr, window_flags);
+
+    ImGui::Text("Time: %.1f", GameManager->GetRemainingTime());
+
+    ImGui::End();
+}
+
 void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
 {
     ImGuiViewport* Viewport = ImGui::GetMainViewport();
@@ -66,8 +89,6 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
     default:
         break;
     }
-
-   
 }
 
 void UGameUI::RenderTitle(UGameManager* GameManager)
@@ -782,6 +803,7 @@ void UGameUI::UIRender(UGameManager* GameManager)
 
     case Playing:
         // 인게임 UI
+        RenderTime(GameManager);
         break;
 
     case Paused:

@@ -25,6 +25,8 @@ private:
     void RenderDifficultyPopup(UGameManager* GameManager);
     void RenderCreditsPopup();
 
+    void RenderTime(UGameManager* GameManager);
+
     void RenderPopup(UGameManager* GameManager, EPopupType type);
     void RenderPausePopup(UGameManager* GameManager);
     void RenderGameOverPopup(UGameManager* GameManager);
