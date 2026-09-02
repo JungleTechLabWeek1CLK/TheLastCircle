@@ -35,6 +35,9 @@ UGameManager::~UGameManager()
 
     delete[] ProjectileList;
     ProjectileList = nullptr;
+
+    delete[] ItemList;
+    ItemList = nullptr;
 }
 
 void UGameManager::Initialize(URenderer* InputRenderer)

@@ -32,22 +32,16 @@ void USoundManager::Update()
 
 void USoundManager::Shutdown()
 {
-    if (AudioEngine == nullptr)
+    if (AudioEngine != nullptr)
     {
-        return;
+        AudioEngine->Suspend();
     }
 
-    // 1. 먼저 XAudio2 작업 중지
-    AudioEngine->Suspend();
-
-    // 2. 우리가 직접 만든 BGM Instance 제거
     if (BGMInstance != nullptr)
     {
         BGMInstance->Stop(true);
         BGMInstance.reset();
     }
-
-    AudioEngine.reset();
 
     BGMSound.reset();
 
@@ -55,6 +49,8 @@ void USoundManager::Shutdown()
     {
         SFXSounds[i].reset();
     }
+
+    AudioEngine.reset();
 }
 
 bool USoundManager::LoadSFX(ESFXType Type, const wchar_t* FilePath)
