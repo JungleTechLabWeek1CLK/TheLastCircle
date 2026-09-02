@@ -645,10 +645,13 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
     const char* Title = "SELECT UPGRADE";
     float TitleWidth = ImGui::CalcTextSize(Title).x;
 
-    float Spacing = WindowWidth * 0.02f;
+    float SideMargin = WindowWidth * 0.01f;   // 좌우 여백 1%
+    float CardSpacing = WindowWidth * 0.01f;  // 카드 사이 간격 1%
 
     float ButtonWidth =
-        (WindowWidth - Spacing * (ChoiceCount + 1))
+        (WindowWidth
+            - SideMargin * 2
+            - CardSpacing * (ChoiceCount - 1))
         / ChoiceCount;
 
     float ButtonHeight = WindowHeight * 0.7f;
@@ -665,7 +668,7 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
     );
 
     // 여백 적용
-    ImGui::SetCursorPosX(Spacing);
+    ImGui::SetCursorPosX(SideMargin);
 
     for (int i = 0; i < ChoiceCount; i++)
     {
@@ -690,6 +693,20 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             CardName = "Bullets+";
             Description = "Increase number of bullets.";
             break;
+
+        case ETypeUpgrade::ETU_Penetration:
+            CardName = "Piercing+";
+            Description = "Bullets pierce more enemies";
+            break;
+        case ETypeUpgrade::ETU_AttackSpeed:
+            CardName = "DPS+";
+            Description = "Increase attack Speed";
+            break;
+        case ETypeUpgrade::ETU_Scale:
+            CardName = "Scale-";
+            Description = "Become smaller";
+            break;
+
         }
 
         ImGui::BeginChild("UpgradeCard",
