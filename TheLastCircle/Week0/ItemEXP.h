@@ -1,23 +1,19 @@
 #pragma once
 #include "Item.h"
 
+class UGameManager;
+
 class UItemEXP : public UItem
 {
 public:
-	float Reward;
-	float LootableRadius = Radius * 10.f;
+	float Reward = 100;
 	bool bIsFollow = false;
-	bool bIsActive = true;
-	UItemEXP(float reward) : UItem()
+	UItemEXP() : UItem()
 	{
-		Reward = reward;
-		ItemType = ETI_EXP;
-	}
-	void Die() {
-		bIsActive = false;
-	}
-	bool IsActive() {
-		return bIsActive;
+		BigRadius = Radius * 10.f;
+		bIsMagnet = true;
 	}
 	void Move(FVector location, float delta);
+	void ItemEffect(UGameManager* gameManager) override;
+	void CollisionCheck(UGameManager* gameManager) override;
 };

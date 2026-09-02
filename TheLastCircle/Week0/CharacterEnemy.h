@@ -11,7 +11,7 @@ enum class ETypeEnemy
 class UCharacterEnemy : public UCharacter
 {
 public:
-    ETypeEnemy EnemyType = ETypeEnemy::ETE_Walker;
+    ETypeEnemy EnemyType;
     float Reward = 100.f;
     UCharacterEnemy(ETypeEnemy enemyType)
     {
@@ -19,7 +19,8 @@ public:
         Delay = 5.f;
         bIsShoot = false;
         ShootTime = 5.f;
-        switch (enemyType)
+        EnemyType = enemyType;
+        switch (EnemyType)
         {
         case ETypeEnemy::ETE_Walker:
             Range = -1.f;
@@ -27,7 +28,7 @@ public:
             break;
         case ETypeEnemy::ETE_Runner:
             Range = -1.f;
-            Speed = 0.7f;
+            Speed = 0.5f;
             break;
         case ETypeEnemy::ETE_Ranger:
             Range = 0.3f;

@@ -23,6 +23,7 @@ public:
     float MaxHp;
     float InvincibleTime = 0.f;
     ETypeUpgrade Upgrades[4] = {ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets };
+    FVector PlayerOffset;
 
     UCharacterPlayer()
     {
@@ -30,7 +31,7 @@ public:
         Hp = 1000;
         Damage = 100;
         Delay = 1.f;
-        Speed = 0.5f;
+        Speed = 0.6f;
         Bullets = 5;
         Radian = 10.f;
     }
