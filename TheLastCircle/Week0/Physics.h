@@ -17,4 +17,4 @@ class UCharacterEnemy;
 class UProjectile;
 class UItemEXP;
 class UGameManager;
-void HandleCollision(UGameManager* gameManager, const float DELTA_TIME);
+void HandleCollision(UGameManager* GameManager, const float DELTA_TIME);

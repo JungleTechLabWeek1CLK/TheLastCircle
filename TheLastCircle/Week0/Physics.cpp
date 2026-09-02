@@ -9,17 +9,17 @@
 #include "GameManager.h"
 
 
-void HandleCollision(UGameManager* gameManager, const float DELTA_TIME)
+void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
 {
-    if (gameManager->IsPlaying() == false)
+    if (GameManager->IsPlaying() == false)
         return;
-    UCharacterPlayer* Player = gameManager->GetPlayer();
-    UCharacterEnemy** EnemyList = gameManager->GetEnemyList();
-    INT32 EnemyListCount = gameManager->GetEnemyListCount();
-    UProjectile** ProjectileList = gameManager->GetProjectileList();
-    INT32 ProjectileListCount = gameManager->GetProjectileListCount();
-    UItemEXP** ItemEXPList = gameManager->GetEXPList();
-    INT32 ItemEXPListCount = gameManager->GetEXPListCount();
+    UCharacterPlayer* Player = GameManager->GetPlayer();
+    UCharacterEnemy** EnemyList = GameManager->GetEnemyList();
+    INT32 EnemyListCount = GameManager->GetEnemyListCount();
+    UProjectile** ProjectileList = GameManager->GetProjectileList();
+    INT32 ProjectileListCount = GameManager->GetProjectileListCount();
+    UItemEXP** ItemEXPList = GameManager->GetEXPList();
+    INT32 ItemEXPListCount = GameManager->GetEXPListCount();
     // ----------
     // detecting collision regarding player
     // Player - Enemy 
@@ -89,7 +89,7 @@ void HandleCollision(UGameManager* gameManager, const float DELTA_TIME)
             // collision detected
             Player->GetEXP(CurrentItemEXP->Reward);
 
-            CurrentItemEXP->ItemEffect(gameManager);
+            CurrentItemEXP->ItemEffect(GameManager);
         }
     }
     // ----------
