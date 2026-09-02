@@ -40,7 +40,7 @@ public:
         Speed = 0.6f;
         Bullets = 5;
         Radian = 10.f;
-        Penetration = 2;
+        Penetration = 1;
     }
     ~UCharacterPlayer()
     {

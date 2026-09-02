@@ -217,6 +217,8 @@ void UGameManager::SpawnPlayer()
     Player.Damage = 100.f;
     Player.InvincibleTime = 0.f;
     Player.Radius = 0.05f;
+    Player.Penetration = 3;
+    Player.AttackSpeed = 1.5f;
     Player.bIsGuard = false;
 }
 
