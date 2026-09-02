@@ -8,7 +8,6 @@
 
 #include <algorithm>
 
-
 enum RenderType
 {
     PLAYER = 0, PROJECTILE_PLAYER = 2, PROJECTILE_ENEMY = 3, ITEM_EXP, ITEM_BOMB, ITEM_HEAL, ITEM_MAGNET,
@@ -93,6 +92,7 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
 
     Renderer->UpdateConstantBuffer(Player->PlayerOffset, Player->Radius, Player->Location, RenderType::PLAYER + RENDER_OFFSET, Player->InvincibleTime);
     Renderer->RenderPrimitive(EPT_Sphere);
+
 }
 
 void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle)

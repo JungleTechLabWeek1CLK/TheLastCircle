@@ -57,28 +57,9 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
             CurrentEnemyProjectile->Die();
         }
     }
-    // Player - ItemEXP (magnetic check)
-/*    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
-    {
-        UItem* CurrentItemEXP = ItemList[CurrentIndex];
-        ItemList[CurrentIndex]->CollisionCheck(gameManager);
-        if (CurrentItemEXP->bIsActive == false)
-            continue;
-
-        // Sphere - Sphere Collision
-        FVector CollisionNormal = CurrentItemEXP->Location - Player->Location; // not normalized yet
-        const float DISTANCE = CollisionNormal.GetMagnitude();
-
-        if (DISTANCE < (Player->Radius + CurrentItemEXP->LootableRadius))
-        {
-            // collision detected
-            CurrentItemEXP->bIsFollow = true;
-        }
-    }*/
     // Player - ItemEXP (collision check)
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
     {
-
         UItem* CurrentItemEXP = ItemList[CurrentIndex];
         CurrentItemEXP->CollisionCheck(GameManager);
     }
