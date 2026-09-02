@@ -22,7 +22,7 @@ void UGameUI::RenderTime(UGameManager* GameManager)
 
     auto Position = ImGui::GetMainViewport()->GetCenter();
     Position.y = 7.f;
-    Position.x -= 130.f;
+    Position.x -= 145.f;
     ImGui::SetNextWindowPos(Position, ImGuiCond_Always);
 
     ImGui::Begin("Timer", nullptr, window_flags);

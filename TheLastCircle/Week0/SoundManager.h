@@ -10,6 +10,7 @@ enum class ESFXType
     EnemyHit,
     EnemyDie,
     LevelUp,
+    Coin,
     GameOver,
     GameClear,
 

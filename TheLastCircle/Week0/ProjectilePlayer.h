@@ -16,5 +16,9 @@ public:
 		Cnt = 0;
 		HitEnemyList = new UCharacterEnemy * [cnt]();
 	}
+	~UProjectilePlayer()
+	{
+		delete[] HitEnemyList;
+	}
 private:
 };

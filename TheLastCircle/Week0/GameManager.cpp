@@ -52,6 +52,7 @@ void UGameManager::Initialize(URenderer* InputRenderer)
 
 
     USoundManager::GetInstance().LoadSFX(ESFXType::LevelUp, L"Sound/LevelUp.wav");
+    USoundManager::GetInstance().LoadSFX(ESFXType::Coin, L"Sound/Coin.wav");
 
     USoundManager::GetInstance().LoadSFX(ESFXType::GameClear, L"Sound/GameClear.wav");
     USoundManager::GetInstance().LoadSFX(ESFXType::GameOver, L"Sound/GameOver1.wav");
@@ -229,7 +230,7 @@ void UGameManager::SpawnPlayer()
     Player.Damage = 100.f;
     Player.InvincibleTime = 0.f;
     Player.Radius = 0.05f;
-    Player.Penetration = 3;
+    Player.Penetration = 1;
     Player.AttackSpeed = 1.5f;
     Player.bIsGuard = false;
 }
