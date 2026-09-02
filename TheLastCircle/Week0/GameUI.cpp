@@ -328,7 +328,7 @@ void UGameUI::RenderCreditsPopup()
         ImGui::SetWindowFontScale(1.0f);
 
         const char* Text = "Made By";
-        const char* CreditNames[] = {"aaaaaaaaa", "bbbbbbbb", "ccccccccccc"};
+        const char* CreditNames[] = {"CHOI KANG IN", "KIM MIN GON", "LEE JAE YONG"};
        
 
         float TextWidth = ImGui::CalcTextSize(Text).x;
