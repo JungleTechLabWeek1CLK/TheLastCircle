@@ -1,0 +1,60 @@
+#pragma once
+
+#include <Audio.h>
+
+enum class ESFXType
+{
+    PlayerShoot,
+    PlayerHit,
+    EnemyDie,
+    LevelUp,
+    GameOver,
+    GameClear,
+
+    Count
+};
+
+class USoundManager
+{
+public:
+
+    void Initialize();
+
+    void Update();
+
+    bool LoadSFX(ESFXType Type, const wchar_t* FilePath);
+    bool LoadBGM(const wchar_t* FilePath);
+
+    // no loop
+    void PlaySFX(ESFXType Type);
+
+    // loop
+    void PlayBGM();
+    void StopBGM();
+
+    void PauseBGM();
+    void ResumeBGM();
+
+    void PauseAllSound();
+    void ResumeAllSound();
+
+    // volume
+    void SetMasterVolume(float Volume);
+    void SetSFXVolume(float Volume);
+    void SetBGMVolume(float Volume);
+
+private:
+
+    // 소유권이 명확; 공식에서 스마트 포인터 권장
+    std::unique_ptr<DirectX::AudioEngine> AudioEngine;
+
+    std::unique_ptr<DirectX::SoundEffect> SFXSounds[static_cast<int>(ESFXType::Count)];
+
+    std::unique_ptr<DirectX::SoundEffect> BGMSound;
+
+    std::unique_ptr<DirectX::SoundEffectInstance> BGMInstance;
+
+    float MasterVolume = 1.0f;
+    float SFXVolume = 1.0f;
+    float BGMVolume = 1.0f;
+};
