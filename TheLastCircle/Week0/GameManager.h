@@ -140,6 +140,26 @@ public:
 		return Delta;
 	}
 
+	float GetBGMVolume() const
+	{
+		return SoundManager.GetBGMVolume();
+	}
+
+	float GetSFXVolume() const
+	{
+		return SoundManager.GetSFXVolume();
+	}
+
+	void SetBGMVolume(float Volume)
+	{
+		SoundManager.SetBGMVolume(Volume);
+	}
+
+	void SetSFXVolume(float Volume)
+	{
+		SoundManager.SetSFXVolume(Volume);
+	}
+
 
 private:
 	USoundManager SoundManager;
@@ -193,4 +213,6 @@ private:
 	void UpdateGameTime(float DeltaTime);
 	void CheckGameOver();
 	void CheckGameClear();
+
+	
 };

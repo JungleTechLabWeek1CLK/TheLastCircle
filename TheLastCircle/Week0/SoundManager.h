@@ -38,6 +38,21 @@ public:
     void PauseAllSound();
     void ResumeAllSound();
 
+    float GetMasterVolume() const
+    {
+        return MasterVolume;
+    }
+
+    float GetBGMVolume() const
+    {
+        return BGMVolume;
+    }
+
+    float GetSFXVolume() const
+    {
+        return SFXVolume;
+    }
+
     // volume
     void SetMasterVolume(float Volume);
     void SetSFXVolume(float Volume);

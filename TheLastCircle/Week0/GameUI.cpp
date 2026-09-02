@@ -42,7 +42,7 @@ void UGameUI::RenderPopup(UGameManager* GameManager, EPopupType type)
         break;
     case EPopupType::Pause:
         ImGui::SetNextWindowSize(
-            ImVec2(WindowSize.x, WindowSize.y*1.2f),
+            ImVec2(WindowSize.x*1.5f, WindowSize.y*1.5f),
             ImGuiCond_Always
         );
         RenderPausePopup(GameManager);
@@ -182,16 +182,16 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
 
+    ImGui::Begin("PausePopup", nullptr, WindowFlags);
+
     float WindowWidth = ImGui::GetWindowWidth();
     float WindowHeight = ImGui::GetWindowHeight();
-
-    ImGui::Begin("PausePopup", nullptr, WindowFlags);
 
     const char* GameClearText = "Paused";
 
     ImVec2 ButtonSize(
-        WindowWidth * 0.7f,
-        WindowHeight * 0.2f
+        WindowWidth * 0.35f,
+        WindowHeight * 0.1f
     );
 
     ImVec2 WindowSize(
@@ -206,7 +206,7 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
     float TextWidth = ImGui::CalcTextSize(GameClearText).x;
     float ScoreWidth = ImGui::CalcTextSize(ScoreText).x;
 
-    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
 
     ImGui::SetCursorPosX(
         (WindowWidth - TextWidth) * 0.5f
@@ -221,8 +221,33 @@ void UGameUI::RenderPausePopup(UGameManager* GameManager)
 
     ImGui::Text("SCORE:%d", Score);
 
-    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.1f));
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
 
+    int BGMVolume = GameManager->GetBGMVolume()*100;
+    int SFXVolume = GameManager->GetSFXVolume()*100;
+
+    float SliderWidth = WindowWidth * 0.5f;
+
+    // BGM
+    ImGui::SetCursorPosX((WindowWidth - SliderWidth) * 0.5f);
+
+    ImGui::SetNextItemWidth(SliderWidth);
+
+    if (ImGui::SliderInt(" BGM", &BGMVolume, 0.0f, 100.0f))
+    {
+        GameManager->SetBGMVolume(float(BGMVolume / 100.0f));
+    }
+
+    ImGui::SetCursorPosX((WindowWidth - SliderWidth) * 0.5f);
+
+    ImGui::SetNextItemWidth(SliderWidth);
+
+    if (ImGui::SliderInt(" SFX", &SFXVolume, 0.0f, 100.0f))
+    {
+        GameManager->SetSFXVolume(float(SFXVolume/100.0f));
+    }
+
+    ImGui::Dummy(ImVec2(0.f, WindowSize.y * 0.05f));
     // 가운데 정렬
     ImGui::SetCursorPosX(
         (WindowWidth - ButtonSize.x) * 0.5f
