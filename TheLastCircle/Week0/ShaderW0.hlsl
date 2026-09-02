@@ -1,8 +1,8 @@
 // ShaderW0.hlsl
 
-Texture2D MainTexture : register(t0); 
+Texture2D MainTexture : register(t0);
 Texture2D BackgroundTexture : register(t1);
-SamplerState MainSampler : register(s0); 
+SamplerState MainSampler : register(s0);
 
 
 cbuffer constants : register(b0)
@@ -15,16 +15,16 @@ cbuffer constants : register(b0)
     // .5 = player, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP
     // 10.5 = enemy_walker, 11.5 = enemy_runner, 12.5 = enemy_ranger
     // 100.5 = background, 99.5 = health bar, 98.5 = exp bar
-    float CharacterType; 
+    float CharacterType;
     
     float InvincibleTime;
 }
 
 struct VS_INPUT
 {
-    float4 Position : POSITION;      // Input position from vertex buffer
-    float4 DummyColor : COLOR;       // Input color from vertex buffer (but will never be used)
-    float2 UV : TEXCOORD;            // UV 
+    float4 Position : POSITION; // Input position from vertex buffer
+    float4 DummyColor : COLOR; // Input color from vertex buffer (but will never be used)
+    float2 UV : TEXCOORD; // UV 
 };
 
 struct PS_INPUT

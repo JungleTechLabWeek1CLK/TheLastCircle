@@ -19,7 +19,6 @@ enum RenderType
 constexpr float RENDER_OFFSET = 0.5f;
 
 void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
-
 {
     if (bIsTitle)
         return;
@@ -32,10 +31,7 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
     UItem** ItemList = GameManager->GetItemList();
     INT32 ItemListCount = GameManager->GetItemListCount();
 
-    FVector CameraLocation;
-    CameraLocation.x = std::clamp(Player->Location.x, Player->MinLocation + 1, Player->MaxLocation - 1);
-    CameraLocation.y = std::clamp(Player->Location.y, Player->MinLocation + 1, Player->MaxLocation - 1);
-    CameraLocation.z = 0.f;
+    FVector CameraLocation = Renderer->UpdateCameraLocation(Player->Location, Player->MinLocation, Player->MaxLocation);
 
     Player->PlayerOffset = Player->Location - CameraLocation;
 
@@ -63,7 +59,7 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
         if (CurrentProjectile->IsActive() == false)
             continue;
 
-        if(CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
+        if (CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
             Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->PlayerOffset, RenderType::PROJECTILE_PLAYER + RENDER_OFFSET);
         else
             Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->PlayerOffset, RenderType::PROJECTILE_ENEMY + RENDER_OFFSET);
@@ -80,9 +76,6 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
         Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - CameraLocation, CurrentItemEXP->Radius, Player->PlayerOffset, RenderType::ITEM_EXP + RENDER_OFFSET);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
-
-    // TODO: drop item list will be added
-
 }
 
 void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle)
@@ -90,10 +83,7 @@ void DrawBackground(UCharacterPlayer* Player, URenderer* Renderer, bool bIsTitle
     if (bIsTitle)
         return;
 
-    FVector CameraLocation;
-    CameraLocation.x = std::clamp(Player->Location.x, Player->MinLocation + 1, Player->MaxLocation - 1);
-    CameraLocation.y = std::clamp(Player->Location.y, Player->MinLocation + 1, Player->MaxLocation - 1);
-    CameraLocation.z = 0.f;
+    FVector CameraLocation = Renderer->UpdateCameraLocation(Player->Location, Player->MinLocation, Player->MaxLocation);
 
     FVector Origin = { 0.f, 0.f, 0.f };
     Renderer->UpdateConstantBuffer(Origin, 1.f, CameraLocation, RenderType::BACKGROUND + RENDER_OFFSET);
@@ -108,7 +98,7 @@ void DrawUI(UCharacterPlayer* Player, URenderer* Renderer, bool bIsPlaying)
         return;
 
     // Health bar
-    FVector Position = { -0.65f, 0.92f, 0.f};
+    FVector Position = { -0.65f, 0.92f, 0.f };
     FVector Info = { Player->GetCurrentHp(), Player->GetMaxHp(), 0.f };
     Renderer->UpdateConstantBuffer(Position, 1.f, Info, RenderType::UI_HEALTH + RENDER_OFFSET);
     Renderer->RenderPrimitive(EPT_UIQuad);

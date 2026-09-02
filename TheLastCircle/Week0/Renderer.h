@@ -16,6 +16,7 @@
 #include "Shapes.h"
 
 #include <vector>
+#include <algorithm>
 const float PI = 3.14159265359f;
 
 ///////////////////////////////////////////////
@@ -33,6 +34,8 @@ public:
         CreateVertexBuffers();
         CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/tile.png");    // texture location
         CreateSamplerState();
+
+        ResetCameraLocation();
     }
     void Release()
     {
@@ -106,6 +109,33 @@ public:
             RenderPrimitive(VertexBufferUIQuad, NumVerticesUIQuad);
             break;
         }
+    }
+
+    void ResetCameraLocation()
+    {
+        CameraLocation = { 0.f, 0.f, 0.f };
+    }
+
+    FVector UpdateCameraLocation(FVector PlayerLocation, const float MIN_LOCATION, const float MAX_LOCATION)
+    {
+        const float DIFF_X = PlayerLocation.x - CameraLocation.x;
+        const float DIFF_Y = PlayerLocation.y - CameraLocation.y;
+
+        if (DIFF_X < -CAMERA_DEADZONE_X)
+            CameraLocation.x = (PlayerLocation.x + CAMERA_DEADZONE_X);
+        else if (DIFF_X > CAMERA_DEADZONE_X)
+            CameraLocation.x = (PlayerLocation.x - CAMERA_DEADZONE_X);
+
+        if (DIFF_Y < -CAMERA_DEADZONE_Y)
+            CameraLocation.y = (PlayerLocation.y + CAMERA_DEADZONE_Y);
+        else if (DIFF_Y > CAMERA_DEADZONE_Y)
+            CameraLocation.y = (PlayerLocation.y - CAMERA_DEADZONE_Y);
+
+        CameraLocation.x = std::clamp(CameraLocation.x, MIN_LOCATION + 1, MAX_LOCATION - 1);
+        CameraLocation.y = std::clamp(CameraLocation.y, MIN_LOCATION + 1, MAX_LOCATION - 1);
+        CameraLocation.z = 0.f;
+
+        return CameraLocation;
     }
 
 
@@ -343,7 +373,7 @@ private:
     // Primitive Generator
     void GenerateTriangle()
     {
-        VerticesTriangle =  {
+        VerticesTriangle = {
             {  0.0f,  1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.5f, 0.0f }, // Top
             {  1.0f, -1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Bottom-Right
             { -1.0f, -1.0f, 0.0f,  1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 1.0f }  // Bottom-Left
@@ -454,14 +484,14 @@ private:
             Device,
             DeviceContext,
             FilePathSprite,
-            0,                         
-            D3D11_USAGE_DEFAULT,      
-            D3D11_BIND_SHADER_RESOURCE,   
-            0,                             
-            0,                              
-            DirectX::WIC_LOADER_FORCE_SRGB, 
-            nullptr,                        
-            &TextureSrvSprite              
+            0,
+            D3D11_USAGE_DEFAULT,
+            D3D11_BIND_SHADER_RESOURCE,
+            0,
+            0,
+            DirectX::WIC_LOADER_FORCE_SRGB,
+            nullptr,
+            &TextureSrvSprite
         );
 
         if (FAILED(Resut))
@@ -540,6 +570,11 @@ private:
 
     FLOAT ClearColor[4] = { 0.025f, 0.025f, 0.025f, 1.0f }; // color of the background
     D3D11_VIEWPORT ViewportInfo;
+
+    // Camera Lock
+    FVector CameraLocation;
+    const float CAMERA_DEADZONE_X = 0.2;
+    const float CAMERA_DEADZONE_Y = 0.1;
 
     // for managing primitives
     std::vector<FVertexSimple> VerticesTriangle;
