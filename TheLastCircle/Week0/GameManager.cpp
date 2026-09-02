@@ -233,6 +233,7 @@ void UGameManager::SpawnPlayer()
     Player.Radius = 0.05f;
     Player.Penetration = 1;
     Player.AttackSpeed = 1.f;
+    Player.bIsShoot = true;
     Player.bIsGuard = false;
 }
 

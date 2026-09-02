@@ -3,7 +3,8 @@
 
 void UCharacterPlayer::UpdateTime(float delta) {
     
-    ShootTime += delta;
+    if(bIsShoot == false)
+        ShootTime += delta;
     GuardTime += delta;
     if (bIsGuard) {
         InvincibleTime += delta;
