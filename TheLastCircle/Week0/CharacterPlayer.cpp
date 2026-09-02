@@ -61,10 +61,10 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
         break;
     case ETypeUpgrade::ETU_Scale:
         if(Radius > 0.01f)
-        Radius -= 0.001f;
+            Radius -= 0.01f;
         break;
     case ETypeUpgrade::ETU_AttackSpeed:
-        AttackSpeed -= 0.1f;
+        AttackSpeed = max(AttackSpeed - 0.4f, 0.1f);
         break;
     }
 }

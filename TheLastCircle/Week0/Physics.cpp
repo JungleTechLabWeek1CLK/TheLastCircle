@@ -86,7 +86,7 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
             if (DISTANCE < (CurrentPlayerProjectile->Radius + CurrentEnemy->Radius))
             {
                 // collision detected
-                UProjectilePlayer* PlayerProjectile = static_cast<UProjectilePlayer*>(CurrentPlayerProjectile);
+                UProjectilePlayer* PlayerProjectile = dynamic_cast<UProjectilePlayer*>(CurrentPlayerProjectile);
                 if (PlayerProjectile->Cnt != 0) {
                     bool sw = true;
                     for (int i = 0; i < PlayerProjectile->Cnt; i++) {

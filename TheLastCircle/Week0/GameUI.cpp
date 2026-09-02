@@ -773,6 +773,15 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             case ETypeUpgrade::ETU_bullets:
                 GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_bullets);
                 break;
+            case ETypeUpgrade::ETU_AttackSpeed:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_AttackSpeed);
+                break;
+            case ETypeUpgrade::ETU_Scale:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Scale);
+                break;
+            case ETypeUpgrade::ETU_Penetration:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Penetration);
+                break;
             }
             GameManager->ResumeGame();
             
