@@ -9,6 +9,7 @@ public:
 	float Damage = 100;
 	UItemBomb() : UItem(ETypeItem::ETI_Bomb)
 	{
+		Radius = 0.06f;
 		BigRadius = Radius * 100.f;
 		bIsMagnet = false;
 	}

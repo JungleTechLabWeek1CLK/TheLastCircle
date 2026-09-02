@@ -8,6 +8,7 @@ class UItemMagnet : public UItem
 public:
 	UItemMagnet() : UItem(ETypeItem::ETI_Magnet)
 	{
+		Radius = 0.06f;
 		BigRadius = 0;
 		bIsMagnet = false;
 	}

@@ -3,7 +3,7 @@
 #include "CharacterPlayer.h"
 #include "CharacterEnemy.h"
 #include "Projectile.h"
-#include "ItemEXP.h"
+#include "Item.h"
 #include "GameManager.h"
 
 #include <algorithm>
@@ -11,7 +11,7 @@
 
 enum RenderType
 {
-    PLAYER = 0, PROJECTILE_PLAYER = 2, PROJECTILE_ENEMY = 3, ITEM_EXP = 4,
+    PLAYER = 0, PROJECTILE_PLAYER = 2, PROJECTILE_ENEMY = 3, ITEM_EXP, ITEM_BOMB, ITEM_HEAL, ITEM_MAGNET,
     ENEMY_WALKER = 10, ENEMY_RUNNER, ENEMY_RANGER,
     UI_EXP = 98, UI_HEALTH,
     BACKGROUND = 100
@@ -69,11 +69,19 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
 
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
     {
-        UItem* CurrentItemEXP = ItemList[CurrentIndex];
-        if (CurrentItemEXP->IsActive() == false)
+        UItem* CurrentItem = ItemList[CurrentIndex];
+        if (CurrentItem->IsActive() == false)
             continue;
 
-        Renderer->UpdateConstantBuffer(CurrentItemEXP->Location - CameraLocation, CurrentItemEXP->Radius, Player->PlayerOffset, RenderType::ITEM_EXP + RENDER_OFFSET);
+        float RenderType = -1.f;
+        switch (CurrentItem->ItemType)
+        {
+        case ETypeItem::ETI_EXP: RenderType = RenderType::ITEM_EXP + RENDER_OFFSET; break;
+        case ETypeItem::ETI_Bomb: RenderType = RenderType::ITEM_BOMB + RENDER_OFFSET; break;
+        case ETypeItem::ETI_Heal: RenderType = RenderType::ITEM_HEAL + RENDER_OFFSET; break;
+        case ETypeItem::ETI_Magnet: RenderType = RenderType::ITEM_MAGNET + RENDER_OFFSET; break;
+        }
+        Renderer->UpdateConstantBuffer(CurrentItem->Location - CameraLocation, CurrentItem->Radius, Player->PlayerOffset, RenderType);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
 }

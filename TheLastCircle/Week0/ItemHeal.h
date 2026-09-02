@@ -8,6 +8,7 @@ class UItemHeal : public UItem
 public:
 	UItemHeal() : UItem(ETypeItem::ETI_Heal)
 	{
+		Radius = 0.06f;
 		BigRadius = 0;
 		bIsMagnet = false;
 	}

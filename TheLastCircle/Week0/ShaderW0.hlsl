@@ -12,7 +12,8 @@ cbuffer constants : register(b0)
     
     float3 PlayerOffset;
     
-    // .5 = player, 2.5 = player projectile, 3.5 = enemy projectile, 4.5 = EXP
+    // .5 = player, 2.5 = player projectile, 3.5 = enemy projectile
+    // 4.5 = EXP, 5.5 = bomb, 6.5 = heal, 7.5 = magnet
     // 10.5 = enemy_walker, 11.5 = enemy_runner, 12.5 = enemy_ranger
     // 100.5 = background, 99.5 = health bar, 98.5 = exp bar
     float CharacterType;
@@ -127,6 +128,26 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         // EXP
         float3 Color = { 0.9f, 0.9f, 0.15f };
         TextureColor = float4(Color, 1.f);
+    }
+    else if (CharacterType > 5 && CharacterType < 6)
+    {
+        // bomb
+        UvOffset.y = 0.66f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+    }
+    else if (CharacterType > 6 && CharacterType < 7)
+    {
+        // heal
+        UvOffset.x = 0.33f;
+        UvOffset.y = 0.66f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+    }
+    else if (CharacterType > 7 && CharacterType < 8)
+    {
+        // magnet
+        UvOffset.x = 0.66f;
+        UvOffset.y = 0.66f;
+        TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
     }
     else if (CharacterType > 10 && CharacterType < 11)
     {
