@@ -1,6 +1,7 @@
 #include "CharacterEnemy.h"
 
 void UCharacterEnemy::Move(FVector location, float delta) {
+
     FVector PreviousLocation = Location;
     UCharacter::Move(location, delta);
 
@@ -20,6 +21,7 @@ void UCharacterEnemy::Move(FVector location, float delta) {
     Location.y += InertiaVelocity.y * Speed * delta;
 
     float d = sqrt((Location.x - location.x) * (Location.x - location.x) + (Location.y - location.y) * (Location.y - location.y));
+
         if (d <= Range && Delay <= ShootTime)
             Attack(location);
 }

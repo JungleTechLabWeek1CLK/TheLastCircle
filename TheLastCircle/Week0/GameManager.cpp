@@ -7,6 +7,7 @@
 #include "CharacterEnemy.h"
 #include "Projectile.h"
 #include "Renderer.h"
+#include "ProjectileBible.h"
 
 UGameManager::UGameManager()
     : currentState(Title), 
@@ -491,8 +492,10 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
             NewProjectile = new UProjectilePlayer(Damage, Cnt);
             break;
         case ETypeProjectile::ETP_Axe:
-
             NewProjectile = new UProjectileAxe(Damage, Cnt);
+            break;
+        case ETypeProjectile::ETP_Bible:
+            NewProjectile = new UProjectileBible(Damage);
             break;
         }
     }

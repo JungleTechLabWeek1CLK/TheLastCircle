@@ -28,6 +28,7 @@ void UCharacter::GetDamage(float damage) {
         Die();
     }
 }
+
 void UCharacter::Die() {
     if (CharacterType == ETypeCharacter::ETC_Player)
         USoundManager::GetInstance().PlaySFX(ESFXType::PlayerDie);

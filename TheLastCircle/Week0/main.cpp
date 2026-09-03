@@ -154,6 +154,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             else if (GameManager.IsPaused())
             {
                 GameManager.ResumeGame();
+
+                // TODO: FOR TEST
+                GameManager.SpawnProjectile(Player->Location, 0.f, ETypeCharacter::ETC_PlayerProjectile,
+                    ETypeProjectile::ETP_Bible, 0.1f, 0);
             }
         }
 
@@ -247,6 +251,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     break;
                 case ETypeProjectile::ETP_Axe:
                     static_cast<UProjectileAxe*>(ProjectileList[CurrentIndex])->Move(ProjectileList[CurrentIndex]->Velocity, DeltaTime);
+                    break;
+                case ETypeProjectile::ETP_Bible:
+                    ProjectileList[CurrentIndex]->Move(Player->Location, DeltaTime);
                     break;
                 }
             }

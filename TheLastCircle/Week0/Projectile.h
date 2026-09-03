@@ -11,6 +11,7 @@ public:
 		Damage = damage;
 		ProjectileType = projectileType;
 	}
+	virtual ~UProjectile() {}
 	virtual void Move(FVector location, float delta)
 	{
 		if (bIsActive)
