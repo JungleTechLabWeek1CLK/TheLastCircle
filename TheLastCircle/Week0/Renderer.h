@@ -33,15 +33,15 @@ public:
         CreateConstantBuffer();
         CreateVertexBuffers();
         CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/bomb.png", L"Asset/tile.png", L"Asset/projectile.png");    // texture location
-        CreateSamplerState();
         CreateBlendState();
+        CreateSamplerState();
 
         ResetCameraLocation();
     }
     void Release()
     {
-        ReleaseBlendState();
         ReleaseSamplerState();
+        ReleaseBlendState();
         ReleaseShaderResourceViews();
         ReleaseVertexBuffers();
         ReleaseConstantBuffer();

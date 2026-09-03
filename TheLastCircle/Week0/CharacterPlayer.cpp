@@ -74,6 +74,7 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
         AttackSpeed = max(AttackSpeed - 0.4f, 0.1f);
         break;
     case ETypeUpgrade::ETU_Garlic:
+        GarlicDamage += 0.1f;
         break;
     }
 }
