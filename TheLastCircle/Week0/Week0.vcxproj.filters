@@ -111,7 +111,11 @@
     <ClCompile Include="ProjectileAxe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ProjectileBible.cpp">
+=======
+    <ClCompile Include="ProjectileGarlic.cpp">
+>>>>>>> 290f501 (Player Skill Garlic)
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,7 +195,11 @@
     <ClInclude Include="SoundManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ProjectileBible.h">
+=======
+    <ClInclude Include="ProjectileGarlic.h">
+>>>>>>> 290f501 (Player Skill Garlic)
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

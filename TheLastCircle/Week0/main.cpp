@@ -204,6 +204,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
                 Player->bIsAxe = true;
             }
+            GameManager.RemoveProjectile(GameManager.GetGarlicIndex());
+            GameManager.SpawnProjectile(Player->Location, 0, ETypeCharacter::ETC_PlayerProjectile,
+                ETypeProjectile::ETP_Garlic, Player->GarlicDamage, 10);
+
             Player->UpdateTime(DeltaTime);
             for (INT32 CurrentIndex = 0; CurrentIndex < GameManager.GetEnemyListCount(); ++CurrentIndex)
             {
@@ -282,8 +286,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         DrawBackground(Player, &Renderer, GameManager.IsTitle());
 
         DrawObjects(&GameManager, &Renderer, GameManager.IsTitle());
-
-
 
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();

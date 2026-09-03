@@ -5,8 +5,8 @@
 class UProjectile : public UCharacter
 {
 public:
-	UProjectile(float damage, ETypeProjectile projectileType) {
-		Radius = 0.01f;
+	UProjectile(float damage, ETypeProjectile projectileType, float radius = 0.01f) {
+		Radius = radius;
 		Speed = 1.f;
 		Damage = damage;
 		ProjectileType = projectileType;

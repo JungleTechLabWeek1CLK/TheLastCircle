@@ -6,6 +6,7 @@
 #include "ProjectileEnemy.h"
 #include "ProjectilePlayer.h"
 #include "ProjectileAxe.h"
+#include "ProjectileGarlic.h"
 #include "ItemEXP.h"
 #include "ItemBomb.h"
 #include "ItemHeal.h"
@@ -83,6 +84,8 @@ public:
 		return ItemCount;
 	}
 
+	void RemoveProjectile(int Index);
+
 	UProjectile** GetProjectileList()
 	{
 		return ProjectileList;
@@ -141,6 +144,13 @@ public:
 		return Delta;
 	}
 
+	void SetGarlicIndex(int garlicIndex) {
+		GarlicIndex = garlicIndex;
+	}
+
+	int GetGarlicIndex() {
+		return GarlicIndex;
+	}
 private:
 	EGameState currentState = Title;
 	EGameDifficulty Difficulty = EGameDifficulty::Easy;
@@ -182,7 +192,6 @@ private:
 	int ProjectileCapacity;
 
 	//void UpdateProjectiles(float DeltaTime);
-	void RemoveProjectile(int Index);
 	void ClearProjectiles();
 	void ResizeProjectileList();
 
@@ -193,5 +202,5 @@ private:
 	void CheckGameOver();
 	void CheckGameClear();
 
-	
+	float GarlicIndex;
 };

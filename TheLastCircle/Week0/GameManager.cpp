@@ -10,11 +10,11 @@
 #include "ProjectileBible.h"
 
 UGameManager::UGameManager()
-    : currentState(Title), 
-    GameTime(0.0f), 
-    GameClearTime(60.0f), 
-    EnemyList(nullptr),EnemyCount(0), 
-    EnemyCapacity(30), EnemySpawnTimer(0.0f), 
+    : currentState(Title),
+    GameTime(0.0f),
+    GameClearTime(60.0f),
+    EnemyList(nullptr), EnemyCount(0),
+    EnemyCapacity(30), EnemySpawnTimer(0.0f),
     EnemySpawnInterval(1.0f),
     ProjectileList(nullptr),
     ProjectileCount(0),
@@ -34,12 +34,6 @@ UGameManager::~UGameManager()
     delete[] EnemyList;
     EnemyList = nullptr;
 
-    for(int i = 0; i < ProjectileCount; ++i)
-    {
-        delete ProjectileList[i];
-        ProjectileList[i] = nullptr;
-    }
-
     delete[] ProjectileList;
     ProjectileList = nullptr;
 
@@ -52,7 +46,7 @@ void UGameManager::Initialize(URenderer* InputRenderer)
     USoundManager::GetInstance().Initialize();
 
     // 사운드 추가
-    
+
     USoundManager::GetInstance().LoadSFX(ESFXType::PlayerShoot, L"Sound/PlayerShoot.wav");
     USoundManager::GetInstance().LoadSFX(ESFXType::PlayerHit, L"Sound/PlayerHit.wav");
     USoundManager::GetInstance().LoadSFX(ESFXType::PlayerDie, L"Sound/PlayerDie.wav");
@@ -246,6 +240,8 @@ void UGameManager::SpawnPlayer()
     Player.AttackSpeed = 1.f;
     Player.bIsShoot = true;
     Player.bIsGuard = false;
+    SpawnProjectile(Player.Location, 0, ETypeCharacter::ETC_PlayerProjectile,
+        ETypeProjectile::ETP_Garlic, Player.GarlicDamage, 10);
 }
 
 void UGameManager::SpawnEnemy(ETypeEnemy EnemyType)
@@ -365,116 +361,6 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
 {
     UProjectile* NewProjectile = nullptr;
 
-    for (int i = 0; i < ProjectileCount; ++i)
-    {
-        UProjectile* Projectile = ProjectileList[i];
-
-        if (Projectile->IsActive())
-        {
-            continue;
-        }
-
-        // 적 투사체
-        if (type == ETypeCharacter::ETC_EnemyProjectile)
-        {
-            if (Projectile->CharacterType ==
-                ETypeCharacter::ETC_EnemyProjectile)
-            {
-                NewProjectile = Projectile;
-                break;
-            }
-        }
-
-        // 플레이어 투사체
-        else if (type == ETypeCharacter::ETC_PlayerProjectile)
-        {
-            // 일반 총알
-            if (Cnt < 100)
-            {
-                if (Projectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile && Projectile->ProjectileType ==  ETypeProjectile::ETP_Projectile)
-                {
-                    NewProjectile = Projectile;
-                    break;
-                }
-            }
-
-            // 도끼
-            else
-            {
-                if (Projectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile &&  Projectile->ProjectileType ==  ETypeProjectile::ETP_Axe)
-                {
-                    NewProjectile = Projectile;
-                    break;
-                }
-            }
-        }
-    }
-
-
-    // 가용가능한 객체 없으면 생성
-    if (NewProjectile == nullptr)
-    {
-        if (ProjectileCount >= ProjectileCapacity)
-        {
-            ResizeProjectileList();
-        }
-
-        if (type == ETypeCharacter::ETC_EnemyProjectile)
-        {
-            NewProjectile = new UProjectileEnemy(Damage);
-        }
-        else if (type == ETypeCharacter::ETC_PlayerProjectile)
-        {
-            // 일반 총알
-            if (Cnt < 100)
-            {
-                NewProjectile = new UProjectilePlayer(Damage, Cnt);
-            }
-
-            // 도끼
-            else
-            {
-                NewProjectile = new UProjectileAxe(Damage, Cnt);
-            }
-        }
-        else
-        {
-            return;
-        }
-
-        ProjectileList[ProjectileCount] = NewProjectile;
-        ++ProjectileCount;
-
-    }
-
-    NewProjectile->Location = Location;
-    NewProjectile->Velocity = Velocity;
-    NewProjectile->Damage = Damage;
-    NewProjectile->SetDealthTimer(5.0f);
-
-    NewProjectile->SetActive(true);
-
-    if (type == ETypeCharacter::ETC_PlayerProjectile)
-    {
-        if (projectileType == ETypeProjectile::ETP_Projectile)
-        {
-            UProjectilePlayer* PlayerProjectile = static_cast<UProjectilePlayer*>(NewProjectile);
-
-            PlayerProjectile->ResetProjectile(Cnt);
-        }
-        else if (projectileType == ETypeProjectile::ETP_Axe)
-        {
-            UProjectileAxe* AxeProjectile = static_cast<UProjectileAxe*>(NewProjectile);
-
-            AxeProjectile->ResetProjectile(Cnt);
-        }
-    }
-
-
-# pragma region Code before Pooling
-
-   
-/*
     if (ProjectileCount >= ProjectileCapacity)
     {
         ResizeProjectileList();
@@ -497,6 +383,10 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
         case ETypeProjectile::ETP_Bible:
             NewProjectile = new UProjectileBible(Damage);
             break;
+        case ETypeProjectile::ETP_Garlic:
+            NewProjectile = new UProjectileGarlic(Damage, 0.2f);
+            SetGarlicIndex(ProjectileCount);
+            break;
         }
     }
     else
@@ -514,11 +404,7 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
 
     ProjectileList[ProjectileCount] = NewProjectile;
 
-    ++ProjectileCount;*/
-
-#pragma endregion
-
-
+    ++ProjectileCount;
 }
 
 void UGameManager::SpawnItem(FVector location) {
@@ -568,8 +454,11 @@ void UGameManager::ClearProjectiles()
 {
     for (int i = 0; i < ProjectileCount; ++i)
     {
-        ProjectileList[i]->Die();
+        delete ProjectileList[i];
+        ProjectileList[i] = nullptr;
     }
+
+    ProjectileCount = 0;
 }
 
 void UGameManager::RemoveProjectile(int Index)
@@ -578,15 +467,7 @@ void UGameManager::RemoveProjectile(int Index)
     {
         return;
     }
-
     ProjectileList[Index]->Die();
-
-/*
-    if (Index < 0 || Index >= ProjectileCount)
-    {
-        return;
-    }
-
     delete ProjectileList[Index];
 
     ProjectileList[Index] =
@@ -594,7 +475,7 @@ void UGameManager::RemoveProjectile(int Index)
 
     ProjectileList[ProjectileCount - 1] = nullptr;
 
-    --ProjectileCount;*/
+    --ProjectileCount;
 }
 
 void UGameManager::UpdateEnemySpawn(float DeltaTime)
@@ -688,7 +569,7 @@ void UGameManager::UpdateScore()
     const float TimeScoreMultiplier = 10.0f;
     const float KillScoreMultiplier = 100.0f;
 
-    Score = DifficultyMultiplier *(GameTime * TimeScoreMultiplier + KillCount * KillScoreMultiplier);
+    Score = DifficultyMultiplier * (GameTime * TimeScoreMultiplier + KillCount * KillScoreMultiplier);
 }
 
 void UGameManager::UpdateGameTime(float DeltaTime)
@@ -699,7 +580,7 @@ void UGameManager::UpdateGameTime(float DeltaTime)
 
 void UGameManager::CheckGameOver()
 {
-     if (Player.Hp <= 0.0f)
+    if (Player.Hp <= 0.0f)
     {
         Lose();
     }

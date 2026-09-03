@@ -10,6 +10,7 @@ enum class ETypeUpgrade {
     ETU_AttackSpeed,
     ETU_Scale,
     ETU_Axe,
+    ETU_Garlic,
     COUNT
 };
 
@@ -24,6 +25,7 @@ public:
     int Level = 1;
     bool bIsGuard = false;
     bool bIsAxe = false;
+    float GarlicDamage = 0.1f;
     int AxeCnt = 2;
     float AxeDelay = 2.f;
     float AxeTime = 0.f;

@@ -15,7 +15,8 @@ enum class ETypeProjectile
 {
 	ETP_Projectile,
 	ETP_Axe,
-	ETP_Bible
+	ETP_Bible,
+	ETP_Garlic
 };
 class UCharacter
 {

@@ -73,6 +73,8 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
     case ETypeUpgrade::ETU_AttackSpeed:
         AttackSpeed = max(AttackSpeed - 0.4f, 0.1f);
         break;
+    case ETypeUpgrade::ETU_Garlic:
+        break;
     }
 }
 void UCharacterPlayer::GetEXP(int exp) {
