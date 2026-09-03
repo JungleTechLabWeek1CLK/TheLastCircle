@@ -727,7 +727,22 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             CardName = "Scale-";
             Description = "Become smaller";
             break;
-
+        case ETypeUpgrade::ETU_Axe:
+            CardName = "Axe";
+            Description = "Throwing Axe";
+            break;
+        case ETypeUpgrade::ETU_Garlic:
+            CardName = "Garlic";
+            Description = "Garlic always Good";
+            break;
+        case ETypeUpgrade::COUNT:
+            CardName = "COUNT";
+            Description = "Number";
+            break;
+        default:
+            CardName = "CardName";
+            Description = "Description";
+            break;
         }
 
         ImGui::BeginChild("UpgradeCard",
@@ -781,6 +796,12 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
                 break;
             case ETypeUpgrade::ETU_Penetration:
                 GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Penetration);
+                break;
+            case ETypeUpgrade::ETU_Axe:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Axe);
+                break;
+            case ETypeUpgrade::ETU_Garlic:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Garlic);
                 break;
             }
             GameManager->ResumeGame();
