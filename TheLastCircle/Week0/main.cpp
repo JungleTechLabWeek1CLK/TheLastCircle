@@ -184,7 +184,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     for (INT32 Index = 0; Index < Player->Bullets; ++Index) {
                         float offsetDeg = (Player->Bullets > 1) ? -Player->Radian / 2.0f + Index * (Player->Radian / (Player->Bullets - 1)) : 0.0f;
                         float finalRad = baseRad + (offsetDeg * DEG2RAD);
-                        GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage, Player->Penetration);
+                        GameManager.SpawnProjectile(Player->Location, { sin(finalRad), cos(finalRad), 0 }, ETypeCharacter::ETC_PlayerProjectile,
+                            ETypeProjectile::ETP_Projectile, Player->Damage, Player->Penetration);
                     }
 
                     Player->bIsShoot = false;
@@ -194,7 +195,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 for (int i = 0; i < Player->AxeCnt; i++) {
                     float angleRadian = (75.0f + ((float)rand() / RAND_MAX) * 30.0f) * (3.14159265f / 180.0f);
                     FVector Velocity = { cos(angleRadian), sin(angleRadian), 0 };
-                    GameManager.SpawnProjectile(Player->Location, Velocity * 2.f, ETypeCharacter::ETC_PlayerProjectile, Player->Damage, 999);
+                    GameManager.SpawnProjectile(Player->Location, Velocity * 2.f, ETypeCharacter::ETC_PlayerProjectile,
+                        ETypeProjectile::ETP_Axe, Player->Damage, 999);
                 }
                 Player->bIsAxe = true;
             }
@@ -206,7 +208,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     if (EnemyList[CurrentIndex]->bIsShoot) {
                         FVector V = { Player->Location.x - EnemyList[CurrentIndex]->Location.x, Player->Location.y - EnemyList[CurrentIndex]->Location.y ,0 };
                         V.Normalize();
-                        GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile, EnemyList[CurrentIndex]->Damage, 1);
+                        GameManager.SpawnProjectile(EnemyList[CurrentIndex]->Location, V, ETypeCharacter::ETC_EnemyProjectile,
+                            ETypeProjectile::ETP_Projectile, EnemyList[CurrentIndex]->Damage, 1);
                         EnemyList[CurrentIndex]->bIsShoot = false;
                     }
                     else

@@ -354,7 +354,7 @@ void UGameManager::ResizeProjectileList()
     ProjectileCapacity = NewCapacity;
 }
 
-void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage, int Cnt)
+void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, ETypeProjectile projectileType, float Damage, int Cnt)
 {
     UProjectile* NewProjectile = nullptr;
 
@@ -369,10 +369,16 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
     }
     else if (type == ETypeCharacter::ETC_PlayerProjectile)
     {
-        if(Cnt < 100)
+        switch (projectileType)
+        {
+        case ETypeProjectile::ETP_Projectile:
             NewProjectile = new UProjectilePlayer(Damage, Cnt);
-        else
+            break;
+        case ETypeProjectile::ETP_Axe:
+
             NewProjectile = new UProjectileAxe(Damage, Cnt);
+            break;
+        }
     }
     else
     {

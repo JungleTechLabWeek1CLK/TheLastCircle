@@ -13,6 +13,9 @@ public:
 		BigRadius = Radius * 10.f;
 		bIsMagnet = true;
 	}
+	~UItemEXP() {
+
+	}
 	void Move(FVector location, float delta);
 	void ItemEffect(UGameManager* gameManager) override;
 	void CollisionCheck(UGameManager* gameManager) override;
