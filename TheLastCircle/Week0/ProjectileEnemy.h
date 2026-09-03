@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Projectile.h"
-#include "Character.h"
 
+class UGameManager;
 class UProjectileEnemy : public UProjectile
 {
 public:
@@ -10,5 +10,7 @@ public:
 	{
 		CharacterType = ETypeCharacter::ETC_EnemyProjectile;
 	}
+
+	virtual void CollisionCheck(UGameManager* GameManager) override;
 private:
 };

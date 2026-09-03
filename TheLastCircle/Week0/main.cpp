@@ -193,7 +193,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             if (!Player->bIsAxe) {
                 for (int i = 0; i < Player->AxeCnt; i++) {
                     float angleRadian = (75.0f + ((float)rand() / RAND_MAX) * 30.0f) * (3.14159265f / 180.0f);
-                    GameManager.SpawnProjectile(Player->Location, { cos(angleRadian), sin(angleRadian), 0 }, ETypeCharacter::ETC_PlayerProjectile, Player->Damage, 999);
+                    FVector Velocity = { cos(angleRadian), sin(angleRadian), 0 };
+                    GameManager.SpawnProjectile(Player->Location, Velocity * 2.f, ETypeCharacter::ETC_PlayerProjectile, Player->Damage, 999);
                 }
                 Player->bIsAxe = true;
             }

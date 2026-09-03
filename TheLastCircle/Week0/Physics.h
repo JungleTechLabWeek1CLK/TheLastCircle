@@ -12,9 +12,5 @@ const FVector DIRECTION_DOWN(0.f, -1.f, 0.f);
 
 
 // Handle Collisions
-class UCharacterPlayer;
-class UCharacterEnemy;
-class UProjectile;
-class UItemEXP;
 class UGameManager;
 void HandleCollision(UGameManager* GameManager, const float DELTA_TIME);

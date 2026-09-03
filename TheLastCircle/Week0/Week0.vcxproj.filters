@@ -102,6 +102,15 @@
     <ClCompile Include="ProjectileAxe.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectileEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectilePlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileAxe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGui\imconfig.h">

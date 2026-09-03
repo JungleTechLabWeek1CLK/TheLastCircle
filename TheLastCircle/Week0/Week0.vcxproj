@@ -149,7 +149,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Projectile.h" />
+    <ClCompile Include="ProjectileAxe.cpp" />
     <ClCompile Include="ProjectileAxe.h" />
+    <ClCompile Include="ProjectileEnemy.cpp" />
+    <ClCompile Include="ProjectilePlayer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shapes.cpp" />
     <ClCompile Include="SoundManager.cpp" />

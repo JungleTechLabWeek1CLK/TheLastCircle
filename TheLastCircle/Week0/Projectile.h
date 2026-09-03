@@ -37,6 +37,9 @@ public:
 	void SetDealthTimer(float dealthTimer) {
 		DealthTimer = dealthTimer;
 	}
+
+	virtual void CollisionCheck(UGameManager* GameManager) = 0;
+
 	ETypeProjectile ProjectileType;
 private:
 	float DealthTimer = 5.f;

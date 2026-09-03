@@ -21,6 +21,8 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
     INT32 ProjectileListCount = GameManager->GetProjectileListCount();
     UItem** ItemList = GameManager->GetItemList();
     INT32 ItemListCount = GameManager->GetItemListCount();
+
+
     // ----------
     // detecting collision regarding player
     // Player - Enemy 
@@ -38,116 +40,21 @@ void HandleCollision(UGameManager* GameManager, const float DELTA_TIME)
             Player->GetDamage(CurrentEnemy->Damage);
         }
     }
-    // Player - Enemy Projectile 
-    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
-    {
-        UProjectile* CurrentEnemyProjectile = ProjectileList[CurrentIndex];
-        if (CurrentEnemyProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile || CurrentEnemyProjectile->IsActive() == false)
-            continue;
-
-        // Sphere - Sphere Collision
-        FVector CollisionNormal = CurrentEnemyProjectile->Location - Player->Location; // not normalized yet
-        const float DISTANCE = CollisionNormal.GetMagnitude();
-
-        if (DISTANCE < (Player->Radius + CurrentEnemyProjectile->Radius))
-        {
-            // collision detected
-            Player->GetDamage(CurrentEnemyProjectile->Damage);
-
-            CurrentEnemyProjectile->Die();
-        }
-    }
-    // Player - ItemEXP (collision check)
-    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
-    {
-        UItem* CurrentItemEXP = ItemList[CurrentIndex];
-        CurrentItemEXP->CollisionCheck(GameManager);
-    }
     // ----------
 
 
+    // Item (collision check)
+    for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)
+    {
+        UItem* CurrentItem = ItemList[CurrentIndex];
+        CurrentItem->CollisionCheck(GameManager);
+    }
 
-    // detecting collision regarding enemy
-    // Player Projectile - Enemy
+
+    // Projectile (collision check)
     for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
     {
-        UProjectile* CurrentPlayerProjectile = ProjectileList[CurrentIndex];
-        if (CurrentPlayerProjectile->CharacterType == ETypeCharacter::ETC_EnemyProjectile || CurrentPlayerProjectile->IsActive() == false)
-            continue;
-
-        for (INT32 CurrentNestedIndex = 0; CurrentNestedIndex < EnemyListCount; ++CurrentNestedIndex)
-        {
-            UCharacterEnemy* CurrentEnemy = EnemyList[CurrentNestedIndex];
-
-            // Sphere - Sphere Collision
-            FVector CollisionNormal = CurrentEnemy->Location - CurrentPlayerProjectile->Location; // not normalized yet
-            const float DISTANCE = CollisionNormal.GetMagnitude();
-
-            if (DISTANCE < (CurrentPlayerProjectile->Radius + CurrentEnemy->Radius))
-            {
-                // collision detected
-                if (CurrentPlayerProjectile->ProjectileType == ETypeProjectile::ETP_Axe)
-                {
-                    UProjectileAxe* PlayerProjectile = dynamic_cast<UProjectileAxe*>(CurrentPlayerProjectile);
-                    if (PlayerProjectile->Cnt != 0) {
-                        bool sw = true;
-                        for (int i = 0; i < PlayerProjectile->Cnt; i++) {
-                            if (PlayerProjectile->HitEnemyList[i] == CurrentEnemy) {
-                                sw = false;
-                                break;
-                            }
-                        }
-                        if (!sw)  break;
-                        PlayerProjectile->Cnt++;
-                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
-                            CurrentPlayerProjectile->Die();
-                        else {
-                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
-                        }
-                    }
-                    else {
-                        PlayerProjectile->Cnt++;
-                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
-                            CurrentPlayerProjectile->Die();
-                        else {
-                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
-                        }
-                        break;
-                    }
-                }
-                else if (CurrentPlayerProjectile->ProjectileType == ETypeProjectile::ETP_Projectile) {
-                    UProjectilePlayer* PlayerProjectile = dynamic_cast<UProjectilePlayer*>(CurrentPlayerProjectile);
-                    if (PlayerProjectile->Cnt != 0) {
-                        bool sw = true;
-                        for (int i = 0; i < PlayerProjectile->Cnt; i++) {
-                            if (PlayerProjectile->HitEnemyList[i] == CurrentEnemy) {
-                                sw = false;
-                                break;
-                            }
-                        }
-                        if (!sw)  break;
-                        PlayerProjectile->Cnt++;
-                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
-                            CurrentPlayerProjectile->Die();
-                        else {
-                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
-                        }
-                    }
-                    else {
-                        PlayerProjectile->Cnt++;
-                        CurrentEnemy->GetDamage(CurrentPlayerProjectile->Damage);
-                        if (PlayerProjectile->Cnt == PlayerProjectile->Penetration)
-                            CurrentPlayerProjectile->Die();
-                        else {
-                            PlayerProjectile->HitEnemyList[PlayerProjectile->Cnt - 1] = CurrentEnemy;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
+        UProjectile* CurrentProjectile = ProjectileList[CurrentIndex];
+        CurrentProjectile->CollisionCheck(GameManager);
     }
 }

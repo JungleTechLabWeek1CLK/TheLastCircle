@@ -15,6 +15,7 @@ void UItemEXP::ItemEffect(UGameManager* gameManager) {
     UItem::ItemEffect(gameManager);
 }
 
+
 void UItemEXP::CollisionCheck(UGameManager* gameManager) {
     if (!bIsActive || bIsFollow) {
         UItem::CollisionCheck(gameManager);
