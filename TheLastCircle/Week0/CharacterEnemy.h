@@ -13,6 +13,8 @@ class UCharacterEnemy : public UCharacter
 public:
     ETypeEnemy EnemyType;
     float Reward = 100.f;
+    FVector InertiaVelocity = { 0, 0, 0 };
+    float Acceleration = 1.5f;
     UCharacterEnemy(ETypeEnemy enemyType)
     {
         Hp = 200;
