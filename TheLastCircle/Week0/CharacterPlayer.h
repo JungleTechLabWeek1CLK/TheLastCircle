@@ -39,9 +39,10 @@ public:
     int MaxBible = 0;
     int BibleCnt = 0;
 
-    ETypeUpgrade Upgrades[10] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets ,
-                                  ETypeUpgrade::ETU_Penetration ,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale,
-                                  ETypeUpgrade::ETU_Axe, ETypeUpgrade::ETU_Garlic, ETypeUpgrade::ETU_Bible };
+    ETypeUpgrade Upgrades[3] = { ETypeUpgrade::ETU_Axe, ETypeUpgrade::ETU_Garlic, ETypeUpgrade::ETU_Bible };
+    ETypeUpgrade SpecialUpgrade[5] = { ETypeUpgrade::ETU_bullets ,ETypeUpgrade::ETU_Penetration,ETypeUpgrade::ETU_Axe, ETypeUpgrade::ETU_Garlic, ETypeUpgrade::ETU_Bible };
+    ETypeUpgrade NormalUpgrade[5] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale };
+
     FVector PlayerOffset;
 
     UCharacterPlayer()

@@ -89,13 +89,22 @@ void UCharacterPlayer::GetEXP(int exp) {
 }
 
 ETypeUpgrade* UCharacterPlayer::RandomUpgrade() {
-    int size = static_cast<int>(ETypeUpgrade::COUNT);
+    int size = 5;
     for (int i = 0; i < size; i++) {
         int r = i + rand() % (size - i);
-        ETypeUpgrade temp = Upgrades[i];
-        Upgrades[i] = Upgrades[r];
-        Upgrades[r] = temp;
+        ETypeUpgrade temp = SpecialUpgrade[i];
+        SpecialUpgrade[i] = SpecialUpgrade[r];
+        SpecialUpgrade[r] = temp;
     }
+    for (int i = 0; i < size; i++) {
+        int r = i + rand() % (size - i);
+        ETypeUpgrade temp = NormalUpgrade[i];
+        NormalUpgrade[i] = NormalUpgrade[r];
+        NormalUpgrade[r] = temp;
+    }
+    Upgrades[0] = NormalUpgrade[0];
+    Upgrades[1] = NormalUpgrade[1];
+    Upgrades[2] = SpecialUpgrade[0];
     return Upgrades;
 }
 void UpBible() {
