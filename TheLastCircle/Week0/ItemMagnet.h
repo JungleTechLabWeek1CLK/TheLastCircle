@@ -12,6 +12,9 @@ public:
 		BigRadius = 0;
 		bIsMagnet = false;
 	}
+	~UItemMagnet() {
+
+	}
 	void ItemEffect(UGameManager* gameManager) override;
 	void CollisionCheck(UGameManager* gameManager) override;
 };

@@ -43,7 +43,7 @@ public:
 
 	void SpawnPlayer();
 	void SpawnEnemy(ETypeEnemy EnemyType);
-	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, float Damage, int Cnt);
+	void SpawnProjectile(FVector Location, FVector Velocity, ETypeCharacter type, ETypeProjectile projectileType, float Damage, int Cnt);
 	void SpawnItem(FVector location);
 
 	void RemoveEnemy(int Index);
