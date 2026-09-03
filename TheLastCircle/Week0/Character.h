@@ -56,6 +56,10 @@ public:
 	virtual void GetDamage(float damage);
 	virtual void Die();
 	bool IsActive();
+	void SetActive(bool bActive)
+	{
+		bIsActive = bActive;
+	}
 	void UpdateTime(float delta);
 private:
 	bool bIsActive = true;
