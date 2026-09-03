@@ -79,6 +79,9 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
     case ETypeUpgrade::ETU_Bible:
         MaxBible++;
         break;
+    case ETypeUpgrade::ETU_Axe:
+        AxeCnt++;
+        break;
     }
 }
 void UCharacterPlayer::GetEXP(int exp) {

@@ -239,7 +239,7 @@ void UGameManager::SpawnPlayer()
     Player.Penetration = 1;
     Player.AttackSpeed = 1.f;
     Player.AxeCnt = 0.f;
-    Player.GarlicDamage = 0.1f;
+    Player.GarlicDamage = 0.f;
     Player.bIsShoot = true;
     Player.bIsGuard = false;
     Player.MaxBible = 0;
