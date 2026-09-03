@@ -1,7 +1,24 @@
 #include "CharacterEnemy.h"
 
 void UCharacterEnemy::Move(FVector location, float delta) {
+    FVector PreviousLocation = Location;
     UCharacter::Move(location, delta);
+
+    FVector TargetVelocity = Velocity;
+    Location = PreviousLocation;
+
+    // 현재 속도가 목표 속도를 천천히 따라가게 함
+    InertiaVelocity.x +=
+        (TargetVelocity.x - InertiaVelocity.x) * Acceleration * delta;
+
+    InertiaVelocity.y +=
+        (TargetVelocity.y - InertiaVelocity.y) * Acceleration * delta;
+
+
+    // 관성이 적용된 속도로 실제 이동
+    Location.x += InertiaVelocity.x * Speed * delta;
+    Location.y += InertiaVelocity.y * Speed * delta;
+
     float d = sqrt((Location.x - location.x) * (Location.x - location.x) + (Location.y - location.y) * (Location.y - location.y));
         if (d <= Range && Delay <= ShootTime)
             Attack(location);
