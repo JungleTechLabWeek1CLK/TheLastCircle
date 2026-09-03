@@ -33,6 +33,12 @@ UGameManager::~UGameManager()
     delete[] EnemyList;
     EnemyList = nullptr;
 
+    for(int i = 0; i < ProjectileCount; ++i)
+    {
+        delete ProjectileList[i];
+        ProjectileList[i] = nullptr;
+    }
+
     delete[] ProjectileList;
     ProjectileList = nullptr;
 
@@ -358,6 +364,116 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
 {
     UProjectile* NewProjectile = nullptr;
 
+    for (int i = 0; i < ProjectileCount; ++i)
+    {
+        UProjectile* Projectile = ProjectileList[i];
+
+        if (Projectile->IsActive())
+        {
+            continue;
+        }
+
+        // 적 투사체
+        if (type == ETypeCharacter::ETC_EnemyProjectile)
+        {
+            if (Projectile->CharacterType ==
+                ETypeCharacter::ETC_EnemyProjectile)
+            {
+                NewProjectile = Projectile;
+                break;
+            }
+        }
+
+        // 플레이어 투사체
+        else if (type == ETypeCharacter::ETC_PlayerProjectile)
+        {
+            // 일반 총알
+            if (Cnt < 100)
+            {
+                if (Projectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile && Projectile->ProjectileType ==  ETypeProjectile::ETP_Projectile)
+                {
+                    NewProjectile = Projectile;
+                    break;
+                }
+            }
+
+            // 도끼
+            else
+            {
+                if (Projectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile &&  Projectile->ProjectileType ==  ETypeProjectile::ETP_Axe)
+                {
+                    NewProjectile = Projectile;
+                    break;
+                }
+            }
+        }
+    }
+
+
+    // 가용가능한 객체 없으면 생성
+    if (NewProjectile == nullptr)
+    {
+        if (ProjectileCount >= ProjectileCapacity)
+        {
+            ResizeProjectileList();
+        }
+
+        if (type == ETypeCharacter::ETC_EnemyProjectile)
+        {
+            NewProjectile = new UProjectileEnemy(Damage);
+        }
+        else if (type == ETypeCharacter::ETC_PlayerProjectile)
+        {
+            // 일반 총알
+            if (Cnt < 100)
+            {
+                NewProjectile = new UProjectilePlayer(Damage, Cnt);
+            }
+
+            // 도끼
+            else
+            {
+                NewProjectile = new UProjectileAxe(Damage, Cnt);
+            }
+        }
+        else
+        {
+            return;
+        }
+
+        ProjectileList[ProjectileCount] = NewProjectile;
+        ++ProjectileCount;
+
+    }
+
+    NewProjectile->Location = Location;
+    NewProjectile->Velocity = Velocity;
+    NewProjectile->Damage = Damage;
+    NewProjectile->SetDealthTimer(5.0f);
+
+    NewProjectile->SetActive(true);
+
+    if (type == ETypeCharacter::ETC_PlayerProjectile)
+    {
+        if (projectileType == ETypeProjectile::ETP_Projectile)
+        {
+            UProjectilePlayer* PlayerProjectile = static_cast<UProjectilePlayer*>(NewProjectile);
+
+            PlayerProjectile->ResetProjectile(Cnt);
+        }
+        else if (projectileType == ETypeProjectile::ETP_Axe)
+        {
+            UProjectileAxe* AxeProjectile = static_cast<UProjectileAxe*>(NewProjectile);
+
+            AxeProjectile->ResetProjectile(Cnt);
+        }
+    }
+
+
+# pragma region Code before Pooling
+
+   
+/*
     if (ProjectileCount >= ProjectileCapacity)
     {
         ResizeProjectileList();
@@ -395,7 +511,11 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
 
     ProjectileList[ProjectileCount] = NewProjectile;
 
-    ++ProjectileCount;
+    ++ProjectileCount;*/
+
+#pragma endregion
+
+
 }
 
 void UGameManager::SpawnItem(FVector location) {
@@ -445,15 +565,20 @@ void UGameManager::ClearProjectiles()
 {
     for (int i = 0; i < ProjectileCount; ++i)
     {
-        delete ProjectileList[i];
-        ProjectileList[i] = nullptr;
+        ProjectileList[i]->Die();
     }
-
-    ProjectileCount = 0;
 }
 
 void UGameManager::RemoveProjectile(int Index)
 {
+    if (Index < 0 || Index >= ProjectileCount)
+    {
+        return;
+    }
+
+    ProjectileList[Index]->Die();
+
+/*
     if (Index < 0 || Index >= ProjectileCount)
     {
         return;
@@ -466,7 +591,7 @@ void UGameManager::RemoveProjectile(int Index)
 
     ProjectileList[ProjectileCount - 1] = nullptr;
 
-    --ProjectileCount;
+    --ProjectileCount;*/
 }
 
 void UGameManager::UpdateEnemySpawn(float DeltaTime)
