@@ -18,6 +18,10 @@ enum class ETypeUpgrade {
 class UCharacterPlayer : public UCharacter
 {
 public:
+
+    //디버그용
+    int idx = 0;
+
     int Bullets;
     int Penetration;
     float Radian; //총이 퍼지는 각도

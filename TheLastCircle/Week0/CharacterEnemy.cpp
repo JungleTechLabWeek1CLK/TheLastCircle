@@ -4,6 +4,8 @@
 void UCharacterEnemy::GetDamage(float damage)
 {
     UCharacter::GetDamage(damage);
+    if(damage >10.f)
+    USoundManager::GetInstance().PlaySFX(ESFXType::EnemyHit);
 }
 
 
