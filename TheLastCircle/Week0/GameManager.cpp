@@ -238,8 +238,12 @@ void UGameManager::SpawnPlayer()
     Player.Radius = 0.05f;
     Player.Penetration = 1;
     Player.AttackSpeed = 1.f;
+    Player.AxeCnt = 0.f;
+    Player.GarlicDamage = 0.1f;
     Player.bIsShoot = true;
     Player.bIsGuard = false;
+    Player.MaxBible = 0;
+    Player.BibleCnt = 0;
     SpawnProjectile(Player.Location, 0, ETypeCharacter::ETC_PlayerProjectile,
         ETypeProjectile::ETP_Garlic, Player.GarlicDamage, 10);
 }
@@ -378,7 +382,7 @@ void UGameManager::SpawnProjectile(FVector Location, FVector Velocity, ETypeChar
             NewProjectile = new UProjectilePlayer(Damage, Cnt);
             break;
         case ETypeProjectile::ETP_Axe:
-            NewProjectile = new UProjectileAxe(Damage, Cnt);
+            NewProjectile = new UProjectileAxe(Damage, Cnt, 0.07f);
             break;
         case ETypeProjectile::ETP_Bible:
             NewProjectile = new UProjectileBible(Damage);

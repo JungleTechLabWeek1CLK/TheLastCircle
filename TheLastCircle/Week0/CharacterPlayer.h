@@ -11,6 +11,7 @@ enum class ETypeUpgrade {
     ETU_Scale,
     ETU_Axe,
     ETU_Garlic,
+    ETU_Bible,
     COUNT
 };
 
@@ -26,7 +27,7 @@ public:
     bool bIsGuard = false;
     bool bIsAxe = false;
     float GarlicDamage = 0.1f;
-    int AxeCnt = 2;
+    int AxeCnt = 0;
     float AxeDelay = 2.f;
     float AxeTime = 0.f;
     float GuardTime = 0.f;
@@ -34,8 +35,13 @@ public:
     float MaxHp;
     float InvincibleTime = 0.f;
     float AttackSpeed = 1.5f;
-    ETypeUpgrade Upgrades[9] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets ,
-                                        ETypeUpgrade::ETU_Penetration ,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale, ETypeUpgrade::ETU_Axe, ETypeUpgrade::ETU_Garlic };
+
+    int MaxBible = 0;
+    int BibleCnt = 0;
+
+    ETypeUpgrade Upgrades[10] = { ETypeUpgrade::ETU_Damage, ETypeUpgrade::ETU_Hp, ETypeUpgrade::ETU_Speed, ETypeUpgrade::ETU_bullets ,
+                                  ETypeUpgrade::ETU_Penetration ,ETypeUpgrade::ETU_AttackSpeed ,ETypeUpgrade::ETU_Scale,
+                                  ETypeUpgrade::ETU_Axe, ETypeUpgrade::ETU_Garlic, ETypeUpgrade::ETU_Bible };
     FVector PlayerOffset;
 
     UCharacterPlayer()
@@ -73,6 +79,7 @@ public:
     float GetMaxHp() {
         return MaxHp;
     }
+    void UpBible(){}
 private:
 
 };

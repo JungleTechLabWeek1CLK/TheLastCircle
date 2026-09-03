@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 
-UProjectileAxe::UProjectileAxe(float damage, int cnt) : UProjectile(damage, ETypeProjectile::ETP_Axe)
+UProjectileAxe::UProjectileAxe(float damage, int cnt, float radius) : UProjectile(damage, ETypeProjectile::ETP_Axe, radius)
 {
     CharacterType = ETypeCharacter::ETC_PlayerProjectile;
     Penetration = cnt;

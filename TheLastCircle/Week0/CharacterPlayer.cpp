@@ -76,6 +76,9 @@ void UCharacterPlayer::Upgrade(ETypeUpgrade type) {
     case ETypeUpgrade::ETU_Garlic:
         GarlicDamage += 0.1f;
         break;
+    case ETypeUpgrade::ETU_Bible:
+        MaxBible++;
+        break;
     }
 }
 void UCharacterPlayer::GetEXP(int exp) {
@@ -91,4 +94,7 @@ ETypeUpgrade* UCharacterPlayer::RandomUpgrade() {
         Upgrades[r] = temp;
     }
     return Upgrades;
+}
+void UpBible() {
+
 }

@@ -154,10 +154,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             else if (GameManager.IsPaused())
             {
                 GameManager.ResumeGame();
-
-                // TODO: FOR TEST
-                GameManager.SpawnProjectile(Player->Location, 0.f, ETypeCharacter::ETC_PlayerProjectile,
-                    ETypeProjectile::ETP_Bible, 0.1f, 0);
             }
         }
 
@@ -203,6 +199,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         ETypeProjectile::ETP_Axe, Player->Damage, 999);
                 }
                 Player->bIsAxe = true;
+            }
+            for (int i = Player->BibleCnt; i < Player->MaxBible; i++) {
+                GameManager.SpawnProjectile(Player->Location, 0.f, ETypeCharacter::ETC_PlayerProjectile,
+                    ETypeProjectile::ETP_Bible, 0.1f, 0);
+                Player->BibleCnt++;
             }
             GameManager.RemoveProjectile(GameManager.GetGarlicIndex());
             GameManager.SpawnProjectile(Player->Location, 0, ETypeCharacter::ETC_PlayerProjectile,

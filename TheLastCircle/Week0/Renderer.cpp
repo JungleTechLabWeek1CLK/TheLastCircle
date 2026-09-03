@@ -42,7 +42,7 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
         Garlic = ProjectileList[GameManager->GetGarlicIndex()];
     if (Garlic->IsActive())
     {
-        Renderer->UpdateConstantBuffer(Garlic->Location - CameraLocation, Garlic->Radius, Player->PlayerOffset, RenderType::PROJECTILE_GARLIC + RENDER_OFFSET);
+        Renderer->UpdateConstantBuffer(Garlic->Location - CameraLocation, Garlic->Radius, Player->PlayerOffset, RenderType::PROJECTILE_GARLIC + RENDER_OFFSET, Player->GarlicDamage);
         Renderer->RenderPrimitive(EPT_Sphere);
     }
     for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)

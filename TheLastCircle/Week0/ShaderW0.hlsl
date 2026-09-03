@@ -210,7 +210,7 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         UvOffset.y = 0.5f;
         TextureColor = ProjectileTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
         
-        TextureColor.a = 0.1f;
+        TextureColor.a = min(1.f, InvincibleTime);
     }
     else if (CharacterType > 21 && CharacterType < 22)
     {

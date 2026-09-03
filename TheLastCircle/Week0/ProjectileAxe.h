@@ -10,7 +10,7 @@ public:
 	int Penetration;
 	int Cnt;
 	UCharacterEnemy** HitEnemyList;
-    UProjectileAxe(float damage, int cnt);
+    UProjectileAxe(float damage, int cnt, float radius);
 	~UProjectileAxe();
 	void Move(FVector location, float delta) override {
 		Velocity.y -= 0.05f;
