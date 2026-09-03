@@ -151,6 +151,7 @@
     <ClCompile Include="Projectile.h" />
     <ClCompile Include="ProjectileAxe.cpp" />
     <ClCompile Include="ProjectileAxe.h" />
+    <ClCompile Include="ProjectileBible.cpp" />
     <ClCompile Include="ProjectileEnemy.cpp" />
     <ClCompile Include="ProjectilePlayer.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="ItemMagnet.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="ProjectileBible.h" />
     <ClInclude Include="ProjectileEnemy.h" />
     <ClInclude Include="ProjectilePlayer.h" />
     <ClInclude Include="Renderer.h" />

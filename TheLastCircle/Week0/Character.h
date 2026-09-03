@@ -14,7 +14,8 @@ enum class ETypeCharacter
 enum class ETypeProjectile
 {
 	ETP_Projectile,
-	ETP_Axe
+	ETP_Axe,
+	ETP_Bible
 };
 class UCharacter
 {
@@ -33,6 +34,11 @@ public:
 	FVector Color;
 	ETypeCharacter CharacterType;
 
+	// knockback
+	FVector KnockbackDirection;
+	float KnockbackTimer = -1.f;
+
+
 	float Delay;
 	float ShootTime = 0;
 	bool bIsShoot = true;
@@ -49,6 +55,12 @@ public:
 	}
 	~UCharacter()
 	{
+	}
+
+	void GetKnockback(FVector InputKnockbackDirection)
+	{
+		KnockbackDirection = InputKnockbackDirection;
+		KnockbackTimer = 0.15f;
 	}
 
 	virtual void Move(FVector location, float delta);
