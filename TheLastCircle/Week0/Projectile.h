@@ -41,6 +41,11 @@ public:
 	virtual void CollisionCheck(UGameManager* GameManager) = 0;
 
 	ETypeProjectile ProjectileType;
+
+	void SetActive(bool bActive)
+	{
+		bIsActive = bActive;
+	}
 private:
 	float DealthTimer = 5.f;
 	bool bIsActive = true;
