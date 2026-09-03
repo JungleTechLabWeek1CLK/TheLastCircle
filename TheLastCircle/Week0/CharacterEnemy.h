@@ -42,6 +42,7 @@ public:
     ~UCharacterEnemy()
     {
     }
+    void GetDamage(float damage) override;
     void Move(FVector location, float delta) override;
     void Attack(FVector location) override;
     void UpdateTime(float delta);

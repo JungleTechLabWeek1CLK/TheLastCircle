@@ -22,8 +22,6 @@ void UCharacter::Attack(FVector location) {
 void UCharacter::GetDamage(float damage) {
     Hp -= damage;
 
-    USoundManager::GetInstance().PlaySFX(ESFXType::EnemyHit);
-
     if (Hp <= 0) {
         Die();
     }

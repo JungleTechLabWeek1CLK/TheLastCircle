@@ -1,4 +1,11 @@
 #include "CharacterEnemy.h"
+#include "SoundManager.h"
+
+void UCharacterEnemy::GetDamage(float damage)
+{
+    UCharacter::GetDamage(damage);
+}
+
 
 void UCharacterEnemy::Move(FVector location, float delta) {
 
