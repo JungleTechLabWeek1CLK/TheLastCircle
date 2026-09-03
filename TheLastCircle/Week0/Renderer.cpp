@@ -12,6 +12,7 @@ enum RenderType
 {
     PLAYER = 0, PROJECTILE_PLAYER = 2, PROJECTILE_ENEMY = 3, ITEM_EXP, ITEM_BOMB, ITEM_HEAL, ITEM_MAGNET,
     ENEMY_WALKER = 10, ENEMY_RUNNER, ENEMY_RANGER,
+    PROJECTILE_GARLIC = 20, PROJECTILE_AXE, PROJECTILE_BIBLE,
     UI_EXP = 98, UI_HEALTH,
     BACKGROUND = 100
 };
@@ -34,6 +35,45 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
 
     Player->PlayerOffset = Player->Location - CameraLocation;
 
+    
+
+    UProjectile* Garlic = nullptr;
+    if (GameManager->GetGarlicIndex() > -1.f)
+        Garlic = ProjectileList[GameManager->GetGarlicIndex()];
+    if (Garlic->IsActive())
+    {
+        Renderer->UpdateConstantBuffer(Garlic->Location - CameraLocation, Garlic->Radius, Player->PlayerOffset, RenderType::PROJECTILE_GARLIC + RENDER_OFFSET);
+        Renderer->RenderPrimitive(EPT_Sphere);
+    }
+    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
+    {
+        UProjectile* CurrentProjectile = ProjectileList[CurrentIndex];
+
+        if (CurrentProjectile->IsActive() == false || CurrentProjectile == Garlic)
+            continue;
+
+        if (CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
+        {
+            float RenderType;
+            switch (CurrentProjectile->ProjectileType)
+            {
+            case ETypeProjectile::ETP_Projectile: RenderType = RenderType::PROJECTILE_PLAYER; break;
+            case ETypeProjectile::ETP_Axe: RenderType = RenderType::PROJECTILE_AXE; break;
+            case ETypeProjectile::ETP_Garlic: RenderType = RenderType::PROJECTILE_GARLIC; break;
+            case ETypeProjectile::ETP_Bible: RenderType = RenderType::PROJECTILE_BIBLE; break;
+            }
+            RenderType += RENDER_OFFSET;
+
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->PlayerOffset, RenderType);
+        }
+        else
+            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->PlayerOffset, RenderType::PROJECTILE_ENEMY + RENDER_OFFSET);
+
+        Renderer->RenderPrimitive(EPT_Sphere);
+    }
+
+
+
     for (INT32 CurrentIndex = 0; CurrentIndex < EnemyListCount; ++CurrentIndex)
     {
         UCharacterEnemy* CurrentEnemy = EnemyList[CurrentIndex];
@@ -46,21 +86,6 @@ void DrawObjects(UGameManager* GameManager, URenderer* Renderer, bool bIsTitle)
         }
         Renderer->UpdateConstantBuffer(CurrentEnemy->Location - CameraLocation, CurrentEnemy->Radius, Player->PlayerOffset, RenderType);
         Renderer->RenderPrimitive(EPT_Triangle);
-    }
-
-    for (INT32 CurrentIndex = 0; CurrentIndex < ProjectileListCount; ++CurrentIndex)
-    {
-        UProjectile* CurrentProjectile = ProjectileList[CurrentIndex];
-
-        if (CurrentProjectile->IsActive() == false)
-            continue;
-
-        if (CurrentProjectile->CharacterType == ETypeCharacter::ETC_PlayerProjectile)
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->PlayerOffset, RenderType::PROJECTILE_PLAYER + RENDER_OFFSET);
-        else
-            Renderer->UpdateConstantBuffer(CurrentProjectile->Location - CameraLocation, CurrentProjectile->Radius, Player->PlayerOffset, RenderType::PROJECTILE_ENEMY + RENDER_OFFSET);
-
-        Renderer->RenderPrimitive(EPT_Sphere);
     }
 
     for (INT32 CurrentIndex = 0; CurrentIndex < ItemListCount; ++CurrentIndex)

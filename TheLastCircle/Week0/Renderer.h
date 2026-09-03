@@ -32,13 +32,15 @@ public:
         CreateShader();
         CreateConstantBuffer();
         CreateVertexBuffers();
-        CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/bomb.png", L"Asset/tile.png");    // texture location
+        CreateShaderResourceViews(L"Asset/sprite.png", L"Asset/bomb.png", L"Asset/tile.png", L"Asset/projectile.png");    // texture location
         CreateSamplerState();
+        CreateBlendState();
 
         ResetCameraLocation();
     }
     void Release()
     {
+        ReleaseBlendState();
         ReleaseSamplerState();
         ReleaseShaderResourceViews();
         ReleaseVertexBuffers();
@@ -69,7 +71,7 @@ public:
         DeviceContext->RSSetState(RasterizerState);
 
         DeviceContext->OMSetRenderTargets(1, &FrameBufferRTV, nullptr);
-        DeviceContext->OMSetBlendState(nullptr, nullptr, 0xffffffff);
+        DeviceContext->OMSetBlendState(AlphaBlendState, nullptr, 0xffffffff);
 
         PrepareShader();
     }
@@ -305,24 +307,13 @@ private:
         DeviceContext->PSSetShaderResources(0, 1, &TextureSrvSprite);
         DeviceContext->PSSetShaderResources(1, 1, &TextureSrvSpriteBomb);
         DeviceContext->PSSetShaderResources(2, 1, &TextureSrvTile);
+        DeviceContext->PSSetShaderResources(3, 1, &TextureSrvProjectile);
         DeviceContext->PSSetSamplers(0, 1, &SamplerState);
     }
 
     // Vertex Buffer
     void CreateVertexBuffers()
     {
-        /*
-        * previous code
-        NumVerticesTriangle = sizeof(triangle_vertices) / sizeof(FVertexSimple);
-        NumVerticesCube = sizeof(cube_vertices) / sizeof(FVertexSimple);
-        NumVerticesSphere = sizeof(sphere_vertices) / sizeof(FVertexSimple);
-
-        VertexBufferTriangle = CreateVertexBuffer(triangle_vertices, sizeof(triangle_vertices));
-        VertexBufferCube = CreateVertexBuffer(cube_vertices, sizeof(cube_vertices));
-        VertexBufferSphere = CreateVertexBuffer(sphere_vertices, sizeof(sphere_vertices));
-        */
-
-        // revised one
         GenerateTriangle();
         GenerateCircle(10);
         GenerateBackgroundQuad(10);
@@ -356,10 +347,6 @@ private:
     }
     void ReleaseVertexBuffers()
     {
-        /*
-        ReleaseVertexBuffer(VertexBufferCube);
-        ReleaseVertexBuffer(VertexBufferSphere);
-        */
         ReleaseVertexBuffer(VertexBufferTriangle);
         ReleaseVertexBuffer(VertexBufferCircle);
         ReleaseVertexBuffer(VertexBufferBackgroundQuad);
@@ -478,7 +465,7 @@ private:
     }
 
     // Texture
-    void CreateShaderResourceViews(const wchar_t* FilePathSprite, const wchar_t* FilePathSpriteBomb, const wchar_t* FilePathTile)
+    void CreateShaderResourceViews(const wchar_t* FilePathSprite, const wchar_t* FilePathSpriteBomb, const wchar_t* FilePathTile, const wchar_t* FilePathProjectile)
     {
         // use srgb
         HRESULT Resut = DirectX::CreateWICTextureFromFileEx(
@@ -517,7 +504,24 @@ private:
             MessageBox(NULL, L"Failed to load sprite bomb.", L"Error", MB_OK | MB_ICONERROR);
             abort();
         }
-        
+        Resut = DirectX::CreateWICTextureFromFileEx(
+            Device,
+            DeviceContext,
+            FilePathProjectile,
+            0,
+            D3D11_USAGE_DEFAULT,
+            D3D11_BIND_SHADER_RESOURCE,
+            0,
+            0,
+            DirectX::WIC_LOADER_FORCE_SRGB,
+            nullptr,
+            &TextureSrvProjectile
+        );
+        if (FAILED(Resut))
+        {
+            MessageBox(NULL, L"Failed to load projectile.", L"Error", MB_OK | MB_ICONERROR);
+            abort();
+        }
 
         // use rgb
         Resut = DirectX::CreateWICTextureFromFile(
@@ -541,6 +545,8 @@ private:
         TextureSrvSpriteBomb = nullptr;
         TextureSrvTile->Release();
         TextureSrvTile = nullptr;
+        TextureSrvProjectile->Release();
+        TextureSrvProjectile = nullptr;
     }
     void CreateSamplerState()
     {
@@ -559,6 +565,31 @@ private:
     void ReleaseSamplerState()
     {
         SamplerState->Release();
+        SamplerState = nullptr;
+    }
+
+    void CreateBlendState()
+    {
+        D3D11_BLEND_DESC BlendDesc = {};
+        ZeroMemory(&BlendDesc, sizeof(D3D11_BLEND_DESC));
+
+        BlendDesc.RenderTarget[0].BlendEnable = TRUE;
+
+        BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+        BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+        BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+
+        BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+        BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+        BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+
+        BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+        Device->CreateBlendState(&BlendDesc, &AlphaBlendState);
+    }
+    void ReleaseBlendState()
+    {
+        AlphaBlendState->Release();
         SamplerState = nullptr;
     }
 
@@ -606,7 +637,9 @@ private:
     ID3D11ShaderResourceView* TextureSrvSprite;
     ID3D11ShaderResourceView* TextureSrvSpriteBomb;
     ID3D11ShaderResourceView* TextureSrvTile;
+    ID3D11ShaderResourceView* TextureSrvProjectile;
     ID3D11SamplerState* SamplerState;
+    ID3D11BlendState* AlphaBlendState;
 
     // for managing shaders
     ID3D11VertexShader* SimpleVertexShader;

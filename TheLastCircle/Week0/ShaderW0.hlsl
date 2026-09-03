@@ -3,6 +3,8 @@
 Texture2D MainTexture : register(t0);
 Texture2D BombTexture : register(t1);
 Texture2D BackgroundTexture : register(t2);
+Texture2D ProjectileTexture : register(t3);
+
 SamplerState MainSampler : register(s0);
 
 
@@ -16,6 +18,7 @@ cbuffer constants : register(b0)
     // .5 = player, 2.5 = player projectile, 3.5 = enemy projectile
     // 4.5 = EXP, 5.5 = bomb, 6.5 = heal, 7.5 = magnet
     // 10.5 = enemy_walker, 11.5 = enemy_runner, 12.5 = enemy_ranger
+    // 20.5 = garlic, 21.5 = axe, 22.5 = bible 
     // 100.5 = background, 99.5 = health bar, 98.5 = exp bar
     float CharacterType;
     
@@ -198,6 +201,41 @@ float4 mainPS(PS_INPUT Input) : SV_TARGET
         // enemy ranger
         UvOffset.x = 0.66f;
         TextureColor = MainTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+    }
+    else if (CharacterType > 20 && CharacterType < 21)
+    {
+        // garlic
+        UvScale.x = 0.5f;
+        UvScale.y = 0.5f;
+        UvOffset.y = 0.5f;
+        TextureColor = ProjectileTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+        
+        TextureColor.a = 0.1f;
+    }
+    else if (CharacterType > 21 && CharacterType < 22)
+    {
+        // axe
+        UvScale.x = 0.5f;
+        UvScale.y = 0.5f;
+        
+        TextureColor = ProjectileTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+        
+        float DistToWhite = distance(TextureColor.rgb, float3(1.0f, 1.0f, 1.0f));
+        float Threshold = 0.2f;
+        clip(DistToWhite - Threshold);
+    }
+    else if (CharacterType > 22 && CharacterType < 23)
+    {
+        // bible
+        UvScale.x = 0.5f;
+        UvScale.y = 0.5f;
+        UvOffset.x = 0.5f;
+        
+        TextureColor = ProjectileTexture.Sample(MainSampler, Input.UV * UvScale + UvOffset);
+        
+        float DistToWhite = distance(TextureColor.rgb, float3(1.0f, 1.0f, 1.0f));
+        float Threshold = 0.2f;
+        clip(DistToWhite - Threshold);
     }
     else if (CharacterType > 100)
     {
