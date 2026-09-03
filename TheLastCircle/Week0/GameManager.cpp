@@ -30,6 +30,7 @@ UGameManager::~UGameManager()
 {
     ClearEnemies();
     ClearProjectiles();
+    ClearItem();
 
     delete[] EnemyList;
     EnemyList = nullptr;
