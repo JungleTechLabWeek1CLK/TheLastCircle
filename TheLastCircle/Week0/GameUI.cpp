@@ -735,6 +735,10 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
             CardName = "Garlic";
             Description = "Garlic always Good";
             break;
+        case ETypeUpgrade::ETU_Bible:
+            CardName = "HolyBible";
+            Description = "Garlic always Good";
+            break;
         case ETypeUpgrade::COUNT:
             CardName = "COUNT";
             Description = "Number";
@@ -799,6 +803,9 @@ void UGameUI::RenderChoicePopup(UGameManager* GameManager, ETypeUpgrade* Choices
                 break;
             case ETypeUpgrade::ETU_Axe:
                 GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Axe);
+                break;
+            case ETypeUpgrade::ETU_Bible:
+                GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Bible);
                 break;
             case ETypeUpgrade::ETU_Garlic:
                 GameManager->GetPlayer()->Upgrade(ETypeUpgrade::ETU_Garlic);
